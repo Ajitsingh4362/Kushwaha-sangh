@@ -1,0 +1,100 @@
+/* Only latin + devanagari subsets are loaded (not greek/cyrillic/
+   vietnamese) to keep page weight down — devanagari is kept in so
+   a future Hindi version of the site won't need a font change. */
+@import '@fontsource/eczar/latin-500.css';
+@import '@fontsource/eczar/latin-600.css';
+@import '@fontsource/eczar/latin-700.css';
+@import '@fontsource/eczar/devanagari-500.css';
+@import '@fontsource/eczar/devanagari-600.css';
+@import '@fontsource/eczar/devanagari-700.css';
+@import '@fontsource/hind/latin-400.css';
+@import '@fontsource/hind/latin-500.css';
+@import '@fontsource/hind/latin-600.css';
+@import '@fontsource/hind/devanagari-400.css';
+@import '@fontsource/hind/devanagari-500.css';
+@import '@fontsource/hind/devanagari-600.css';
+@import '@fontsource/ibm-plex-mono/latin-400.css';
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-cream text-ink font-body;
+}
+
+::selection {
+  @apply bg-saffron/30 text-maroon-deep;
+}
+
+/* Visible keyboard focus everywhere */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid theme('colors.saffron.DEFAULT');
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---- Signature element: the Ledger Plaque ----
+   A registry/felicitation-plaque treatment reused across stat
+   highlights, achiever recognition and committee cards: warm
+   parchment card, double gold rule, engraved corner notch,
+   monospace registry number. */
+.ledger-plaque {
+  position: relative;
+  background: linear-gradient(180deg, #fffaf0 0%, #fbf1dd 100%);
+  border: 1px solid theme('colors.gold.DEFAULT' / 45%);
+  box-shadow:
+    0 0 0 4px theme('colors.cream.paper'),
+    0 0 0 5px theme('colors.gold.DEFAULT' / 35%),
+    0 10px 24px -12px rgba(69, 11, 22, 0.35);
+}
+
+.ledger-plaque::before {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid theme('colors.gold.DEFAULT' / 30%);
+  pointer-events: none;
+}
+
+.ledger-number {
+  @apply font-ledger text-[0.7rem] tracking-widest text-gold-deep/80 uppercase;
+}
+
+.ledger-rule {
+  background-image: repeating-linear-gradient(
+    to right,
+    theme('colors.gold.DEFAULT' / 55%) 0,
+    theme('colors.gold.DEFAULT' / 55%) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  height: 1px;
+}
+
+.eyebrow {
+  @apply font-ledger text-xs tracking-[0.25em] uppercase text-maroon/70;
+}
+
+.bg-noise {
+  background-image: radial-gradient(theme('colors.maroon.DEFAULT' / 6%) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
