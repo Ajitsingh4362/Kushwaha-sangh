@@ -30,9 +30,23 @@ export default function Contact() {
               </li>
             </ul>
 
-            <div className="mt-7 flex aspect-video items-center justify-center border border-dashed border-gold/50 bg-cream-deep/40 text-center text-sm text-stone/70">
-              Embed a real Google Maps location here once the Sangh&rsquo;s address is finalised.
+            <div className="mt-7 aspect-video overflow-hidden border border-gold/40">
+              <iframe
+                title="Sangh location on Google Maps"
+                src="https://maps.google.com/maps?q=Sitamarhi%20Kushwaha%20Sangh&z=14&output=embed"
+                className="h-full w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
+            <a
+              href="https://maps.app.goo.gl/XBFUzRQfWX9eA4aB9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 flex items-center gap-1.5 text-sm font-medium text-saffron hover:underline"
+            >
+              <MapPin size={15} /> Open in Google Maps
+            </a>
           </div>
 
           <div className="ledger-plaque animate-rise p-7">
