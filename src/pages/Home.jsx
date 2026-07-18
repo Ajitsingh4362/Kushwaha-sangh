@@ -8,6 +8,7 @@ import DonateQRButton from '../components/DonateQRButton'
 import Activities from '../components/Activities'
 import momentsCollage from '../assets/moments-collage.jpg'
 import HeroCarousel from '../components/HeroCarousel'
+import { CornerFlourish } from '../components/Ornament'
 
 const heroImages = [
   { src: heroBanner, alt: 'Sitamarhi Kushwaha Sangh community gathering' },
@@ -97,8 +98,9 @@ export default function Home() {
               <Link
                 key={p.id}
                 to={`/welfare#${p.id}`}
-                className="ledger-plaque animate-rise group flex flex-col p-7 transition hover:-translate-y-1"
+                className="ledger-plaque group relative flex flex-col overflow-hidden p-7 transition hover:-translate-y-1"
               >
+                <CornerFlourish className="absolute right-2 top-2 h-9 w-9 -scale-x-100 text-gold-deep/50" />
                 <span className="font-ledger text-sm text-gold-deep/70">{p.number}</span>
                 <h3 className="mt-3 font-display text-xl font-semibold text-maroon-deep">{p.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-stone">{p.blurb}</p>
