@@ -3,12 +3,19 @@ import { ArrowRight, HeartHandshake, Users } from 'lucide-react'
 import { site, stats, pillars, newsItems } from '../data/content'
 import { StatPlaque } from '../components/LedgerCard'
 import { OrnamentDivider } from '../components/Ornament'
+import heroBanner from '../assets/hero-banner.jpg'
 
 export default function Home() {
   return (
     <>
       {/* HERO — the thesis: a registry stamp affirming the Sangh's standing + mission */}
       <section className="relative overflow-hidden bg-maroon-deep text-cream-paper">
+        <img
+          src={heroBanner}
+          alt="Sitamarhi Kushwaha Sangh community gathering"
+          className="absolute inset-0 h-full w-full object-cover opacity-25"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-maroon-deep via-maroon-deep/95 to-maroon-deep/70" />
         <div className="bg-noise absolute inset-0 opacity-40" />
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28 lg:px-8">
           <div>
