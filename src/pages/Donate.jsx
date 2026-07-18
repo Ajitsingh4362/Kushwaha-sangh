@@ -1,6 +1,6 @@
-import { QrCode, Landmark, FileDown, ShieldCheck } from 'lucide-react'
+import { QrCode, Landmark, ShieldCheck } from 'lucide-react'
 import PageHero from '../components/PageHero'
-import { donationMethods, transparency } from '../data/content'
+import { donationMethods } from '../data/content'
 
 export default function Donate() {
   return (
@@ -64,58 +64,14 @@ export default function Donate() {
       </section>
 
       <section className="bg-cream-deep/60 py-16">
-        <div className="mx-auto max-w-4xl px-5 lg:px-8">
-          <p className="eyebrow text-center text-maroon/70">Accountability</p>
-          <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">
-            Where Your Money Goes
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-center text-sm text-stone">
-            A year-by-year look at funds raised and spent on the community&rsquo;s welfare programs.
-          </p>
-
-          <div className="mt-10 space-y-5">
-            {transparency.map((t) => {
-              const collectedNum = parseInt(t.collected.replace(/[^\d]/g, ''), 10)
-              const spentNum = parseInt(t.spent.replace(/[^\d]/g, ''), 10)
-              const pct = collectedNum ? Math.min(Math.round((spentNum / collectedNum) * 100), 100) : 0
-              return (
-                <div key={t.year} className="ledger-plaque animate-rise p-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <span className="font-display text-lg font-semibold text-maroon-deep">{t.year}</span>
-                    <a href={t.report} className="flex items-center gap-1.5 text-sm text-saffron hover:underline">
-                      <FileDown size={15} /> Download Report
-                    </a>
-                  </div>
-
-                  <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-2">
-                    <div>
-                      <span className="ledger-number">Collected</span>
-                      <p className="mt-1 font-display text-2xl font-bold text-maroon-deep">{t.collected}</p>
-                    </div>
-                    <div>
-                      <span className="ledger-number">Spent on Programs</span>
-                      <p className="mt-1 font-display text-2xl font-bold text-maroon-deep">{t.spent}</p>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-gold/15">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-saffron to-gold"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                  <p className="mt-1.5 text-xs text-stone">{pct}% of funds collected were put to use that year</p>
-                </div>
-              )
-            })}
-          </div>
-
-          <p className="mt-6 text-center text-xs text-stone">
-            Placeholder figures — replace with the Sangh&rsquo;s audited yearly numbers and link real
-            PDF reports.
-          </p>
+        <div className="mx-auto max-w-2xl px-5 text-center lg:px-8">
+          <blockquote className="font-display text-2xl font-semibold italic leading-snug text-maroon-deep sm:text-3xl">
+            &ldquo;No one has ever become poor by giving.&rdquo;
+          </blockquote>
+          <p className="mt-4 text-sm text-stone">— a small reminder before you scan that QR above 😊</p>
         </div>
       </section>
+
     </>
   )
 }
