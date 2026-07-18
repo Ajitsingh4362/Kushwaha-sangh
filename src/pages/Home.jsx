@@ -105,7 +105,7 @@ export default function Home() {
                   style={{
                     backgroundImage: 'radial-gradient(currentColor 1.4px, transparent 1.4px)',
                     backgroundSize: '7px 7px',
-                    color: '#8F6D26',
+                    color: '#450B16',
                   }}
                   aria-hidden="true"
                 />
