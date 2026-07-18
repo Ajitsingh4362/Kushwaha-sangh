@@ -94,30 +94,47 @@ export default function Home() {
           </div>
 
           <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {pillars.map((p) => (
-              <Link
-                key={p.id}
-                to={`/welfare#${p.id}`}
-                className="ledger-plaque group relative flex flex-col overflow-hidden p-7 transition hover:-translate-y-1"
-              >
-                <span
-                  className="absolute right-3 top-3 h-10 w-10 opacity-40"
-                  style={{
-                    backgroundImage: 'radial-gradient(currentColor 1.4px, transparent 1.4px)',
-                    backgroundSize: '7px 7px',
-                    color: '#450B16',
-                  }}
-                  aria-hidden="true"
-                />
-                <span className="font-ledger text-sm text-gold-deep/70">{p.number}</span>
-                <h3 className="mt-3 font-display text-xl font-semibold text-maroon-deep">{p.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-stone">{p.blurb}</p>
-                <span className="mt-4 flex items-center gap-1.5 text-sm font-medium text-saffron">
-                  Learn more
-                  <ArrowRight size={15} className="transition group-hover:translate-x-1" />
-                </span>
-              </Link>
-            ))}
+            {pillars.map((p) => {
+              const isHealth = p.id === 'health'
+              return (
+                <Link
+                  key={p.id}
+                  to={`/welfare#${p.id}`}
+                  className={`group relative flex flex-col overflow-hidden p-7 transition hover:-translate-y-1 ${
+                    isHealth
+                      ? 'ledger-plaque !bg-none !bg-maroon-deep text-cream-paper'
+                      : 'ledger-plaque'
+                  }`}
+                >
+                  <span
+                    className="absolute right-3 top-3 h-10 w-10 opacity-40"
+                    style={{
+                      backgroundImage: 'radial-gradient(currentColor 1.4px, transparent 1.4px)',
+                      backgroundSize: '7px 7px',
+                      color: isHealth ? '#E8821C' : '#450B16',
+                    }}
+                    aria-hidden="true"
+                  />
+                  <span className={`font-ledger text-sm ${isHealth ? 'text-gold-light/80' : 'text-gold-deep/70'}`}>
+                    {p.number}
+                  </span>
+                  <h3
+                    className={`mt-3 font-display text-xl font-semibold ${
+                      isHealth ? 'text-cream-paper' : 'text-maroon-deep'
+                    }`}
+                  >
+                    {p.title}
+                  </h3>
+                  <p className={`mt-2 flex-1 text-sm leading-relaxed ${isHealth ? 'text-cream/80' : 'text-stone'}`}>
+                    {p.blurb}
+                  </p>
+                  <span className="mt-4 flex items-center gap-1.5 text-sm font-medium text-saffron">
+                    Learn more
+                    <ArrowRight size={15} className="transition group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
