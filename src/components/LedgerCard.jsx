@@ -1,3 +1,5 @@
+import AnimatedCounter from './AnimatedCounter'
+
 export function LedgerCard({ regNo, title, subtitle, children, className = '' }) {
   return (
     <div className={`ledger-plaque animate-rise p-6 ${className}`}>
@@ -13,7 +15,9 @@ export function StatPlaque({ value, label, id }) {
   return (
     <div className="ledger-plaque animate-rise flex flex-col items-center px-5 py-7 text-center">
       <span className="ledger-number">{id}</span>
-      <span className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">{value}</span>
+      <span className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">
+        <AnimatedCounter value={value} />
+      </span>
       <span className="mt-1 text-sm text-stone">{label}</span>
     </div>
   )

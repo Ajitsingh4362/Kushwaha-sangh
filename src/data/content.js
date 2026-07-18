@@ -43,10 +43,10 @@ export const navigation = [
 ]
 
 export const stats = [
-  { label: 'Registered Members', value: '2,400+', id: 'REG-M' },
+  { label: 'Registered Members', value: '500+', id: 'REG-M' },
   { label: 'Hostel Fund Progress', value: '14%', id: 'REG-H' },
   { label: 'Families Assisted', value: '310', id: 'REG-F' },
-  { label: 'Years of Service', value: '27', id: 'REG-Y' },
+  { label: 'Years of Service', value: '10', id: 'REG-Y' },
 ]
 
 export const pillars = [
