@@ -3,20 +3,23 @@ import { ArrowRight, HeartHandshake, Users } from 'lucide-react'
 import { site, stats, pillars, newsItems } from '../data/content'
 import { StatPlaque } from '../components/LedgerCard'
 import heroBanner from '../assets/hero-banner.jpg'
+import heroBanner2 from '../assets/hero-banner-2.jpg'
 import DonateQRButton from '../components/DonateQRButton'
 import Activities from '../components/Activities'
 import momentsCollage from '../assets/moments-collage.jpg'
+import HeroCarousel from '../components/HeroCarousel'
+
+const heroImages = [
+  { src: heroBanner, alt: 'Sitamarhi Kushwaha Sangh community gathering' },
+  { src: heroBanner2, alt: 'Sitamarhi Kushwaha Sangh — Ekta aur Sangathan hi hamari Shakti hai' },
+]
 
 export default function Home() {
   return (
     <>
-      {/* HERO — just the image */}
+      {/* HERO — auto-rotating carousel */}
       <section className="relative overflow-hidden bg-maroon-deep">
-        <img
-          src={heroBanner}
-          alt="Sitamarhi Kushwaha Sangh community gathering"
-          className="h-full w-full object-cover"
-        />
+        <HeroCarousel images={heroImages} />
         <div className="ledger-rule absolute bottom-0 left-0 right-0 opacity-40" />
       </section>
 
