@@ -43,8 +43,8 @@ export default {
           '100%': { transform: 'translateX(-50%)' },
         },
         blink: {
-          '0%, 100%': { opacity: '1' },
-          '50%': { opacity: '0.45' },
+          '0%, 49%': { opacity: '1' },
+          '50%, 100%': { opacity: '0' },
         },
         stamp: {
           '0%': { transform: 'scale(1.4) rotate(-8deg)', opacity: '0' },
