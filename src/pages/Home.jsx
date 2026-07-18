@@ -4,6 +4,7 @@ import { site, stats, pillars, newsItems } from '../data/content'
 import { StatPlaque } from '../components/LedgerCard'
 import heroBanner from '../assets/hero-banner.jpg'
 import DonateQRButton from '../components/DonateQRButton'
+import Activities from '../components/Activities'
 
 export default function Home() {
   return (
@@ -61,6 +62,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <Activities />
 
       {/* NEWS PREVIEW */}
       <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">

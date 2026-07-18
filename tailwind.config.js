@@ -38,6 +38,10 @@ export default {
         ledger: ['"IBM Plex Mono"', 'monospace'],
       },
       keyframes: {
+        'scroll-x': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
         stamp: {
           '0%': { transform: 'scale(1.4) rotate(-8deg)', opacity: '0' },
           '60%': { transform: 'scale(0.96) rotate(-2deg)', opacity: '1' },
