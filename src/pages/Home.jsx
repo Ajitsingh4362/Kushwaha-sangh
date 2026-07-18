@@ -5,6 +5,7 @@ import { StatPlaque } from '../components/LedgerCard'
 import heroBanner from '../assets/hero-banner.jpg'
 import DonateQRButton from '../components/DonateQRButton'
 import Activities from '../components/Activities'
+import momentsCollage from '../assets/moments-collage.jpg'
 
 export default function Home() {
   return (
@@ -27,6 +28,25 @@ export default function Home() {
           {stats.map((s) => (
             <StatPlaque key={s.id} {...s} />
           ))}
+        </div>
+      </section>
+
+      {/* MOMENTS COLLAGE */}
+      <section className="py-16">
+        <div className="mx-auto max-w-6xl px-5 lg:px-8">
+          <div className="mx-auto max-w-xl text-center">
+            <p className="eyebrow text-maroon/70">A Glimpse</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">
+              Moments from Our Events
+            </h2>
+          </div>
+          <div className="mt-8 overflow-hidden rounded-sm border border-gold/40">
+            <img
+              src={momentsCollage}
+              alt="Collage of Sitamarhi Kushwaha Sangh felicitation ceremony moments"
+              className="w-full object-cover"
+            />
+          </div>
         </div>
       </section>
 
