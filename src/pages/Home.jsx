@@ -30,7 +30,7 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
         <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
           {stats.map((s) => (
-            <StatPlaque key={s.id} {...s} />
+            <StatPlaque key={s.id} {...s} dark={s.id === 'REG-M' || s.id === 'REG-Y'} />
           ))}
         </div>
       </section>

@@ -11,14 +11,22 @@ export function LedgerCard({ regNo, title, subtitle, children, className = '' })
   )
 }
 
-export function StatPlaque({ value, label, id }) {
+export function StatPlaque({ value, label, id, dark = false }) {
   return (
-    <div className="ledger-plaque animate-rise flex flex-col items-center px-5 py-7 text-center">
-      <span className="ledger-number">{id}</span>
-      <span className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">
+    <div
+      className={`ledger-plaque animate-rise flex flex-col items-center px-5 py-7 text-center ${
+        dark ? '!bg-none !bg-maroon-deep text-cream-paper' : ''
+      }`}
+    >
+      <span className={`ledger-number ${dark ? 'text-gold-light/80' : ''}`}>{id}</span>
+      <span
+        className={`mt-2 font-display text-3xl font-bold sm:text-4xl ${
+          dark ? 'text-cream-paper' : 'text-maroon-deep'
+        }`}
+      >
         <AnimatedCounter value={value} />
       </span>
-      <span className="mt-1 text-sm text-stone">{label}</span>
+      <span className={`mt-1 text-sm ${dark ? 'text-cream/80' : 'text-stone'}`}>{label}</span>
     </div>
   )
 }
