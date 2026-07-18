@@ -44,7 +44,7 @@ export const navigation = [
 
 export const stats = [
   { label: 'Registered Members', value: '2,400+', id: 'REG-M' },
-  { label: 'Hostel Residents', value: '46', id: 'REG-H' },
+  { label: 'Hostel Fund Progress', value: '14%', id: 'REG-H' },
   { label: 'Families Assisted', value: '310', id: 'REG-F' },
   { label: 'Years of Service', value: '27', id: 'REG-Y' },
 ]
@@ -54,7 +54,7 @@ export const pillars = [
     id: 'hostel',
     title: "Girls' Hostel",
     blurb:
-      'Safe, subsidised residence for young women from the community pursuing education away from home.',
+      'A planned residence for young women from the community pursuing education away from home — currently raising funds to build it.',
     number: '01',
   },
   {
@@ -93,8 +93,9 @@ export const committee = {
 }
 
 export const hostelInfo = {
+  status: 'upcoming', // 'upcoming' — hostel is a planned initiative, not yet built
   intro:
-    'The Sangh runs a residential hostel for girls from the community who are pursuing higher education. The hostel provides safe accommodation, meals and a supportive environment close to college campuses.',
+    'The Sangh is raising funds to build its first residential hostel for girls from the community pursuing higher education — a safe, affordable place to stay close to college campuses.',
   facilities: [
     'Furnished shared rooms',
     'Three meals a day',
@@ -103,9 +104,11 @@ export const hostelInfo = {
     'CCTV-monitored premises',
     'Medical first-aid on site',
   ],
-  capacity: '60 beds',
-  occupied: '46 residents',
-  progressPercent: 77,
+  plannedCapacity: '60 beds (planned)',
+  fundGoal: '\u20b950,00,000', // placeholder — replace with the real target
+  fundRaised: '\u20b96,80,000', // placeholder — replace with real progress
+  progressPercent: 14,
+  progressNote: 'Funds raised so far toward the construction goal — replace with live figures.',
   progressNote: 'Current occupancy against total capacity — replace with live figures.',
 }
 

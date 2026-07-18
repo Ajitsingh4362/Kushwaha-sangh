@@ -28,10 +28,10 @@ function HostelSection() {
           </div>
 
           <div className="ledger-plaque animate-rise p-7">
-            <div className="ledger-number">Occupancy</div>
+            <span className="ledger-number">Upcoming Initiative</span>
             <div className="mt-3 flex items-baseline justify-between">
-              <span className="font-display text-2xl font-bold text-maroon-deep">{hostelInfo.occupied}</span>
-              <span className="text-sm text-stone">of {hostelInfo.capacity}</span>
+              <span className="font-display text-2xl font-bold text-maroon-deep">{hostelInfo.fundRaised}</span>
+              <span className="text-sm text-stone">raised of {hostelInfo.fundGoal}</span>
             </div>
             <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-gold/15">
               <div
@@ -40,15 +40,17 @@ function HostelSection() {
               />
             </div>
             <p className="mt-2 text-xs text-stone">{hostelInfo.progressNote}</p>
+            <p className="mt-1 text-xs text-stone">Planned capacity: {hostelInfo.plannedCapacity}</p>
 
             <div className="ledger-rule my-6" />
 
             <p className="text-sm leading-relaxed text-stone">
-              Photo gallery of the hostel building, rooms and study hall goes here — see the{' '}
+              This hostel hasn&rsquo;t been built yet — it&rsquo;s the Sangh&rsquo;s next big goal. Once
+              ground is broken, photos of construction and the finished building will appear on the{' '}
               <a href="/gallery" className="text-saffron underline">
                 Gallery
               </a>{' '}
-              page for the full set once real photos are added.
+              page.
             </p>
             <div className="mt-4 grid grid-cols-3 gap-2">
               {[1, 2, 3].map((i) => (
@@ -56,10 +58,16 @@ function HostelSection() {
                   key={i}
                   className="flex aspect-square items-center justify-center border border-dashed border-gold/50 bg-cream text-xs text-stone/70"
                 >
-                  Photo {i}
+                  Concept {i}
                 </div>
               ))}
             </div>
+            <a
+              href="/donate"
+              className="mt-5 block w-full rounded-sm bg-maroon-deep px-5 py-3 text-center text-sm font-semibold text-cream-paper transition hover:bg-maroon"
+            >
+              Contribute to the Hostel Fund
+            </a>
           </div>
         </div>
       </div>
