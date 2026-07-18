@@ -44,16 +44,11 @@ function MembershipForm() {
         <Field id="phone" label="Phone Number" type="tel" required />
         <Field id="email" label="Email Address" type="email" />
         <Field id="address" label="Current Address" type="text" className="sm:col-span-2" required />
-        <SelectField
-          id="area"
-          label="Area / Zone"
-          options={['North Zone', 'South Zone', 'East Zone', 'West Zone', 'Outside District']}
-        />
         <Field id="occupation" label="Occupation" type="text" />
       </div>
       <label className="flex items-start gap-2.5 text-sm text-stone">
         <input type="checkbox" required className="mt-1 accent-maroon" />
-        I agree to the Sangh&rsquo;s membership terms and consent to my name and area appearing in
+        I agree to the Sangh&rsquo;s membership terms and consent to my name appearing in
         the public member directory.
       </label>
       <button
