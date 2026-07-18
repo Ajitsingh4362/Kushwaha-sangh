@@ -157,7 +157,6 @@ export const newsItems = [
 ]
 
 export const galleryCategories = [
-  { id: 'hostel', label: 'Hostel Life', count: 8 },
   { id: 'events', label: 'Sangh Events', count: 10 },
   { id: 'ceremonies', label: 'Felicitation Ceremonies', count: 6 },
   { id: 'health', label: 'Health Camps', count: 5 },
