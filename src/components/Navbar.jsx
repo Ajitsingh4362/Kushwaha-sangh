@@ -76,7 +76,7 @@ export default function Navbar() {
 
         <Link
           to="/donate"
-          className="hidden rounded-sm border border-saffron bg-saffron px-4 py-2 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light lg:block"
+          className="ml-6 hidden rounded-sm border border-saffron bg-saffron px-4 py-2 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light lg:block"
         >
           Donate
         </Link>
