@@ -2,58 +2,18 @@ import { Link } from 'react-router-dom'
 import { ArrowRight, HeartHandshake, Users } from 'lucide-react'
 import { site, stats, pillars, newsItems } from '../data/content'
 import { StatPlaque } from '../components/LedgerCard'
-import { OrnamentDivider } from '../components/Ornament'
 import heroBanner from '../assets/hero-banner.jpg'
 
 export default function Home() {
   return (
     <>
-      {/* HERO — the thesis: a registry stamp affirming the Sangh's standing + mission */}
-      <section className="relative overflow-hidden bg-maroon-deep text-cream-paper">
+      {/* HERO — just the image */}
+      <section className="relative overflow-hidden bg-maroon-deep">
         <img
           src={heroBanner}
           alt="Sitamarhi Kushwaha Sangh community gathering"
-          className="absolute inset-0 h-full w-full object-cover opacity-25"
+          className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-maroon-deep via-maroon-deep/95 to-maroon-deep/70" />
-        <div className="bg-noise absolute inset-0 opacity-40" />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 lg:grid-cols-[1.1fr_0.9fr] lg:py-28 lg:px-8">
-          <div>
-            <p className="eyebrow text-gold-light">Est. {site.established} · Regd. Community Welfare Association</p>
-            <h1 className="mt-4 font-display text-5xl font-bold leading-[1.05] sm:text-6xl">
-              {site.name}
-            </h1>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-cream/80">{site.mission}</p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <Link
-                to="/membership"
-                className="flex items-center gap-2 rounded-sm bg-saffron px-6 py-3 font-semibold text-maroon-deep transition hover:bg-saffron-light"
-              >
-                Become a Member <ArrowRight size={18} />
-              </Link>
-              <Link
-                to="/donate"
-                className="flex items-center gap-2 rounded-sm border border-gold/70 px-6 py-3 font-semibold text-cream-paper transition hover:bg-cream-paper/10"
-              >
-                Support Our Work
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-sm">
-            <div className="ledger-plaque animate-stamp -rotate-3 p-8 text-center">
-              <div className="ledger-number">Official Registry</div>
-              <div className="mt-3 grid h-20 w-20 mx-auto place-items-center rounded-full border-2 border-gold-deep bg-maroon-deep">
-                <span className="font-display text-2xl font-bold text-gold">KS</span>
-              </div>
-              <p className="mt-4 font-display text-lg font-semibold text-maroon-deep">{site.name}</p>
-              <OrnamentDivider className="mx-auto mt-3 h-4 w-32 text-gold-deep/70" />
-              <p className="mt-3 text-sm text-stone">
-                Serving the community since {site.established} through welfare, education and mutual support.
-              </p>
-            </div>
-          </div>
-        </div>
         <div className="ledger-rule absolute bottom-0 left-0 right-0 opacity-40" />
       </section>
 
