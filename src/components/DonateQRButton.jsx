@@ -13,7 +13,7 @@ export default function DonateQRButton() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="rounded-sm bg-saffron px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-saffron-light"
+          className="animate-blink rounded-sm bg-saffron px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-saffron-light"
         >
           Donate via QR
         </button>
