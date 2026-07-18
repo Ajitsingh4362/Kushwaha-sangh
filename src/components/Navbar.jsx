@@ -93,7 +93,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt={`${site.name} logo`} className="h-16 w-16 rounded-full object-contain" />
           <span className="flex flex-col leading-tight">
-            <span className="font-display text-lg font-semibold text-blue-900">{site.name}</span>
+            <span className="font-display text-lg font-semibold uppercase text-blue-900">{site.name}</span>
             <span className="eyebrow text-gold-light/80">{site.tagline}</span>
           </span>
         </Link>
