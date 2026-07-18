@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ImageIcon } from 'lucide-react'
+import { ImageIcon, X } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { galleryCategories } from '../data/content'
 import a1 from '../assets/activities/activity-1.jpg'
@@ -24,6 +24,7 @@ const realPhotos = [
 
 export default function Gallery() {
   const [active, setActive] = useState('all')
+  const [lightbox, setLightbox] = useState(null)
 
   const realTiles = realPhotos
     .filter((p) => active === 'all' || p.category === active)
@@ -71,9 +72,13 @@ export default function Gallery() {
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {realTiles.map((t) => (
-            <div key={t.key} className="aspect-square overflow-hidden border border-gold/40 bg-cream-deep/50">
+            <button
+              key={t.key}
+              onClick={() => setLightbox(t)}
+              className="aspect-square overflow-hidden border border-gold/40 bg-cream-deep/50 transition hover:opacity-90"
+            >
               <img src={t.src} alt={t.label} className="h-full w-full object-cover" loading="lazy" />
-            </div>
+            </button>
           ))}
           {placeholderTiles.map((t) => (
             <div
@@ -89,6 +94,28 @@ export default function Gallery() {
           Hostel and health-camp tiles are still placeholders — replace once the Sangh shares those photos.
         </p>
       </section>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-5"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            type="button"
+            onClick={() => setLightbox(null)}
+            aria-label="Close"
+            className="absolute right-5 top-5 text-cream-paper hover:text-saffron"
+          >
+            <X size={28} />
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.label}
+            className="max-h-[85vh] max-w-full rounded-sm object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </>
   )
 }
