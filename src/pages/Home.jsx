@@ -9,6 +9,7 @@ import Activities from '../components/Activities'
 import momentsCollage from '../assets/moments-collage.jpg'
 import HeroCarousel from '../components/HeroCarousel'
 import { CornerFlourish } from '../components/Ornament'
+import MarqueeStrip from '../components/MarqueeStrip'
 
 const heroImages = [
   { src: heroBanner, alt: 'Sitamarhi Kushwaha Sangh community gathering' },
@@ -23,6 +24,8 @@ export default function Home() {
         <HeroCarousel images={heroImages} />
         <div className="ledger-rule absolute bottom-0 left-0 right-0 opacity-40" />
       </section>
+
+      <MarqueeStrip />
 
       <DonateQRButton />
 
