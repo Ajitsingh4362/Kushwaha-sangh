@@ -3,6 +3,7 @@ import { ArrowRight, HeartHandshake, Users } from 'lucide-react'
 import { site, stats, pillars, newsItems } from '../data/content'
 import { StatPlaque } from '../components/LedgerCard'
 import heroBanner from '../assets/hero-banner.jpg'
+import DonateQRButton from '../components/DonateQRButton'
 
 export default function Home() {
   return (
@@ -16,6 +17,8 @@ export default function Home() {
         />
         <div className="ledger-rule absolute bottom-0 left-0 right-0 opacity-40" />
       </section>
+
+      <DonateQRButton />
 
       {/* STATS */}
       <section className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
