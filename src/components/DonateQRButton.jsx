@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { X } from 'lucide-react'
 import QRCode from 'react-qr-code'
 import { donationMethods } from '../data/content'
@@ -8,7 +9,7 @@ export default function DonateQRButton() {
 
   return (
     <>
-      <div className="flex justify-center bg-cream-deep/60 py-8">
+      <div className="flex flex-wrap justify-center gap-4 bg-cream-deep/60 py-8">
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -16,6 +17,12 @@ export default function DonateQRButton() {
         >
           Donate via QR
         </button>
+        <Link
+          to="/membership"
+          className="rounded-sm border border-maroon-deep px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-maroon-deep hover:text-cream-paper"
+        >
+          Join Us
+        </Link>
       </div>
 
       {open && (
