@@ -85,14 +85,14 @@ export default function Navbar() {
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen((v) => !v)}
-          className="text-cream-paper lg:hidden"
+          className="text-blue-900 lg:hidden"
         >
           {mobileOpen ? <X size={26} /> : <Menu size={26} />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-gold/25 bg-maroon-deep px-5 pb-5 lg:hidden">
+        <div className="border-t border-gold/25 bg-cream px-5 pb-5 lg:hidden">
           <nav className="flex flex-col divide-y divide-gold/10">
             {navigation.map((item) => (
               <div key={item.label} className="py-1">
@@ -104,7 +104,7 @@ export default function Navbar() {
                         key={child.label}
                         to={child.to}
                         onClick={() => setMobileOpen(false)}
-                        className="py-2 text-sm text-cream/80"
+                        className="py-2 text-sm text-blue-900/80"
                       >
                         {child.label}
                       </Link>
