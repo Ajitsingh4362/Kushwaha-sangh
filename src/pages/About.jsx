@@ -67,15 +67,35 @@ export default function About() {
             <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Our Objectives</h2>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
-            {objectives.map((o) => (
-              <div key={o.title} className="ledger-plaque animate-rise flex gap-4 p-6">
-                <o.icon size={28} className="mt-1 shrink-0 text-saffron" strokeWidth={1.75} />
-                <div>
-                  <h3 className="font-display text-lg font-semibold text-maroon-deep">{o.title}</h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-stone">{o.text}</p>
+            {objectives.map((o) => {
+              const isDark = o.title === 'Education First' || o.title === 'Recognition'
+              return (
+                <div
+                  key={o.title}
+                  className={`flex gap-4 p-6 ${
+                    isDark ? 'ledger-plaque !bg-none !bg-maroon-deep text-cream-paper' : 'ledger-plaque'
+                  }`}
+                >
+                  <o.icon
+                    size={28}
+                    className={`mt-1 shrink-0 ${isDark ? 'text-gold-light' : 'text-saffron'}`}
+                    strokeWidth={1.75}
+                  />
+                  <div>
+                    <h3
+                      className={`font-display text-lg font-semibold ${
+                        isDark ? 'text-cream-paper' : 'text-maroon-deep'
+                      }`}
+                    >
+                      {o.title}
+                    </h3>
+                    <p className={`mt-1.5 text-sm leading-relaxed ${isDark ? 'text-cream/80' : 'text-stone'}`}>
+                      {o.text}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </section>
