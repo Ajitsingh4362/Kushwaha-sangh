@@ -65,7 +65,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt={`${site.name} logo`} className="h-11 w-11 rounded-full object-contain" />
+          <img src={logo} alt={`${site.name} logo`} className="h-16 w-16 rounded-full object-contain" />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-lg font-semibold text-cream-paper">{site.name}</span>
             <span className="eyebrow text-gold-light/80">{site.tagline}</span>
