@@ -18,7 +18,7 @@ function NavItem({ item, onNavigate }) {
           to={item.to}
           className={({ isActive }) =>
             `flex items-center gap-1 py-2 text-sm font-medium tracking-wide transition-colors ${
-              isActive ? 'text-saffron' : 'text-cream/90 hover:text-saffron'
+              isActive ? 'text-saffron' : 'text-blue-900 hover:text-saffron'
             }`
           }
         >
@@ -67,7 +67,7 @@ export default function Navbar() {
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt={`${site.name} logo`} className="h-16 w-16 rounded-full object-contain" />
           <span className="flex flex-col leading-tight">
-            <span className="font-display text-lg font-semibold text-cream-paper">{site.name}</span>
+            <span className="font-display text-lg font-semibold text-blue-900">{site.name}</span>
             <span className="eyebrow text-gold-light/80">{site.tagline}</span>
           </span>
         </Link>
