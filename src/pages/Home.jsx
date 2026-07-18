@@ -100,7 +100,15 @@ export default function Home() {
                 to={`/welfare#${p.id}`}
                 className="ledger-plaque group relative flex flex-col overflow-hidden p-7 transition hover:-translate-y-1"
               >
-                <CornerFlourish className="absolute right-2 top-2 h-9 w-9 -scale-x-100 text-gold-deep/50" />
+                <span
+                  className="absolute right-3 top-3 h-10 w-10 opacity-40"
+                  style={{
+                    backgroundImage: 'radial-gradient(currentColor 1.4px, transparent 1.4px)',
+                    backgroundSize: '7px 7px',
+                    color: '#8F6D26',
+                  }}
+                  aria-hidden="true"
+                />
                 <span className="font-ledger text-sm text-gold-deep/70">{p.number}</span>
                 <h3 className="mt-3 font-display text-xl font-semibold text-maroon-deep">{p.title}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-stone">{p.blurb}</p>
