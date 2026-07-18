@@ -16,11 +16,7 @@ function NavItem({ item, onNavigate }) {
       >
         <NavLink
           to={item.to}
-          className={({ isActive }) =>
-            `flex items-center gap-1 py-2 text-sm font-medium tracking-wide transition-colors ${
-              isActive ? 'text-saffron' : 'text-blue-900 hover:text-saffron'
-            }`
-          }
+          className="flex items-center gap-1 py-2 text-sm font-medium tracking-wide text-blue-900"
         >
           {item.label}
           <ChevronDown size={14} strokeWidth={2.5} />
@@ -32,7 +28,7 @@ function NavItem({ item, onNavigate }) {
                 key={child.label}
                 to={child.to}
                 onClick={onNavigate}
-                className="block px-4 py-2.5 text-sm text-cream/90 hover:bg-maroon hover:text-saffron"
+                className="block px-4 py-2.5 text-sm text-blue-900"
               >
                 {child.label}
               </Link>
@@ -49,7 +45,7 @@ function NavItem({ item, onNavigate }) {
       onClick={onNavigate}
       className={({ isActive }) =>
         `py-2 text-sm font-medium tracking-wide transition-colors ${
-          isActive ? 'text-saffron' : 'text-cream/90 hover:text-saffron'
+          'text-blue-900'
         }`
       }
     >
