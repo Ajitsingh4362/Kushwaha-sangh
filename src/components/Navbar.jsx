@@ -4,10 +4,40 @@ import { Menu, X, ChevronDown } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
 
-function NavItem({ item, onNavigate }) {
+function NavItem({ item, onNavigate, mobile = false }) {
   const [open, setOpen] = useState(false)
 
   if (item.children) {
+    if (mobile) {
+      return (
+        <div>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            className="flex w-full items-center justify-between gap-1 py-2 text-sm font-medium tracking-wide text-blue-900"
+          >
+            {item.label}
+            <ChevronDown size={16} strokeWidth={2.5} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+          </button>
+          {open && (
+            <div className="ml-3 flex flex-col border-l border-gold/20 pl-3">
+              {item.children.map((child) => (
+                <Link
+                  key={child.label}
+                  to={child.to}
+                  onClick={onNavigate}
+                  className="py-2 text-sm text-blue-900/80"
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    }
+
     return (
       <div
         className="relative"
@@ -96,21 +126,7 @@ export default function Navbar() {
           <nav className="flex flex-col divide-y divide-gold/10">
             {navigation.map((item) => (
               <div key={item.label} className="py-1">
-                <NavItem item={item} onNavigate={() => setMobileOpen(false)} />
-                {item.children && (
-                  <div className="ml-3 flex flex-col border-l border-gold/20 pl-3">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.label}
-                        to={child.to}
-                        onClick={() => setMobileOpen(false)}
-                        className="py-2 text-sm text-blue-900/80"
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                <NavItem item={item} onNavigate={() => setMobileOpen(false)} mobile />
               </div>
             ))}
           </nav>
