@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { site, navigation } from '../data/content'
+import logo from '../assets/logo.png'
 
 // lucide-react no longer ships brand/logo marks, so these three
 // social icons are simple hand-drawn SVGs kept consistent in weight
@@ -38,9 +39,7 @@ export default function Footer() {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 lg:grid-cols-[1.3fr_1fr_1fr] lg:px-8">
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-full border-2 border-gold bg-maroon font-display text-lg font-semibold text-gold">
-              KS
-            </span>
+            <img src={logo} alt={`${site.name} logo`} className="h-12 w-12 rounded-full object-contain" />
             <span className="font-display text-xl font-semibold text-cream-paper">{site.name}</span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream/70">{site.mission}</p>

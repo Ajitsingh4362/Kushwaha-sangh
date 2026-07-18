@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { site, navigation } from '../data/content'
+import logo from '../assets/logo.png'
 
 function NavItem({ item, onNavigate }) {
   const [open, setOpen] = useState(false)
@@ -64,9 +65,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <span className="grid h-10 w-10 place-items-center rounded-full border-2 border-gold bg-maroon font-display text-lg font-semibold text-gold">
-            KS
-          </span>
+          <img src={logo} alt={`${site.name} logo`} className="h-11 w-11 rounded-full object-contain" />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-lg font-semibold text-cream-paper">{site.name}</span>
             <span className="eyebrow text-gold-light/80">{site.tagline}</span>
