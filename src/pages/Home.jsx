@@ -34,6 +34,32 @@ export default function Home() {
         </div>
       </section>
 
+      {/* SHAPE DIVIDER */}
+      <div className="relative h-14 overflow-hidden bg-cream sm:h-20">
+        <svg
+          viewBox="0 0 1200 100"
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full text-maroon-deep/8"
+          aria-hidden="true"
+        >
+          <path d="M0,40 C300,100 900,0 1200,60 L1200,0 L0,0 Z" fill="currentColor" />
+        </svg>
+        <svg
+          viewBox="0 0 1200 100"
+          preserveAspectRatio="none"
+          className="absolute inset-0 h-full w-full text-gold"
+          aria-hidden="true"
+        >
+          <path
+            d="M0,55 C300,110 900,10 1200,70"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            opacity="0.6"
+          />
+        </svg>
+      </div>
+
       {/* MOMENTS COLLAGE */}
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
