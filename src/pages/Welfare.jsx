@@ -168,7 +168,7 @@ function AchieversSection() {
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {achievers.map((a, i) => (
             <div key={i} className="ledger-plaque animate-rise flex gap-4 p-5">
-              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-gold bg-maroon-deep font-display font-semibold text-gold">
+              <div className="grid h-14 w-14 shrink-0 place-items-center rounded-md border-2 border-gold bg-maroon-deep font-display font-semibold text-gold">
                 {a.name.replace(/Achiever Name/i, 'A').slice(0, 1)}
               </div>
               <div>

@@ -23,7 +23,7 @@ export function PersonPlaque({ name, designation, regNo, note, featured = false 
   return (
     <div className={`ledger-plaque animate-rise flex flex-col items-center px-6 text-center ${featured ? 'py-9' : 'py-7'}`}>
       <div
-        className={`grid place-items-center rounded-full border-2 border-gold bg-maroon-deep font-display font-semibold text-gold ${
+        className={`grid place-items-center rounded-md border-2 border-gold bg-maroon-deep font-display font-semibold text-gold ${
           featured ? 'h-24 w-24 text-3xl' : 'h-20 w-20 text-2xl'
         }`}
       >
