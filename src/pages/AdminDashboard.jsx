@@ -20,6 +20,16 @@ export default function AdminDashboard() {
       <PageHero eyebrow="Committee Only" title="Admin Dashboard" blurb="Manage member dues and record donations." />
 
       <section className="mx-auto max-w-5xl px-5 py-12 lg:px-8">
+        <div className="ledger-plaque mb-8 p-5 text-sm leading-relaxed text-stone">
+          <p className="font-medium text-maroon-deep">How this works, in short:</p>
+          <ol className="mt-2 list-decimal space-y-1 pl-5">
+            <li>Go to <strong>Member Dues</strong> and add each member once, with their monthly amount.</li>
+            <li>At the start of every month, click <strong>&ldquo;Generate This Month&rsquo;s Dues&rdquo;</strong> — this creates that month&rsquo;s row for everyone automatically.</li>
+            <li>As people pay, click <strong>&ldquo;Mark Paid&rdquo;</strong> next to their name.</li>
+            <li>Go to <strong>Donations</strong> whenever someone donates — pick their name if they&rsquo;re a member, or add a one-off donor.</li>
+          </ol>
+        </div>
+
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gold/30 pb-4">
           <div className="flex gap-2">
             <button
