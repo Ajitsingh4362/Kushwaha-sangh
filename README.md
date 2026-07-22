@@ -59,3 +59,38 @@ Devanagari support already, so a Hindi version later is mostly a
 translation exercise, not a font change. The recurring bordered "plaque"
 card (used for stats, committee members and achievers) is the signature
 element — a nod to registry ledgers and felicitation plaques.
+
+## Backend (Supabase) — Step 1 complete
+
+A dedicated Supabase project (`kushwaha-sangh`) now backs two features:
+
+- **`/admin-login` → `/admin`** — committee-only dashboard with two tabs:
+  - **Member Dues**: add members with a monthly due amount, click "Generate This
+    Month's Dues" once a month, then mark each member Paid/Unpaid. Pending
+    months per member are tracked automatically.
+  - **Donations**: log each donation (name or anonymous, amount, note).
+- **Public Donate page**: a "Recent Donations" ledger pulls live from the same
+  `donations` table — no manual editing of the page needed.
+
+### First-time setup still needed
+
+1. **Create the first committee login** — this isn't done via the website (no
+   public sign-up, by design). In the Supabase dashboard: Authentication →
+   Users → Add User → set an email + password for whoever will manage this
+   (e.g. the Adhyaksh or Sachiv). Add more accounts the same way for other
+   committee members.
+2. **Environment variables** — `.env` (already set locally, gitignored) holds
+   `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. Add the same two as
+   Environment Variables in the Vercel project settings, or the deployed site
+   won't be able to reach Supabase.
+3. The anon key is safe to expose publicly — every table has Row Level
+   Security on, so only signed-in committee accounts can read/write members
+   and dues, while donations are public-read (for the transparency widget)
+   and committee-write only.
+
+### Still to come (next modules, one at a time)
+
+- WhatsApp/email reminders for pending dues
+- Auto-generated donation receipts (PDF)
+- Wiring Razorpay payments to auto-insert into the `donations` table instead
+  of manual entry
