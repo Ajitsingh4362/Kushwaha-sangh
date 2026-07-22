@@ -1,6 +1,7 @@
 import { QrCode, Landmark, ShieldCheck } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { donationMethods } from '../data/content'
+import LiveDonationsPanel from '../components/LiveDonationsPanel'
 
 export default function Donate() {
   return (
@@ -72,6 +73,7 @@ export default function Donate() {
         </div>
       </section>
 
+      <LiveDonationsPanel />
     </>
   )
 }
