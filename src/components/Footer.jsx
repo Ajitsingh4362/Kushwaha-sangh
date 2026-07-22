@@ -90,9 +90,22 @@ export default function Footer() {
 
       <div className="ledger-rule opacity-40" />
 
-      <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-cream/55 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-        <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
-        <span>Regd. Community Welfare Association · Est. {site.established}</span>
+      <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-5 text-xs text-cream/55 lg:px-8">
+        <div className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
+          <Link to="/privacy-policy" className="hover:text-saffron">
+            Privacy Policy
+          </Link>
+          <Link to="/terms-and-conditions" className="hover:text-saffron">
+            Terms &amp; Conditions
+          </Link>
+          <Link to="/refund-policy" className="hover:text-saffron">
+            Refund &amp; Cancellation Policy
+          </Link>
+        </div>
+        <div className="flex flex-col items-center gap-1 sm:flex-row sm:justify-between sm:gap-4">
+          <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
+          <span>Regd. Community Welfare Association · Est. {site.established}</span>
+        </div>
       </div>
     </footer>
   )

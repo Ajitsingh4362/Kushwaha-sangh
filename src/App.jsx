@@ -11,6 +11,9 @@ import Donate from './pages/Donate'
 import Gallery from './pages/Gallery'
 import News from './pages/News'
 import Contact from './pages/Contact'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsAndConditions from './pages/TermsAndConditions'
+import RefundPolicy from './pages/RefundPolicy'
 import NotFound from './pages/NotFound'
 import ScrollToTop from './components/ScrollToTop'
 
@@ -30,6 +33,9 @@ export default function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="/refund-policy" element={<RefundPolicy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
