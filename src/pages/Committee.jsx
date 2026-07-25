@@ -35,10 +35,6 @@ export default function Committee() {
             <PersonPlaque key={m.regNo} {...m} />
           ))}
         </div>
-        <p className="mx-auto mt-8 max-w-lg text-center text-sm text-stone">
-          Replace these placeholder cards with real committee member names, photos and registry
-          numbers from the Sangh&rsquo;s records.
-        </p>
       </section>
     </>
   )
