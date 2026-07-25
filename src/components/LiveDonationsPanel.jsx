@@ -9,6 +9,7 @@ export default function LiveDonationsPanel() {
     supabase
       .from('donations')
       .select('donor_name, is_anonymous, amount, created_at')
+      .eq('status', 'verified')
       .order('created_at', { ascending: false })
       .limit(8)
       .then(({ data }) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Info } from 'lucide-react'
+import { Plus, Info, CheckCircle2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -54,6 +54,7 @@ export default function DonationsPanel() {
       amount: parseFloat(form.amount),
       note: form.note || null,
       payment_method: 'manual',
+      status: 'verified', // entered directly by the committee, so no separate verification needed
     })
 
     setForm({ member_id: '', donor_name: '', amount: '', is_anonymous: false, note: '' })
@@ -61,7 +62,15 @@ export default function DonationsPanel() {
     loadData()
   }
 
-  const total = donations.reduce((sum, d) => sum + Number(d.amount), 0)
+  async function markVerified(id) {
+    setSaving(true)
+    await supabase.from('donations').update({ status: 'verified' }).eq('id', id)
+    setSaving(false)
+    loadData()
+  }
+
+  const verifiedTotal = donations.filter((d) => d.status === 'verified').reduce((sum, d) => sum + Number(d.amount), 0)
+  const pendingCount = donations.filter((d) => d.status === 'declared').length
 
   if (loading) return <p className="text-stone">Loading donations…</p>
 
@@ -72,6 +81,9 @@ export default function DonationsPanel() {
         <p>
           Most donors are Sangh members — pick their name from the dropdown so it links to their member
           record. Only use &ldquo;Someone else&rdquo; for one-off donors who aren&rsquo;t registered members.
+          Entries added here are marked <strong>Verified</strong> automatically. Entries from the public
+          &ldquo;Donate Now&rdquo; QR flow show as <strong>Declared</strong> until you check the payment
+          against the bank/UPI statement and click Verify.
         </p>
       </div>
 
@@ -168,19 +180,25 @@ export default function DonationsPanel() {
         </div>
       </form>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-display text-lg font-semibold text-maroon-deep">All Donations</h3>
-        <span className="font-ledger text-sm text-gold-deep">Total: ₹{total.toLocaleString('en-IN')}</span>
+        <div className="flex gap-4 text-sm">
+          <span className="font-ledger text-gold-deep">Verified Total: ₹{verifiedTotal.toLocaleString('en-IN')}</span>
+          {pendingCount > 0 && (
+            <span className="font-ledger text-red-700">{pendingCount} awaiting verification</span>
+          )}
+        </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px] text-left text-sm">
+        <table className="w-full min-w-[640px] text-left text-sm">
           <thead>
             <tr className="border-b border-gold/30 text-xs uppercase tracking-wide text-stone">
               <th className="py-2 pr-4 font-medium">Date</th>
               <th className="py-2 pr-4 font-medium">Donor</th>
-              <th className="py-2 pr-4 font-medium">Member?</th>
+              <th className="py-2 pr-4 font-medium">Contact</th>
               <th className="py-2 pr-4 font-medium">Amount</th>
+              <th className="py-2 pr-4 font-medium">Status</th>
               <th className="py-2 font-medium">Note</th>
             </tr>
           </thead>
@@ -193,14 +211,31 @@ export default function DonationsPanel() {
                 <td className="py-3 pr-4 font-medium text-ink">
                   {d.is_anonymous ? 'Anonymous' : d.members?.name || d.donor_name || '—'}
                 </td>
-                <td className="py-3 pr-4 text-stone">{d.member_id ? 'Yes' : 'No'}</td>
+                <td className="py-3 pr-4 text-xs text-stone">
+                  {[d.donor_email, d.donor_phone].filter(Boolean).join(' / ') || '—'}
+                </td>
                 <td className="py-3 pr-4 text-ink">₹{Number(d.amount).toLocaleString('en-IN')}</td>
+                <td className="py-3 pr-4">
+                  {d.status === 'verified' ? (
+                    <span className="flex items-center gap-1 text-xs font-medium text-green-700">
+                      <CheckCircle2 size={14} /> Verified
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => markVerified(d.id)}
+                      disabled={saving}
+                      className="rounded-sm border border-gold/50 px-3 py-1.5 text-xs font-medium text-ink hover:border-saffron disabled:opacity-60"
+                    >
+                      Mark Verified
+                    </button>
+                  )}
+                </td>
                 <td className="py-3 text-stone">{d.note || '—'}</td>
               </tr>
             ))}
             {donations.length === 0 && (
               <tr>
-                <td colSpan={5} className="py-6 text-center text-stone">
+                <td colSpan={6} className="py-6 text-center text-stone">
                   No donations recorded yet.
                 </td>
               </tr>
