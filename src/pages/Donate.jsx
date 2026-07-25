@@ -1,9 +1,18 @@
-import { QrCode, Landmark, ShieldCheck } from 'lucide-react'
+import { QrCode, Landmark, ShieldCheck, HeartHandshake } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { donationMethods } from '../data/content'
 import LiveDonationsPanel from '../components/LiveDonationsPanel'
+import { useDonateModal } from '../lib/DonateModalContext'
+
+const impact = [
+  { amount: '₹500', text: 'Supplies for one health-assistance case file' },
+  { amount: '₹1,500', text: "A month's contribution toward the girls' hostel fund" },
+  { amount: '₹5,000', text: 'A meaningful step toward an achiever\u2019s scholarship' },
+]
 
 export default function Donate() {
+  const { openModal } = useDonateModal()
+
   return (
     <>
       <PageHero
@@ -12,7 +21,39 @@ export default function Donate() {
         blurb="Every rupee is tracked and reported back to the community each year."
       />
 
+      <section className="bg-maroon-deep py-10">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-5 text-center lg:px-8">
+          <HeartHandshake size={32} className="text-saffron" />
+          <p className="max-w-md text-cream/85">
+            Fill in your details, scan the QR, and let us know once you&rsquo;ve paid — quick and simple.
+          </p>
+          <button
+            type="button"
+            onClick={openModal}
+            className="animate-blink rounded-sm bg-saffron px-8 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-saffron-light"
+          >
+            Donate Now
+          </button>
+        </div>
+      </section>
+
       <section className="mx-auto max-w-5xl px-5 py-16 lg:px-8">
+        <p className="eyebrow text-center text-maroon/70">Where It Goes</p>
+        <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">Your Impact</h2>
+        <div className="mt-8 grid gap-5 sm:grid-cols-3">
+          {impact.map((i) => (
+            <div key={i.amount} className="ledger-plaque animate-rise p-6 text-center">
+              <span className="font-display text-2xl font-bold text-maroon-deep">{i.amount}</span>
+              <p className="mt-2 text-sm text-stone">{i.text}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-4 text-center text-xs text-stone">
+          Illustrative figures — replace with the Sangh&rsquo;s real cost breakdowns.
+        </p>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-5 pb-16 lg:px-8">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="ledger-plaque animate-rise p-7">
             <div className="flex items-center gap-2.5">
