@@ -14,7 +14,7 @@ export const site = {
   whatsapp: '910000000000', // placeholder number, digits only, country code first
   email: 'contact@kushwahasangh.org', // placeholder
   phone: '+91 82924 53335',
-  address: 'Sangh Bhawan, Main Road, [Your City], [State] – [PIN]', // placeholder
+  address: 'Kushwaha Hostel, Sitamarhi, Bihar 843302',
   socials: {
     facebook: '#',
     instagram: '#',
