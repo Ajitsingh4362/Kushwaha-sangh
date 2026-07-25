@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
+import { useDonateModal } from '../lib/DonateModalContext'
 
 function NavItem({ item, onNavigate, mobile = false }) {
   const [open, setOpen] = useState(false)
@@ -86,6 +87,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { openModal } = useDonateModal()
 
   return (
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
@@ -104,12 +106,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <Link
-          to="/donate"
+        <button
+          type="button"
+          onClick={openModal}
           className="ml-6 hidden rounded-sm border border-saffron bg-saffron px-4 py-2 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light lg:block"
         >
           Donate
-        </Link>
+        </button>
 
         <button
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -130,13 +133,16 @@ export default function Navbar() {
               </div>
             ))}
           </nav>
-          <Link
-            to="/donate"
-            onClick={() => setMobileOpen(false)}
-            className="mt-4 block rounded-sm border border-saffron bg-saffron px-4 py-2 text-center text-sm font-semibold text-maroon-deep"
+          <button
+            type="button"
+            onClick={() => {
+              setMobileOpen(false)
+              openModal()
+            }}
+            className="mt-4 block w-full rounded-sm border border-saffron bg-saffron px-4 py-2 text-center text-sm font-semibold text-maroon-deep"
           >
             Donate
-          </Link>
+          </button>
         </div>
       )}
     </header>
