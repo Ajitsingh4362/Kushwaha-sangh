@@ -67,6 +67,13 @@ export default function Donate() {
             <p className="mt-2 text-xs text-stone">
               Replace with the Sangh&rsquo;s real UPI ID and a generated QR code before launch.
             </p>
+            <button
+              type="button"
+              onClick={openModal}
+              className="mt-5 w-full rounded-sm bg-saffron px-5 py-2.5 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light"
+            >
+              Donate Now
+            </button>
           </div>
 
           <div className="ledger-plaque animate-rise p-7">
@@ -92,6 +99,13 @@ export default function Donate() {
                 <dd className="font-medium text-ink">{donationMethods.bank.bankBranch}</dd>
               </div>
             </dl>
+            <button
+              type="button"
+              onClick={openModal}
+              className="mt-5 w-full rounded-sm bg-saffron px-5 py-2.5 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light"
+            >
+              Donate Now
+            </button>
           </div>
         </div>
 
