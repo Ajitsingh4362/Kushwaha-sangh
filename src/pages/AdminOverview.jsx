@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Users, HeartHandshake, Hourglass, ShieldCheck, Wallet } from 'lucide-react'
+import { Users, HeartHandshake, Hourglass, ShieldCheck, Wallet, ClipboardCheck } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 function currentMonthStart() {
@@ -34,6 +34,7 @@ export default function AdminOverview() {
         { data: verifiedDonations },
         { count: pendingVerification },
         { data: thisMonthDonations },
+        { count: pendingApplications },
       ] = await Promise.all([
         supabase.from('members').select('*', { count: 'exact', head: true }).eq('active', true),
         supabase.from('dues').select('status, amount').eq('due_month', month),
@@ -44,6 +45,7 @@ export default function AdminOverview() {
           .select('amount')
           .eq('status', 'verified')
           .gte('created_at', month),
+        supabase.from('membership_applications').select('*', { count: 'exact', head: true }).eq('status', 'pending'),
       ])
 
       const unpaidThisMonth = (monthDues || []).filter((d) => d.status !== 'verified').length
@@ -58,6 +60,7 @@ export default function AdminOverview() {
         pendingVerification: pendingVerification || 0,
         collectedThisMonthDues,
         raisedThisMonth,
+        pendingApplications: pendingApplications || 0,
       })
     }
     load()
@@ -67,6 +70,7 @@ export default function AdminOverview() {
       .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, load)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'dues' }, load)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'membership_applications' }, load)
       .subscribe()
 
     return () => {
@@ -83,8 +87,14 @@ export default function AdminOverview() {
         <p className="mt-8 text-stone">Loading…</p>
       ) : (
         <>
-          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
             <StatCard icon={Users} value={stats.members} label="Active Members" />
+            <StatCard
+              icon={ClipboardCheck}
+              value={stats.pendingApplications}
+              label="Pending Applications"
+              accent={stats.pendingApplications > 0 ? 'text-red-700' : 'text-green-700'}
+            />
             <StatCard
               icon={Hourglass}
               value={stats.unpaidThisMonth}

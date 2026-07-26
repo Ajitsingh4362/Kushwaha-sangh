@@ -29,21 +29,19 @@ function MembershipForm() {
     setError('')
     setSaving(true)
 
-    const { error: insertError } = await supabase.from('members').insert({
+    const { error: insertError } = await supabase.from('membership_applications').insert({
       name: form.fullName,
-      phone: form.phone || null,
+      phone: form.phone,
       email: form.email || null,
       address: form.address || null,
       occupation: form.occupation || null,
       date_of_birth: form.dob || null,
-      monthly_due: 0,
-      source: 'website',
     })
 
     setSaving(false)
     if (insertError) {
       if (insertError.code === '23505') {
-        setError('This phone number is already registered as a member. If this is a mistake, please contact us.')
+        setError('An application with this phone number is already pending review. Please wait for the committee to respond.')
       } else {
         setError('Something went wrong submitting your application. Please try again or contact us directly.')
       }
@@ -60,7 +58,7 @@ function MembershipForm() {
           Application received
         </h3>
         <p className="mt-2 max-w-sm text-sm text-stone">
-          The committee will verify your details and confirm your membership by phone or email.
+          The committee will review your application and confirm your membership by phone or email.
         </p>
       </div>
     )

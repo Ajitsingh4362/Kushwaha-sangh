@@ -189,7 +189,7 @@ export default function PayDuesButton() {
                 <CheckCircle2 size={40} className="text-saffron" />
                 <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">Thank you! 🙏</p>
                 <p className="mt-1 text-sm text-stone">
-                  Your due is marked paid right away — it&rsquo;s already cleared from the pending list.
+                  The committee will verify your payment shortly and clear it from your record.
                 </p>
                 <button
                   type="button"

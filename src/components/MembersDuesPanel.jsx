@@ -207,9 +207,8 @@ export default function MembersDuesPanel() {
       </div>
       <p className="text-xs text-stone">
         Members pay via the &ldquo;Pay Monthly Due&rdquo; button on the Membership page (phone number lookup)
-        — as soon as they click &ldquo;I&rsquo;ve Paid&rdquo;, it&rsquo;s marked verified instantly and clears
-        from this list in real time. &ldquo;Mark Verified&rdquo; below is only needed for cash payments you
-        record here directly.
+        — those show as <strong>Declared</strong> here until you verify against the bank/UPI statement.
+        &ldquo;Mark Verified&rdquo; also works for cash payments collected directly.
       </p>
     </div>
   )
