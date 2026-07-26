@@ -42,7 +42,11 @@ function MembershipForm() {
 
     setSaving(false)
     if (insertError) {
-      setError('Something went wrong submitting your application. Please try again or contact us directly.')
+      if (insertError.code === '23505') {
+        setError('This phone number is already registered as a member. If this is a mistake, please contact us.')
+      } else {
+        setError('Something went wrong submitting your application. Please try again or contact us directly.')
+      }
       return
     }
     setSubmitted(true)
