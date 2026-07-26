@@ -61,6 +61,17 @@ export default function AdminOverview() {
       })
     }
     load()
+
+    const channel = supabase
+      .channel('overview-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'dues' }, load)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, load)
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   return (

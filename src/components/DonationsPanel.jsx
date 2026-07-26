@@ -33,6 +33,16 @@ export default function DonationsPanel() {
 
   useEffect(() => {
     loadData()
+
+    const channel = supabase
+      .channel('donations-tab-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, () => loadData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, () => loadData())
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   async function handleAdd(e) {

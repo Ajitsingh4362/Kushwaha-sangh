@@ -5,7 +5,7 @@ export default function LiveDonationsPanel() {
   const [donations, setDonations] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
+  function loadDonations() {
     supabase
       .from('donations')
       .select('donor_name, is_anonymous, amount, created_at')
@@ -16,6 +16,19 @@ export default function LiveDonationsPanel() {
         setDonations(data || [])
         setLoading(false)
       })
+  }
+
+  useEffect(() => {
+    loadDonations()
+
+    const channel = supabase
+      .channel('public-donations-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'donations' }, loadDonations)
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   const total = donations.reduce((sum, d) => sum + Number(d.amount), 0)

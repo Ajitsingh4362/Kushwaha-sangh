@@ -32,6 +32,16 @@ export default function MembersDuesPanel() {
 
   useEffect(() => {
     loadData()
+
+    const channel = supabase
+      .channel('dues-tab-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, () => loadData())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'dues' }, () => loadData())
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   async function handleAddMember(e) {

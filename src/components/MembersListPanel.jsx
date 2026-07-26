@@ -25,6 +25,17 @@ export default function MembersListPanel() {
 
   useEffect(() => {
     loadData()
+
+    const channel = supabase
+      .channel('members-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, () => {
+        loadData()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   async function handleAdd(e) {
