@@ -16,6 +16,7 @@ import TermsAndConditions from './pages/TermsAndConditions'
 import RefundPolicy from './pages/RefundPolicy'
 import AdminLogin from './pages/AdminLogin'
 import AdminOverview from './pages/AdminOverview'
+import AdminMembers from './pages/AdminMembers'
 import AdminDues from './pages/AdminDues'
 import AdminDonations from './pages/AdminDonations'
 import AdminLayout from './components/AdminLayout'
@@ -58,6 +59,7 @@ export default function App() {
                 }
               >
                 <Route index element={<AdminOverview />} />
+                <Route path="members" element={<AdminMembers />} />
                 <Route path="dues" element={<AdminDues />} />
                 <Route path="donations" element={<AdminDonations />} />
               </Route>

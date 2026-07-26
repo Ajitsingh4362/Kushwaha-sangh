@@ -2,11 +2,50 @@ import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { Field } from '../components/FormField'
+import { supabase } from '../lib/supabase'
 import a4 from '../assets/activities/activity-4.jpg'
 import a1 from '../assets/activities/activity-1.jpg'
 
 function MembershipForm() {
   const [submitted, setSubmitted] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [form, setForm] = useState({
+    fullName: '',
+    dob: '',
+    phone: '',
+    email: '',
+    address: '',
+    occupation: '',
+  })
+
+  function update(field) {
+    return (e) => setForm((v) => ({ ...v, [field]: e.target.value }))
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setError('')
+    setSaving(true)
+
+    const { error: insertError } = await supabase.from('members').insert({
+      name: form.fullName,
+      phone: form.phone || null,
+      email: form.email || null,
+      address: form.address || null,
+      occupation: form.occupation || null,
+      date_of_birth: form.dob || null,
+      monthly_due: 0,
+      source: 'website',
+    })
+
+    setSaving(false)
+    if (insertError) {
+      setError('Something went wrong submitting your application. Please try again or contact us directly.')
+      return
+    }
+    setSubmitted(true)
+  }
 
   if (submitted) {
     return (
@@ -23,37 +62,37 @@ function MembershipForm() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault()
-        setSubmitted(true)
-      }}
-      className="ledger-plaque space-y-5 p-7"
-    >
+    <form onSubmit={handleSubmit} className="ledger-plaque space-y-5 p-7">
       <h3 className="font-display text-xl font-semibold text-maroon-deep">New Membership Application</h3>
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="fullName" label="Full Name" type="text" required />
-        <Field id="dob" label="Date of Birth" type="date" />
-        <Field id="phone" label="Phone Number" type="tel" required />
-        <Field id="email" label="Email Address" type="email" />
-        <Field id="address" label="Current Address" type="text" className="sm:col-span-2" required />
-        <Field id="occupation" label="Occupation" type="text" />
+        <Field id="fullName" label="Full Name" type="text" required value={form.fullName} onChange={update('fullName')} />
+        <Field id="dob" label="Date of Birth" type="date" value={form.dob} onChange={update('dob')} />
+        <Field id="phone" label="Phone Number" type="tel" required value={form.phone} onChange={update('phone')} />
+        <Field id="email" label="Email Address" type="email" value={form.email} onChange={update('email')} />
+        <Field
+          id="address"
+          label="Current Address"
+          type="text"
+          className="sm:col-span-2"
+          required
+          value={form.address}
+          onChange={update('address')}
+        />
+        <Field id="occupation" label="Occupation" type="text" value={form.occupation} onChange={update('occupation')} />
       </div>
       <label className="flex items-start gap-2.5 text-sm text-stone">
         <input type="checkbox" required className="mt-1 accent-maroon" />
         I agree to the Sangh&rsquo;s membership terms and consent to my name appearing in
         the public member directory.
       </label>
+      {error && <p className="text-sm text-red-700">{error}</p>}
       <button
         type="submit"
-        className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon sm:w-auto"
+        disabled={saving}
+        className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon disabled:opacity-60 sm:w-auto"
       >
-        Submit Application
+        {saving ? 'Submitting…' : 'Submit Application'}
       </button>
-      <p className="text-xs text-stone">
-        This form needs to be connected to a backend (e.g. Supabase or an email service) to store
-        real submissions before launch.
-      </p>
     </form>
   )
 }
