@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import WhatsAppButton from './components/WhatsAppButton'
@@ -15,7 +15,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
 import RefundPolicy from './pages/RefundPolicy'
 import AdminLogin from './pages/AdminLogin'
-import AdminDashboard from './pages/AdminDashboard'
+import AdminOverview from './pages/AdminOverview'
+import AdminDues from './pages/AdminDues'
+import AdminDonations from './pages/AdminDonations'
+import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
 import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './lib/AuthContext'
@@ -23,42 +26,62 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { DonateModalProvider } from './lib/DonateModalContext'
 import DonateModal from './components/DonateModal'
 
+function PublicChrome({ children }) {
+  return (
+    <>
+      <ScrollToTop />
+      <Navbar />
+      <main className="flex-1">{children}</main>
+      <Footer />
+      <WhatsAppButton />
+      <DonateModal />
+    </>
+  )
+}
+
 export default function App() {
+  const location = useLocation()
+  const isAdminSection = location.pathname.startsWith('/admin') && location.pathname !== '/admin-login'
+
   return (
     <AuthProvider>
       <DonateModalProvider>
         <div className="flex min-h-screen flex-col">
-          <ScrollToTop />
-          <Navbar />
-          <main className="flex-1">
+          {isAdminSection ? (
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/committee" element={<Committee />} />
-              <Route path="/welfare" element={<Welfare />} />
-              <Route path="/membership" element={<Membership />} />
-              <Route path="/donate" element={<Donate />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/news" element={<News />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/admin-login" element={<AdminLogin />} />
               <Route
                 path="/admin"
                 element={
                   <ProtectedRoute>
-                    <AdminDashboard />
+                    <AdminLayout />
                   </ProtectedRoute>
                 }
-              />
-              <Route path="*" element={<NotFound />} />
+              >
+                <Route index element={<AdminOverview />} />
+                <Route path="dues" element={<AdminDues />} />
+                <Route path="donations" element={<AdminDonations />} />
+              </Route>
             </Routes>
-          </main>
-          <Footer />
-          <WhatsAppButton />
-          <DonateModal />
+          ) : (
+            <PublicChrome>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/committee" element={<Committee />} />
+                <Route path="/welfare" element={<Welfare />} />
+                <Route path="/membership" element={<Membership />} />
+                <Route path="/donate" element={<Donate />} />
+                <Route path="/gallery" element={<Gallery />} />
+                <Route path="/news" element={<News />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/admin-login" element={<AdminLogin />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </PublicChrome>
+          )}
         </div>
       </DonateModalProvider>
     </AuthProvider>
