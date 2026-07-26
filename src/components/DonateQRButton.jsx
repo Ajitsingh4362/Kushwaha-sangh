@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom'
 import { useDonateModal } from '../lib/DonateModalContext'
+import PayDuesButton from './PayDuesButton'
 
 export default function DonateQRButton() {
   const { openModal } = useDonateModal()
 
   return (
     <div className="flex flex-wrap justify-center gap-4 bg-cream-deep/60 py-8">
+      <PayDuesButton />
       <button
         type="button"
         onClick={openModal}
