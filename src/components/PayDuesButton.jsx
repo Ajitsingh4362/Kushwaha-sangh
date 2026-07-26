@@ -94,6 +94,11 @@ export default function PayDuesButton() {
                 <p className="text-center text-sm text-stone">
                   Enter the phone number you registered with as a member.
                 </p>
+                <p className="rounded-sm bg-cream-deep/60 p-2.5 text-center text-xs text-stone">
+                  Note: our online records start from <strong>August 2026</strong>. The Sangh itself has
+                  been active for 10 years, but dues from before this system was built aren&rsquo;t tracked
+                  here.
+                </p>
                 <Field
                   id="phone"
                   label="Phone Number"
