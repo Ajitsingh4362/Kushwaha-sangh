@@ -62,18 +62,6 @@ export default function MembersDuesPanel() {
     loadData()
   }
 
-  async function generateThisMonth() {
-    setSaving(true)
-    const rows = members
-      .filter((m) => m.active)
-      .map((m) => ({ member_id: m.id, due_month: month, amount: m.monthly_due || 100 }))
-    if (rows.length) {
-      await supabase.from('dues').upsert(rows, { onConflict: 'member_id,due_month', ignoreDuplicates: true })
-    }
-    setSaving(false)
-    loadData()
-  }
-
   async function verifyDue(due) {
     setSaving(true)
     await supabase.from('dues').update({ status: 'verified', paid: true, paid_date: new Date().toISOString().slice(0, 10) }).eq('id', due.id)
@@ -146,16 +134,7 @@ export default function MembersDuesPanel() {
         </button>
       </form>
 
-      <div className="flex items-center justify-between">
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">Dues — {monthLabel(month)}</h3>
-        <button
-          onClick={generateThisMonth}
-          disabled={saving}
-          className="rounded-sm border border-maroon-deep px-4 py-2 text-xs font-semibold text-maroon-deep hover:bg-maroon-deep hover:text-cream-paper disabled:opacity-60"
-        >
-          Generate This Month&rsquo;s Dues
-        </button>
-      </div>
+      <h3 className="font-display text-lg font-semibold text-maroon-deep">Dues — {monthLabel(month)}</h3>
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-left text-sm">
