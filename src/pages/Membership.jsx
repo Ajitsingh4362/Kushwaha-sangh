@@ -3,6 +3,7 @@ import { CheckCircle2 } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { Field } from '../components/FormField'
 import { supabase } from '../lib/supabase'
+import PayDuesButton from '../components/PayDuesButton'
 import a4 from '../assets/activities/activity-4.jpg'
 import a1 from '../assets/activities/activity-1.jpg'
 
@@ -118,6 +119,11 @@ export default function Membership() {
         title="Membership"
         blurb="Register as a member, or search the community directory."
       />
+
+      <div className="flex justify-center bg-cream-deep/60 py-8">
+        <PayDuesButton />
+      </div>
+
       <section className="mx-auto max-w-2xl px-5 py-16 lg:px-8">
         <MembershipForm />
       </section>

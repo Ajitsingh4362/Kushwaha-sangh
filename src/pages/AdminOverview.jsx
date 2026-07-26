@@ -36,7 +36,7 @@ export default function AdminOverview() {
         { data: thisMonthDonations },
       ] = await Promise.all([
         supabase.from('members').select('*', { count: 'exact', head: true }).eq('active', true),
-        supabase.from('dues').select('paid, amount').eq('due_month', month),
+        supabase.from('dues').select('status, amount').eq('due_month', month),
         supabase.from('donations').select('amount').eq('status', 'verified'),
         supabase.from('donations').select('*', { count: 'exact', head: true }).eq('status', 'declared'),
         supabase
@@ -46,8 +46,8 @@ export default function AdminOverview() {
           .gte('created_at', month),
       ])
 
-      const unpaidThisMonth = (monthDues || []).filter((d) => !d.paid).length
-      const collectedThisMonthDues = (monthDues || []).filter((d) => d.paid).reduce((s, d) => s + Number(d.amount), 0)
+      const unpaidThisMonth = (monthDues || []).filter((d) => d.status !== 'verified').length
+      const collectedThisMonthDues = (monthDues || []).filter((d) => d.status === 'verified').reduce((s, d) => s + Number(d.amount), 0)
       const totalRaised = (verifiedDonations || []).reduce((sum, d) => sum + Number(d.amount), 0)
       const raisedThisMonth = (thisMonthDonations || []).reduce((sum, d) => sum + Number(d.amount), 0)
 
