@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ImageIcon, X } from 'lucide-react'
+import { ImageIcon, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { galleryCategories } from '../data/content'
 import { supabase } from '../lib/supabase'
@@ -39,7 +39,7 @@ function shuffle(arr) {
 
 export default function Gallery() {
   const [active, setActive] = useState('all')
-  const [lightbox, setLightbox] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
   const [dbPhotos, setDbPhotos] = useState([])
   const [rotateTick, setRotateTick] = useState(0)
 
@@ -88,6 +88,27 @@ export default function Gallery() {
       ? shuffle(filtered).slice(0, SHOWCASE_SIZE)
       : filtered
 
+  const lightbox = lightboxIndex !== null ? tiles[lightboxIndex] : null
+
+  function showNext() {
+    setLightboxIndex((i) => (i + 1) % tiles.length)
+  }
+  function showPrev() {
+    setLightboxIndex((i) => (i - 1 + tiles.length) % tiles.length)
+  }
+
+  useEffect(() => {
+    if (lightboxIndex === null) return
+    function handleKey(e) {
+      if (e.key === 'ArrowRight') showNext()
+      if (e.key === 'ArrowLeft') showPrev()
+      if (e.key === 'Escape') setLightboxIndex(null)
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightboxIndex, tiles.length])
+
   return (
     <>
       <PageHero
@@ -128,10 +149,10 @@ export default function Gallery() {
         )}
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {tiles.map((t) => (
+          {tiles.map((t, i) => (
             <button
               key={t.key}
-              onClick={() => setLightbox(t)}
+              onClick={() => setLightboxIndex(i)}
               className="aspect-square overflow-hidden border border-gold/40 bg-cream-deep/50 transition hover:opacity-90"
             >
               <img src={t.src} alt={t.label} className="h-full w-full object-cover" loading="lazy" />
@@ -149,22 +170,51 @@ export default function Gallery() {
       {lightbox && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-5"
-          onClick={() => setLightbox(null)}
+          onClick={() => setLightboxIndex(null)}
         >
           <button
             type="button"
-            onClick={() => setLightbox(null)}
+            onClick={() => setLightboxIndex(null)}
             aria-label="Close"
             className="absolute right-5 top-5 text-cream-paper hover:text-saffron"
           >
             <X size={28} />
           </button>
+
+          {tiles.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                showPrev()
+              }}
+              aria-label="Previous photo"
+              className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/60 sm:left-5"
+            >
+              <ChevronLeft size={28} />
+            </button>
+          )}
+
           <img
             src={lightbox.src}
             alt={lightbox.label}
             className="max-h-[85vh] max-w-full rounded-sm object-contain"
             onClick={(e) => e.stopPropagation()}
           />
+
+          {tiles.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                showNext()
+              }}
+              aria-label="Next photo"
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/60 sm:right-5"
+            >
+              <ChevronRight size={28} />
+            </button>
+          )}
         </div>
       )}
     </>
