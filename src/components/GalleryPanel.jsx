@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Plus, Trash2, Upload } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { compressImage } from '../lib/compressImage'
 import { Field } from './FormField'
 
 const CATEGORIES = [
@@ -46,8 +47,9 @@ export default function GalleryPanel() {
     setError('')
     setSaving(true)
 
-    const path = `${Date.now()}-${file.name}`
-    const { error: uploadError } = await supabase.storage.from('gallery-photos').upload(path, file)
+    const compressed = await compressImage(file)
+    const path = `${Date.now()}-${compressed.name}`
+    const { error: uploadError } = await supabase.storage.from('gallery-photos').upload(path, compressed)
     if (uploadError) {
       setSaving(false)
       setError('Photo upload failed. Please try again.')
