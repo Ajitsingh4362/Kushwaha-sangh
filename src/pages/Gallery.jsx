@@ -25,10 +25,23 @@ const seedPhotos = [
 
 const categoryLabels = Object.fromEntries(galleryCategories.map((c) => [c.id, c.label]))
 
+const SHOWCASE_SIZE = 12
+const ROTATE_INTERVAL_MS = 15000
+
+function shuffle(arr) {
+  const copy = [...arr]
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[copy[i], copy[j]] = [copy[j], copy[i]]
+  }
+  return copy
+}
+
 export default function Gallery() {
   const [active, setActive] = useState('all')
   const [lightbox, setLightbox] = useState(null)
   const [dbPhotos, setDbPhotos] = useState([])
+  const [rotateTick, setRotateTick] = useState(0)
 
   useEffect(() => {
     function load() {
@@ -48,6 +61,14 @@ export default function Gallery() {
     return () => supabase.removeChannel(channel)
   }, [])
 
+  // Every so often, bring a fresh rotating selection to the front page
+  // view — the admin panel still has the complete library, this is
+  // just what the public "All" view surfaces at any given moment.
+  useEffect(() => {
+    const timer = setInterval(() => setRotateTick((t) => t + 1), ROTATE_INTERVAL_MS)
+    return () => clearInterval(timer)
+  }, [])
+
   const allPhotos = [
     ...dbPhotos.map((p) => ({
       key: `db-${p.id}`,
@@ -58,7 +79,14 @@ export default function Gallery() {
     ...seedPhotos.map((p, i) => ({ key: `seed-${i}`, ...p })),
   ]
 
-  const tiles = allPhotos.filter((p) => active === 'all' || p.category === active)
+  const filtered = allPhotos.filter((p) => active === 'all' || p.category === active)
+
+  // Only rotate/limit the "All" view when there's more to show than
+  // fits — a specific category filter shows everything in it.
+  const tiles =
+    active === 'all' && filtered.length > SHOWCASE_SIZE
+      ? shuffle(filtered).slice(0, SHOWCASE_SIZE)
+      : filtered
 
   return (
     <>
@@ -94,6 +122,10 @@ export default function Gallery() {
             </button>
           ))}
         </div>
+
+        {active === 'all' && filtered.length > SHOWCASE_SIZE && (
+          <p className="mt-3 text-xs text-stone">Showing a rotating selection — refreshes every little while.</p>
+        )}
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {tiles.map((t) => (
