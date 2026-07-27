@@ -20,6 +20,8 @@ import AdminApplications from './pages/AdminApplications'
 import AdminMembers from './pages/AdminMembers'
 import AdminDues from './pages/AdminDues'
 import AdminDonations from './pages/AdminDonations'
+import AdminCommittee from './pages/AdminCommittee'
+import AdminGallery from './pages/AdminGallery'
 import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
 import ScrollToTop from './components/ScrollToTop'
@@ -64,6 +66,8 @@ export default function App() {
                 <Route path="members" element={<AdminMembers />} />
                 <Route path="dues" element={<AdminDues />} />
                 <Route path="donations" element={<AdminDonations />} />
+                <Route path="committee" element={<AdminCommittee />} />
+                <Route path="gallery" element={<AdminGallery />} />
               </Route>
             </Routes>
           ) : (

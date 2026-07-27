@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck } from 'lucide-react'
+import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import logo from '../assets/logo.png'
@@ -11,6 +11,8 @@ const navItems = [
   { to: '/admin/members', label: 'All Members', icon: IdCard },
   { to: '/admin/dues', label: 'Member Dues', icon: Users },
   { to: '/admin/donations', label: 'Donations', icon: HeartHandshake },
+  { to: '/admin/committee', label: 'Committee', icon: UsersRound },
+  { to: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
 ]
 
 export default function AdminLayout() {

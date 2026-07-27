@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ImageIcon, X } from 'lucide-react'
 import PageHero from '../components/PageHero'
 import { galleryCategories } from '../data/content'
+import { supabase } from '../lib/supabase'
 import a1 from '../assets/activities/activity-1.jpg'
 import a2 from '../assets/activities/activity-2.jpg'
 import a3 from '../assets/activities/activity-3.jpg'
@@ -11,7 +12,7 @@ import a6 from '../assets/activities/activity-6.jpg'
 import a7 from '../assets/activities/activity-7.jpg'
 import a8 from '../assets/activities/activity-8.jpg'
 
-const realPhotos = [
+const seedPhotos = [
   { src: a1, category: 'ceremonies', label: 'Felicitation Ceremonies' },
   { src: a2, category: 'events', label: 'Sangh Events' },
   { src: a3, category: 'ceremonies', label: 'Felicitation Ceremonies' },
@@ -22,18 +23,42 @@ const realPhotos = [
   { src: a8, category: 'events', label: 'Sangh Events' },
 ]
 
+const categoryLabels = Object.fromEntries(galleryCategories.map((c) => [c.id, c.label]))
+
 export default function Gallery() {
   const [active, setActive] = useState('all')
   const [lightbox, setLightbox] = useState(null)
+  const [dbPhotos, setDbPhotos] = useState([])
 
-  const realTiles = realPhotos
-    .filter((p) => active === 'all' || p.category === active)
-    .map((p, i) => ({ key: `real-${i}`, ...p }))
+  useEffect(() => {
+    function load() {
+      supabase
+        .from('gallery_photos')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .then(({ data }) => setDbPhotos(data || []))
+    }
+    load()
 
-  const placeholderTiles = galleryCategories
-    .filter((c) => active === 'all' || c.id === active)
-    .filter((c) => c.id !== 'ceremonies' && c.id !== 'events')
-    .flatMap((c) => Array.from({ length: c.count }).map((_, i) => ({ category: c.label, key: `${c.id}-${i}` })))
+    const channel = supabase
+      .channel('public-gallery-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'gallery_photos' }, load)
+      .subscribe()
+
+    return () => supabase.removeChannel(channel)
+  }, [])
+
+  const allPhotos = [
+    ...dbPhotos.map((p) => ({
+      key: `db-${p.id}`,
+      src: p.url,
+      category: p.category,
+      label: p.caption || categoryLabels[p.category] || p.category,
+    })),
+    ...seedPhotos.map((p, i) => ({ key: `seed-${i}`, ...p })),
+  ]
+
+  const tiles = allPhotos.filter((p) => active === 'all' || p.category === active)
 
   return (
     <>
@@ -71,7 +96,7 @@ export default function Gallery() {
         </div>
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {realTiles.map((t) => (
+          {tiles.map((t) => (
             <button
               key={t.key}
               onClick={() => setLightbox(t)}
@@ -80,19 +105,13 @@ export default function Gallery() {
               <img src={t.src} alt={t.label} className="h-full w-full object-cover" loading="lazy" />
             </button>
           ))}
-          {placeholderTiles.map((t) => (
-            <div
-              key={t.key}
-              className="flex aspect-square flex-col items-center justify-center gap-1.5 border border-dashed border-gold/50 bg-cream-deep/50 text-center text-stone/70"
-            >
+          {tiles.length === 0 && (
+            <div className="col-span-full flex flex-col items-center gap-1.5 py-10 text-center text-stone/70">
               <ImageIcon size={22} strokeWidth={1.5} />
-              <span className="px-2 text-[0.7rem]">{t.category}</span>
+              <span className="text-sm">No photos in this category yet.</span>
             </div>
-          ))}
+          )}
         </div>
-        <p className="mt-6 text-center text-sm text-stone">
-          Hostel and health-camp tiles are still placeholders — replace once the Sangh shares those photos.
-        </p>
       </section>
 
       {lightbox && (
