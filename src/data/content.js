@@ -44,7 +44,7 @@ export const navigation = [
 
 export const stats = [
   { label: 'Registered Members', value: '500+', id: 'REG-M' },
-  { label: 'Hostel Fund Progress', value: '14%', id: 'REG-H' },
+  { label: 'Hostel Fund Progress', value: '49%', id: 'REG-H' },
   { label: 'Families Assisted', value: '310', id: 'REG-F' },
   { label: 'Years of Service', value: '10', id: 'REG-Y' },
 ]
@@ -106,8 +106,8 @@ export const hostelInfo = {
   ],
   plannedCapacity: '60 beds (planned)',
   fundGoal: '\u20b950,00,000', // placeholder — replace with the real target
-  fundRaised: '\u20b96,80,000', // placeholder — replace with real progress
-  progressPercent: 14,
+  fundRaised: '\u20b924,50,000', // placeholder — replace with real progress
+  progressPercent: 49,
   progressNote: 'Funds raised so far toward the construction goal — replace with live figures.',
   progressNote: 'Current occupancy against total capacity — replace with live figures.',
 }
