@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CheckCircle2, XCircle, Clock } from 'lucide-react'
+import { CheckCircle2, XCircle, Clock, IndianRupee } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 export default function ApplicationsPanel() {
@@ -32,6 +32,13 @@ export default function ApplicationsPanel() {
       supabase.removeChannel(channel)
     }
   }, [])
+
+  async function handleVerifyFee(app) {
+    setSaving(true)
+    await supabase.from('membership_applications').update({ joining_fee_status: 'verified' }).eq('id', app.id)
+    setSaving(false)
+    loadData()
+  }
 
   async function handleApprove(app) {
     setError('')
@@ -104,15 +111,34 @@ export default function ApplicationsPanel() {
                 {a.address && <p className="text-stone">{a.address}</p>}
                 {a.occupation && <p className="text-stone">Occupation: {a.occupation}</p>}
                 {a.caste && <p className="text-stone">Caste: {a.caste}</p>}
+                <p className="mt-1.5 flex items-center gap-1 text-xs">
+                  <IndianRupee size={12} />
+                  Joining fee:{' '}
+                  {a.joining_fee_status === 'verified' ? (
+                    <span className="font-medium text-green-700">Verified</span>
+                  ) : (
+                    <span className="font-medium text-red-700">Declared — not yet verified</span>
+                  )}
+                </p>
                 <p className="mt-1 text-xs text-stone">
                   Applied {new Date(a.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                {a.joining_fee_status !== 'verified' && (
+                  <button
+                    onClick={() => handleVerifyFee(a)}
+                    disabled={saving}
+                    className="flex items-center gap-1.5 rounded-sm border border-gold/50 px-4 py-2 text-xs font-medium text-ink hover:border-saffron disabled:opacity-60"
+                  >
+                    <IndianRupee size={14} /> Verify Fee
+                  </button>
+                )}
                 <button
                   onClick={() => handleApprove(a)}
-                  disabled={saving}
-                  className="flex items-center gap-1.5 rounded-sm bg-maroon-deep px-4 py-2 text-xs font-semibold text-cream-paper disabled:opacity-60"
+                  disabled={saving || a.joining_fee_status !== 'verified'}
+                  title={a.joining_fee_status !== 'verified' ? 'Verify the joining fee before approving' : ''}
+                  className="flex items-center gap-1.5 rounded-sm bg-maroon-deep px-4 py-2 text-xs font-semibold text-cream-paper disabled:opacity-40"
                 >
                   <CheckCircle2 size={14} /> Approve
                 </button>

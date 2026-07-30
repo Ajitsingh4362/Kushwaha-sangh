@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
+import QRCode from 'react-qr-code'
 import PageHero from '../components/PageHero'
 import { Field } from '../components/FormField'
 import { supabase } from '../lib/supabase'
+import { donationMethods } from '../data/content'
 import PayDuesButton from '../components/PayDuesButton'
 import a4 from '../assets/activities/activity-4.jpg'
 import a1 from '../assets/activities/activity-1.jpg'
 
+const JOINING_FEE = 100
+const STEP = { DETAILS: 'details', FEE: 'fee', DONE: 'done' }
+
 function MembershipForm() {
-  const [submitted, setSubmitted] = useState(false)
+  const [step, setStep] = useState(STEP.DETAILS)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [form, setForm] = useState({
@@ -25,7 +30,7 @@ function MembershipForm() {
     return (e) => setForm((v) => ({ ...v, [field]: e.target.value }))
   }
 
-  async function handleSubmit(e) {
+  function handleDetailsSubmit(e) {
     e.preventDefault()
     setError('')
 
@@ -34,6 +39,11 @@ function MembershipForm() {
       return
     }
 
+    setStep(STEP.FEE)
+  }
+
+  async function handleIvePaid() {
+    setError('')
     setSaving(true)
 
     const { error: insertError } = await supabase.from('membership_applications').insert({
@@ -44,6 +54,7 @@ function MembershipForm() {
       occupation: form.occupation || null,
       date_of_birth: form.dob || null,
       caste: form.caste.trim(),
+      joining_fee_status: 'declared',
     })
 
     setSaving(false)
@@ -55,10 +66,10 @@ function MembershipForm() {
       }
       return
     }
-    setSubmitted(true)
+    setStep(STEP.DONE)
   }
 
-  if (submitted) {
+  if (step === STEP.DONE) {
     return (
       <div className="ledger-plaque flex flex-col items-center px-6 py-14 text-center">
         <CheckCircle2 size={44} className="text-saffron" />
@@ -66,15 +77,55 @@ function MembershipForm() {
           Application received
         </h3>
         <p className="mt-2 max-w-sm text-sm text-stone">
-          The committee will review your application and confirm your membership by phone or email.
+          The committee will verify your joining fee and confirm your membership by phone or email.
         </p>
       </div>
     )
   }
 
+  if (step === STEP.FEE) {
+    return (
+      <div className="ledger-plaque p-7 text-center">
+        <h3 className="font-display text-xl font-semibold text-maroon-deep">Joining Fee — ₹{JOINING_FEE}</h3>
+        <p className="mt-1 text-sm text-stone">
+          A one-time ₹{JOINING_FEE} joining fee applies to all new members. Scan and pay, then confirm below.
+        </p>
+        <div className="mx-auto mt-5 w-fit bg-white p-3">
+          <QRCode
+            value={`upi://pay?pa=${donationMethods.upiId}&pn=Kushwaha%20Sangh&am=${JOINING_FEE}&cu=INR`}
+            size={180}
+          />
+        </div>
+        <p className="mt-4 font-ledger text-sm text-ink">{donationMethods.upiId}</p>
+        <p className="mt-1 text-xs text-stone">Test QR — replace with the Sangh&rsquo;s real UPI QR before launch.</p>
+        {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+          <button
+            type="button"
+            onClick={() => setStep(STEP.DETAILS)}
+            className="rounded-sm border border-gold/50 px-5 py-2.5 text-sm font-medium text-ink hover:border-saffron"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={handleIvePaid}
+            disabled={saving}
+            className="rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper disabled:opacity-60"
+          >
+            {saving ? 'Submitting…' : "I've Paid — Submit Application"}
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="ledger-plaque space-y-5 p-7">
+    <form onSubmit={handleDetailsSubmit} className="ledger-plaque space-y-5 p-7">
       <h3 className="font-display text-xl font-semibold text-maroon-deep">New Membership Application</h3>
+      <p className="text-sm text-stone">
+        A one-time joining fee of <strong>₹{JOINING_FEE}</strong> applies — you&rsquo;ll pay it on the next step.
+      </p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field id="fullName" label="Full Name" type="text" required value={form.fullName} onChange={update('fullName')} />
         <Field id="dob" label="Date of Birth" type="date" value={form.dob} onChange={update('dob')} />
@@ -105,10 +156,9 @@ function MembershipForm() {
       {error && <p className="text-sm text-red-700">{error}</p>}
       <button
         type="submit"
-        disabled={saving}
-        className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon disabled:opacity-60 sm:w-auto"
+        className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon sm:w-auto"
       >
-        {saving ? 'Submitting…' : 'Submit Application'}
+        Continue to Joining Fee
       </button>
     </form>
   )
