@@ -18,6 +18,7 @@ function MembershipForm() {
     email: '',
     address: '',
     occupation: '',
+    caste: '',
   })
 
   function update(field) {
@@ -27,6 +28,12 @@ function MembershipForm() {
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
+
+    if (form.caste.trim().toLowerCase() !== 'kushwaha') {
+      setError('This form is only for members of the Kushwaha community. Please enter "Kushwaha" in the Caste field.')
+      return
+    }
+
     setSaving(true)
 
     const { error: insertError } = await supabase.from('membership_applications').insert({
@@ -36,6 +43,7 @@ function MembershipForm() {
       address: form.address || null,
       occupation: form.occupation || null,
       date_of_birth: form.dob || null,
+      caste: form.caste.trim(),
     })
 
     setSaving(false)
@@ -82,6 +90,12 @@ function MembershipForm() {
           onChange={update('address')}
         />
         <Field id="occupation" label="Occupation" type="text" value={form.occupation} onChange={update('occupation')} />
+        <div>
+          <Field id="caste" label="Caste" type="text" required value={form.caste} onChange={update('caste')} placeholder="Kushwaha" />
+          <p className="mt-1 text-xs text-stone">
+            This form is only for members of the Kushwaha community — please type &ldquo;Kushwaha&rdquo; here.
+          </p>
+        </div>
       </div>
       <label className="flex items-start gap-2.5 text-sm text-stone">
         <input type="checkbox" required className="mt-1 accent-maroon" />

@@ -43,6 +43,7 @@ export default function ApplicationsPanel() {
       email: app.email,
       address: app.address,
       occupation: app.occupation,
+      caste: app.caste,
       date_of_birth: app.date_of_birth,
       source: 'website',
     })
@@ -102,6 +103,7 @@ export default function ApplicationsPanel() {
                 </p>
                 {a.address && <p className="text-stone">{a.address}</p>}
                 {a.occupation && <p className="text-stone">Occupation: {a.occupation}</p>}
+                {a.caste && <p className="text-stone">Caste: {a.caste}</p>}
                 <p className="mt-1 text-xs text-stone">
                   Applied {new Date(a.created_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                 </p>
