@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Globe, UserPlus, Star } from 'lucide-react'
+import { Plus, Globe, UserPlus, Star, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -69,6 +69,16 @@ export default function MembersListPanel() {
       .from('members')
       .update({ member_type: newType, monthly_due: dueFor(newType) })
       .eq('id', member.id)
+    setSaving(false)
+    loadData()
+  }
+
+  async function handleDelete(member) {
+    if (!window.confirm(`Remove ${member.name} from the members list? This also deletes their dues history.`)) {
+      return
+    }
+    setSaving(true)
+    await supabase.from('members').delete().eq('id', member.id)
     setSaving(false)
     loadData()
   }
@@ -146,7 +156,8 @@ export default function MembersListPanel() {
               <th className="py-2 pr-4 font-medium">Occupation</th>
               <th className="py-2 pr-4 font-medium">Type</th>
               <th className="py-2 pr-4 font-medium">Monthly Due</th>
-              <th className="py-2 font-medium">Source</th>
+              <th className="py-2 pr-4 font-medium">Source</th>
+              <th className="py-2 font-medium">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gold/15">
@@ -173,7 +184,7 @@ export default function MembersListPanel() {
                   )}
                 </td>
                 <td className="py-3 pr-4 text-ink">₹{Number(m.monthly_due || 0)}</td>
-                <td className="py-3">
+                <td className="py-3 pr-4">
                   {m.source === 'website' ? (
                     <span className="flex items-center gap-1 text-xs font-medium text-saffron">
                       <Globe size={13} /> Website
@@ -182,11 +193,20 @@ export default function MembersListPanel() {
                     <span className="text-xs text-stone">Manual</span>
                   )}
                 </td>
+                <td className="py-3">
+                  <button
+                    onClick={() => handleDelete(m)}
+                    disabled={saving}
+                    className="flex items-center gap-1 text-xs text-red-700 hover:underline disabled:opacity-60"
+                  >
+                    <Trash2 size={12} /> Delete
+                  </button>
+                </td>
               </tr>
             ))}
             {members.length === 0 && (
               <tr>
-                <td colSpan={7} className="py-6 text-center text-stone">
+                <td colSpan={8} className="py-6 text-center text-stone">
                   No members yet — add one above, or wait for a website application.
                 </td>
               </tr>
