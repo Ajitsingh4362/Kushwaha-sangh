@@ -52,7 +52,7 @@ export default function NoticeBoardPanel() {
     setSavingDelay(true)
     await supabase
       .from('site_settings')
-      .update({ value: String(Math.max(0, parseInt(delaySeconds, 10) || 0)) })
+      .update({ value: String(Math.max(1, parseInt(delaySeconds, 10) || 10)) })
       .eq('key', 'notice_popup_delay_seconds')
     setSavingDelay(false)
   }
@@ -105,12 +105,12 @@ export default function NoticeBoardPanel() {
       <form onSubmit={handleSaveDelay} className="ledger-plaque flex flex-wrap items-end gap-4 p-6">
         <div>
           <label htmlFor="delay" className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-maroon-deep">
-            <Timer size={14} /> Popup Delay (seconds)
+            <Timer size={14} /> Repeat Every (seconds)
           </label>
           <input
             id="delay"
             type="number"
-            min="0"
+            min="1"
             value={delaySeconds}
             onChange={(e) => setDelaySeconds(e.target.value)}
             className="w-32 border border-gold/40 bg-cream-paper px-3.5 py-2.5 text-sm text-ink focus:border-saffron"
@@ -124,8 +124,8 @@ export default function NoticeBoardPanel() {
           {savingDelay ? 'Saving…' : 'Save'}
         </button>
         <p className="w-full text-xs text-stone">
-          How long a visitor waits before the notice pop-up appears on the website. Set to 0 for
-          instant.
+          The notice pop-up reappears on this schedule while a visitor is on the site — e.g. set to 10
+          to have it pop up every 10 seconds, even after they close it.
         </p>
       </form>
 

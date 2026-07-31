@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
-const SESSION_KEY = 'kushwaha-sangh-notice-seen'
-
 export default function NoticePopup() {
   const [notice, setNotice] = useState(null)
   const [open, setOpen] = useState(false)
@@ -11,7 +9,7 @@ export default function NoticePopup() {
   useEffect(() => {
     if (!isSupabaseConfigured) return
 
-    let timer
+    let intervalId
 
     async function load() {
       const [{ data: noticeData }, { data: settingData }] = await Promise.all([
@@ -22,20 +20,20 @@ export default function NoticePopup() {
       const latest = noticeData?.[0]
       if (!latest) return
 
-      const seenId = sessionStorage.getItem(SESSION_KEY)
-      if (seenId === latest.id) return
-
-      const delayMs = Math.max(0, parseInt(settingData?.value, 10) || 0) * 1000
       setNotice(latest)
-      timer = setTimeout(() => setOpen(true), delayMs)
+
+      const intervalMs = Math.max(1, parseInt(settingData?.value, 10) || 10) * 1000
+
+      // Show once right away, then keep reappearing every `intervalMs`.
+      setOpen(true)
+      intervalId = setInterval(() => setOpen(true), intervalMs)
     }
     load()
 
-    return () => clearTimeout(timer)
+    return () => clearInterval(intervalId)
   }, [])
 
   function handleClose() {
-    if (notice) sessionStorage.setItem(SESSION_KEY, notice.id)
     setOpen(false)
   }
 
