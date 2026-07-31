@@ -16,7 +16,7 @@ export default function MembersDuesPanel() {
   const [members, setMembers] = useState([])
   const [dues, setDues] = useState([])
   const [loading, setLoading] = useState(true)
-  const [newMember, setNewMember] = useState({ name: '', phone: '' })
+  const [newMember, setNewMember] = useState({ name: '', phone: '', member_type: 'regular' })
   const [saving, setSaving] = useState(false)
 
   const month = currentMonthStart()
@@ -54,10 +54,11 @@ export default function MembersDuesPanel() {
     await supabase.from('members').insert({
       name: newMember.name,
       phone: newMember.phone || null,
-      monthly_due: 100,
+      member_type: newMember.member_type,
+      monthly_due: newMember.member_type === 'karyakarni' ? 200 : 100,
       source: 'manual',
     })
-    setNewMember({ name: '', phone: '' })
+    setNewMember({ name: '', phone: '', member_type: 'regular' })
     setSaving(false)
     loadData()
   }
@@ -124,7 +125,20 @@ export default function MembersDuesPanel() {
           onChange={(e) => setNewMember((v) => ({ ...v, phone: e.target.value }))}
           className="min-w-[140px] flex-1"
         />
-        <p className="pb-2.5 text-xs text-stone">Flat ₹100/month applies automatically.</p>
+        <div className="min-w-[220px]">
+          <label htmlFor="member_type" className="mb-1.5 block text-sm font-medium text-maroon-deep">
+            Membership Type
+          </label>
+          <select
+            id="member_type"
+            value={newMember.member_type}
+            onChange={(e) => setNewMember((v) => ({ ...v, member_type: e.target.value }))}
+            className="w-full border border-gold/40 bg-cream-paper px-3.5 py-2.5 text-sm text-ink focus:border-saffron"
+          >
+            <option value="regular">Regular — ₹100/month</option>
+            <option value="karyakarni">Executive Committee — ₹200/month</option>
+          </select>
+        </div>
         <button
           type="submit"
           disabled={saving}
