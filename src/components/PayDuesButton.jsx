@@ -171,7 +171,7 @@ export default function PayDuesButton() {
               <>
                 <h3 className="font-display text-lg font-semibold text-maroon-deep">Scan &amp; Pay ₹{total}</h3>
                 <p className="mt-1 text-xs text-stone">
-                  Test QR — replace with the Sangh&rsquo;s real UPI QR before launch.
+                  Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.) to pay.
                 </p>
                 <div className="mx-auto mt-5 w-fit bg-white p-3">
                   <QRCode value={`upi://pay?pa=${donationMethods.upiId}&pn=Kushwaha%20Sangh&am=${total}&cu=INR`} size={180} />

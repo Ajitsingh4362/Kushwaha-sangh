@@ -97,7 +97,7 @@ function MembershipForm() {
           />
         </div>
         <p className="mt-4 font-ledger text-sm text-ink">{donationMethods.upiId}</p>
-        <p className="mt-1 text-xs text-stone">Test QR — replace with the Sangh&rsquo;s real UPI QR before launch.</p>
+        <p className="mt-1 text-xs text-stone">Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.) to pay.</p>
         {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
         <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button
