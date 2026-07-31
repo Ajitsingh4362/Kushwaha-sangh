@@ -22,6 +22,7 @@ import AdminDues from './pages/AdminDues'
 import AdminDonations from './pages/AdminDonations'
 import AdminCommittee from './pages/AdminCommittee'
 import AdminGallery from './pages/AdminGallery'
+import AdminNoticeBoard from './pages/AdminNoticeBoard'
 import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
 import ScrollToTop from './components/ScrollToTop'
@@ -29,6 +30,7 @@ import { AuthProvider } from './lib/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import { DonateModalProvider } from './lib/DonateModalContext'
 import DonateModal from './components/DonateModal'
+import NoticePopup from './components/NoticePopup'
 
 function PublicChrome({ children }) {
   return (
@@ -39,6 +41,7 @@ function PublicChrome({ children }) {
       <Footer />
       <WhatsAppButton />
       <DonateModal />
+      <NoticePopup />
     </>
   )
 }
@@ -68,6 +71,7 @@ export default function App() {
                 <Route path="donations" element={<AdminDonations />} />
                 <Route path="committee" element={<AdminCommittee />} />
                 <Route path="gallery" element={<AdminGallery />} />
+                <Route path="notices" element={<AdminNoticeBoard />} />
               </Route>
             </Routes>
           ) : (
