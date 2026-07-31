@@ -61,9 +61,6 @@ export default function AdminLogin() {
           >
             {loading ? 'Signing in…' : 'Sign In'}
           </button>
-          <p className="text-center text-xs text-stone">
-            Committee accounts are created manually in Supabase — there is no public sign-up.
-          </p>
         </form>
       </section>
     </>
