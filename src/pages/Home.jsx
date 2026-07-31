@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, HeartHandshake, Users } from 'lucide-react'
 import { site, stats, pillars, newsItems } from '../data/content'
@@ -10,6 +11,9 @@ import momentsCollage from '../assets/moments-collage.jpg'
 import HeroCarousel from '../components/HeroCarousel'
 import { CornerFlourish } from '../components/Ornament'
 import MarqueeStrip from '../components/MarqueeStrip'
+import { supabase } from '../lib/supabase'
+
+const MEMBER_COUNT_BASE = 500
 
 const heroImages = [
   { src: heroBanner, alt: 'Sitamarhi Kushwaha Sangh community gathering' },
@@ -17,6 +21,29 @@ const heroImages = [
 ]
 
 export default function Home() {
+  const [memberCount, setMemberCount] = useState(null)
+
+  useEffect(() => {
+    function load() {
+      supabase
+        .from('members')
+        .select('*', { count: 'exact', head: true })
+        .then(({ count }) => setMemberCount(count || 0))
+    }
+    load()
+
+    const channel = supabase
+      .channel('home-member-count-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, load)
+      .subscribe()
+
+    return () => supabase.removeChannel(channel)
+  }, [])
+
+  const liveStats = stats.map((s) =>
+    s.id === 'REG-M' ? { ...s, value: `${MEMBER_COUNT_BASE + (memberCount ?? 0)}+` } : s
+  )
+
   return (
     <>
       {/* HERO — auto-rotating carousel */}
@@ -32,7 +59,7 @@ export default function Home() {
       {/* STATS */}
       <section className="mx-auto max-w-6xl px-5 py-14 lg:px-8">
         <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
-          {stats.map((s) => (
+          {liveStats.map((s) => (
             <StatPlaque key={s.id} {...s} dark={s.id === 'REG-M' || s.id === 'REG-Y'} />
           ))}
         </div>
