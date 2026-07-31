@@ -11,22 +11,27 @@ export default function NoticePopup() {
   useEffect(() => {
     if (!isSupabaseConfigured) return
 
-    supabase
-      .from('notices')
-      .select('*')
-      .eq('active', true)
-      .order('created_at', { ascending: false })
-      .limit(1)
-      .then(({ data }) => {
-        const latest = data?.[0]
-        if (!latest) return
+    let timer
 
-        const seenId = sessionStorage.getItem(SESSION_KEY)
-        if (seenId === latest.id) return
+    async function load() {
+      const [{ data: noticeData }, { data: settingData }] = await Promise.all([
+        supabase.from('notices').select('*').eq('active', true).order('created_at', { ascending: false }).limit(1),
+        supabase.from('site_settings').select('value').eq('key', 'notice_popup_delay_seconds').single(),
+      ])
 
-        setNotice(latest)
-        setOpen(true)
-      })
+      const latest = noticeData?.[0]
+      if (!latest) return
+
+      const seenId = sessionStorage.getItem(SESSION_KEY)
+      if (seenId === latest.id) return
+
+      const delayMs = Math.max(0, parseInt(settingData?.value, 10) || 0) * 1000
+      setNotice(latest)
+      timer = setTimeout(() => setOpen(true), delayMs)
+    }
+    load()
+
+    return () => clearTimeout(timer)
   }, [])
 
   function handleClose() {

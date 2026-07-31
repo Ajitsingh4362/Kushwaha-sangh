@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Upload, Eye, EyeOff } from 'lucide-react'
+import { Plus, Trash2, Upload, Eye, EyeOff, Timer } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { Field, TextAreaField } from './FormField'
@@ -11,6 +11,8 @@ export default function NoticeBoardPanel() {
   const [error, setError] = useState('')
   const [file, setFile] = useState(null)
   const [form, setForm] = useState({ title: '', body: '' })
+  const [delaySeconds, setDelaySeconds] = useState('0')
+  const [savingDelay, setSavingDelay] = useState(false)
 
   function loadData() {
     setLoading(true)
@@ -24,14 +26,36 @@ export default function NoticeBoardPanel() {
       })
   }
 
+  function loadDelay() {
+    supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'notice_popup_delay_seconds')
+      .single()
+      .then(({ data }) => {
+        if (data) setDelaySeconds(data.value)
+      })
+  }
+
   useEffect(() => {
     loadData()
+    loadDelay()
     const channel = supabase
       .channel('notices-admin-realtime')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'notices' }, () => loadData())
       .subscribe()
     return () => supabase.removeChannel(channel)
   }, [])
+
+  async function handleSaveDelay(e) {
+    e.preventDefault()
+    setSavingDelay(true)
+    await supabase
+      .from('site_settings')
+      .update({ value: String(Math.max(0, parseInt(delaySeconds, 10) || 0)) })
+      .eq('key', 'notice_popup_delay_seconds')
+    setSavingDelay(false)
+  }
 
   async function handleAdd(e) {
     e.preventDefault()
@@ -78,6 +102,33 @@ export default function NoticeBoardPanel() {
 
   return (
     <div className="space-y-8">
+      <form onSubmit={handleSaveDelay} className="ledger-plaque flex flex-wrap items-end gap-4 p-6">
+        <div>
+          <label htmlFor="delay" className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-maroon-deep">
+            <Timer size={14} /> Popup Delay (seconds)
+          </label>
+          <input
+            id="delay"
+            type="number"
+            min="0"
+            value={delaySeconds}
+            onChange={(e) => setDelaySeconds(e.target.value)}
+            className="w-32 border border-gold/40 bg-cream-paper px-3.5 py-2.5 text-sm text-ink focus:border-saffron"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={savingDelay}
+          className="rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper disabled:opacity-60"
+        >
+          {savingDelay ? 'Saving…' : 'Save'}
+        </button>
+        <p className="w-full text-xs text-stone">
+          How long a visitor waits before the notice pop-up appears on the website. Set to 0 for
+          instant.
+        </p>
+      </form>
+
       <form onSubmit={handleAdd} className="ledger-plaque space-y-4 p-6">
         <h3 className="font-display text-lg font-semibold text-maroon-deep">Post a Notice</h3>
         <Field id="title" label="Title" type="text" value={form.title} onChange={(e) => setForm((v) => ({ ...v, title: e.target.value }))} />
