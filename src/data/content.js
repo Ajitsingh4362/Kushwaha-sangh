@@ -169,7 +169,7 @@ export const transparency = [
 ]
 
 export const donationMethods = {
-  upiId: 'kushwahasangh@upi', // placeholder
+  upiId: '11834915@cbin',
   bank: {
     accountName: 'Kushwaha Sangh',
     accountNo: 'XXXXXXXXXXXX',
