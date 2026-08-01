@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Calendar, MapPin, Users } from 'lucide-react'
+import { ArrowLeft, Calendar, MapPin, Users, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CornerFlourish, OrnamentDivider } from '../components/Ornament'
 
@@ -9,9 +9,75 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 
+function Lightbox({ photos, index, onClose, onPrev, onNext }) {
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (e.key === 'Escape') onClose()
+      if (e.key === 'ArrowLeft') onPrev()
+      if (e.key === 'ArrowRight') onNext()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [onClose, onPrev, onNext])
+
+  if (index === null) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={onClose}>
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute right-4 top-4 text-cream-paper/80 hover:text-cream-paper"
+      >
+        <X size={28} />
+      </button>
+
+      {photos.length > 1 && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onPrev()
+          }}
+          aria-label="Previous photo"
+          className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/70 sm:left-6"
+        >
+          <ChevronLeft size={28} />
+        </button>
+      )}
+
+      <img
+        src={photos[index]}
+        alt=""
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[85vh] max-w-full rounded-sm object-contain"
+      />
+
+      {photos.length > 1 && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onNext()
+          }}
+          aria-label="Next photo"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/70 sm:right-6"
+        >
+          <ChevronRight size={28} />
+        </button>
+      )}
+
+      {photos.length > 1 && (
+        <p className="absolute bottom-5 left-1/2 -translate-x-1/2 text-sm text-cream-paper/80">
+          {index + 1} / {photos.length}
+        </p>
+      )}
+    </div>
+  )
+}
+
 export default function ProgramDetail() {
   const { id } = useParams()
   const [program, setProgram] = useState(null)
+  const [lightboxIndex, setLightboxIndex] = useState(null)
   const [loading, setLoading] = useState(true)
   const [notFound, setNotFound] = useState(false)
 
@@ -114,10 +180,14 @@ export default function ProgramDetail() {
               Photos ({program.photos.length})
             </p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {program.photos.map((url) => (
-                <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="block overflow-hidden rounded-sm border border-gold/40">
+              {program.photos.map((url, idx) => (
+                <button
+                  key={url}
+                  onClick={() => setLightboxIndex(idx)}
+                  className="block overflow-hidden rounded-sm border border-gold/40"
+                >
                   <img src={url} alt="" className="aspect-square w-full object-cover transition hover:scale-105" />
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -152,6 +222,16 @@ export default function ProgramDetail() {
           </div>
         )}
       </section>
+
+      {program.photos?.length > 0 && (
+        <Lightbox
+          photos={program.photos}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onPrev={() => setLightboxIndex((i) => (i - 1 + program.photos.length) % program.photos.length)}
+          onNext={() => setLightboxIndex((i) => (i + 1) % program.photos.length)}
+        />
+      )}
     </>
   )
 }
