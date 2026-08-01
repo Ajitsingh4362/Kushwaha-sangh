@@ -32,6 +32,7 @@ export default function ProgramsPanel() {
   const [error, setError] = useState('')
 
   const [form, setForm] = useState(EMPTY_FORM)
+  const [formKey, setFormKey] = useState(0)
   const [participants, setParticipants] = useState([]) // [{ name, detail }]
   const [participantName, setParticipantName] = useState('')
   const [participantDetail, setParticipantDetail] = useState('')
@@ -69,6 +70,7 @@ export default function ProgramsPanel() {
   }, [])
 
   function resetForm() {
+    setFormKey((k) => k + 1)
     setForm(EMPTY_FORM)
     setParticipants([])
     setParticipantName('')
@@ -86,6 +88,7 @@ export default function ProgramsPanel() {
   }
 
   function handleEdit(program) {
+    setFormKey((k) => k + 1)
     setForm({
       id: program.id,
       title: program.title || '',
@@ -213,7 +216,7 @@ export default function ProgramsPanel() {
 
   return (
     <div className="space-y-8">
-      <form onSubmit={handleSubmit} className="ledger-plaque space-y-5 p-6">
+      <form key={formKey} onSubmit={handleSubmit} className="ledger-plaque space-y-5 p-6">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-semibold text-maroon-deep">
             {form.id ? 'Edit Program' : 'Add New Program'}
