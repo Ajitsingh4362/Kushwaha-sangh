@@ -38,6 +38,7 @@ export const navigation = [
   { label: 'Membership', to: '/membership' },
   { label: 'Donate', to: '/donate' },
   { label: 'Gallery', to: '/gallery' },
+  { label: 'Programs', to: '/programs' },
   { label: 'News', to: '/news' },
   { label: 'Contact', to: '/contact' },
 ]
