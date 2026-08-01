@@ -2,13 +2,14 @@ import { Link } from 'react-router-dom'
 import { useDonateModal } from '../lib/DonateModalContext'
 import PayDuesButton from './PayDuesButton'
 import { useLanguage } from '../lib/LanguageContext'
+import LanguageToggle from './LanguageToggle'
 
 export default function DonateQRButton() {
   const { openModal } = useDonateModal()
   const { t } = useLanguage()
 
   return (
-    <div className="flex flex-wrap justify-center gap-4 bg-cream-deep/60 py-8">
+    <div className="flex flex-wrap items-center justify-center gap-4 bg-cream-deep/60 py-8">
       <PayDuesButton />
       <button
         type="button"
@@ -23,6 +24,7 @@ export default function DonateQRButton() {
       >
         {t('Join Us')}
       </Link>
+      <LanguageToggle className="lg:hidden" />
     </div>
   )
 }

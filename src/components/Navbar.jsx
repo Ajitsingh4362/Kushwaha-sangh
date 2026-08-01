@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { Menu, X, ChevronDown, Languages } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
 import { useDonateModal } from '../lib/DonateModalContext'
 import { useLanguage } from '../lib/LanguageContext'
+import LanguageToggle from './LanguageToggle'
 
 function NavItem({ item, onNavigate, mobile = false }) {
   const [open, setOpen] = useState(false)
@@ -87,21 +88,6 @@ function NavItem({ item, onNavigate, mobile = false }) {
   )
 }
 
-function LanguageToggle({ className = '' }) {
-  const { lang, toggleLang } = useLanguage()
-  return (
-    <button
-      type="button"
-      onClick={toggleLang}
-      aria-label="Switch language"
-      className={`flex items-center gap-1.5 rounded-sm border border-gold/40 px-2.5 py-1.5 text-xs font-semibold text-blue-900 transition hover:border-saffron ${className}`}
-    >
-      <Languages size={14} />
-      {lang === 'en' ? 'हिंदी' : 'English'}
-    </button>
-  )
-}
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { openModal } = useDonateModal()
@@ -136,7 +122,6 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <LanguageToggle />
           <button
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
