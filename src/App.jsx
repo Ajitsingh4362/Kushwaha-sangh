@@ -9,6 +9,7 @@ import Welfare from './pages/Welfare'
 import Membership from './pages/Membership'
 import Donate from './pages/Donate'
 import Gallery from './pages/Gallery'
+import Programs from './pages/Programs'
 import News from './pages/News'
 import Contact from './pages/Contact'
 import PrivacyPolicy from './pages/PrivacyPolicy'
@@ -22,6 +23,7 @@ import AdminDues from './pages/AdminDues'
 import AdminDonations from './pages/AdminDonations'
 import AdminCommittee from './pages/AdminCommittee'
 import AdminGallery from './pages/AdminGallery'
+import AdminPrograms from './pages/AdminPrograms'
 import AdminNoticeBoard from './pages/AdminNoticeBoard'
 import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
@@ -73,6 +75,7 @@ export default function App() {
                 <Route path="donations" element={<AdminDonations />} />
                 <Route path="committee" element={<AdminCommittee />} />
                 <Route path="gallery" element={<AdminGallery />} />
+                <Route path="programs" element={<AdminPrograms />} />
                 <Route path="notices" element={<AdminNoticeBoard />} />
               </Route>
             </Routes>
@@ -86,6 +89,7 @@ export default function App() {
                 <Route path="/membership" element={<Membership />} />
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/gallery" element={<Gallery />} />
+                <Route path="/programs" element={<Programs />} />
                 <Route path="/news" element={<News />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
