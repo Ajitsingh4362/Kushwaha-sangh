@@ -41,12 +41,21 @@ export default function AnimatedCounter({ value, duration = 1400 }) {
     return () => observer.disconnect()
   }, [number, duration])
 
+  // notranslate: Google Translate rewrites text nodes it touches, which
+  // fights with React re-rendering this span on every animation frame —
+  // that's what was freezing the count mid-way during a language switch.
+  // Numbers don't need translating anyway, so excluding this span avoids
+  // the conflict entirely.
   if (number === null) {
-    return <span ref={ref}>{value}</span>
+    return (
+      <span ref={ref} className="notranslate">
+        {value}
+      </span>
+    )
   }
 
   return (
-    <span ref={ref}>
+    <span ref={ref} className="notranslate">
       {prefix}
       {display.toLocaleString('en-IN')}
       {suffix}
