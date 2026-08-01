@@ -99,21 +99,41 @@ select:focus-visible {
   background-size: 3px 3px;
 }
 
-/* Google Translate widget: hide default UI chrome, we drive it via our own toggle button */
+/* Google Translate widget: fully hide Google's own UI chrome — we drive
+   translation via our own toggle button, not their banner/dropdown. */
+#google_translate_element,
+.goog-te-banner-frame,
 .goog-te-banner-frame.skiptranslate,
+.goog-te-gadget,
 .goog-te-gadget-icon,
-#google_translate_element {
-  display: none !important;
-}
-body {
-  top: 0 !important;
-  position: static !important;
-}
+.goog-te-gadget-simple,
+.goog-te-menu-value,
+.goog-te-combo,
+.goog-logo-link,
+.goog-te-balloon-frame,
+iframe.goog-te-banner-frame,
+iframe[id^="goog-gt"],
+iframe[id^=":"],
+#goog-gt-tt,
 .goog-tooltip,
 .goog-tooltip:hover {
   display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
 }
+
+html body {
+  top: 0 !important;
+  position: static !important;
+  margin-top: 0 !important;
+}
+
 .goog-text-highlight {
   background: none !important;
   box-shadow: none !important;
+}
+
+font.goog-te-spacer {
+  display: none !important;
 }
