@@ -2,39 +2,40 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
 // The full page is translated by the Google Translate widget (see
-// index.html), driven by the `googtrans` cookie below — not by a manual
-// per-string dictionary. `t()` is kept as a pass-through so existing call
-// sites (Navbar, Footer, DonateQRButton, PayDuesButton) don't need to
-// change; Google Translate rewrites the rendered English text in place.
+// index.html). `t()` is kept as a pass-through so existing call sites
+// (Navbar, Footer, DonateQRButton, PayDuesButton) don't need to change;
+// Google Translate rewrites the rendered English text in place.
 const LanguageContext = createContext({ lang: 'en', t: (s) => s, toggleLang: () => {} })
 
-function readLangFromCookie() {
-  const match = document.cookie.match(/(?:^|;\s*)googtrans=\/en\/(\w+)/)
-  return match ? match[1] : 'en'
-}
+const STORAGE_KEY = 'kushwaha-lang'
 
-function setLangCookie(lang) {
-  const value = lang === 'hi' ? '/en/hi' : '/en/en'
-  // Single cookie, current host only. A second domain-scoped variant
-  // risks two conflicting cookie values on some hosts, which is what
-  // made the toggle flaky — so we keep this to one write.
-  document.cookie = `googtrans=${value};path=/`
-}
-
-// This app is a client-side-routed SPA: Google Translate only scans the
-// DOM once, on full page load. Navigating between pages afterwards
-// doesn't reload the page, so newly rendered content stays untranslated
-// unless we nudge the widget again. Re-firing a change on its hidden
-// <select> makes it re-scan the current DOM without a reload.
-function retriggerTranslation() {
+// Finds Google's auto-generated hidden <select> and switches it directly.
+// This is the standard, popup-free way to drive the widget: setting a
+// cookie and reloading the page (the previous approach) raced with
+// Google's own script and briefly showed its banner/UI. Driving the
+// select in place avoids a reload entirely.
+function applyGoogleTranslate(lang) {
   const select = document.querySelector('select.goog-te-combo')
-  if (select) {
-    select.dispatchEvent(new Event('change'))
-  }
+  if (!select) return false
+  select.value = lang
+  select.dispatchEvent(new Event('change'))
+  return true
+}
+
+// Retries for a short window in case the widget script hasn't finished
+// injecting its <select> yet (it loads async, from Google's servers).
+function applyGoogleTranslateWithRetry(lang, maxAttempts = 30) {
+  let attempts = 0
+  const id = setInterval(() => {
+    attempts += 1
+    if (applyGoogleTranslate(lang) || attempts >= maxAttempts) {
+      clearInterval(id)
+    }
+  }, 200)
 }
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => readLangFromCookie())
+  const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEY) || 'en')
   const location = useLocation()
 
   function t(text) {
@@ -43,30 +44,18 @@ export function LanguageProvider({ children }) {
 
   function toggleLang() {
     const next = lang === 'en' ? 'hi' : 'en'
-    setLangCookie(next)
     setLang(next)
-    // Google Translate reads the cookie on load, so a fresh page load is
-    // the reliable way to translate (or restore) the full DOM.
-    window.location.reload()
+    localStorage.setItem(STORAGE_KEY, next)
+    applyGoogleTranslateWithRetry(next)
   }
 
-  // Re-apply translation after client-side navigation, with a short
-  // retry loop since the Google widget's <select> may not exist yet
-  // on very first load.
+  // Re-apply on client-side route changes: Google Translate only scans
+  // the DOM once on load, and this is an SPA, so newly rendered pages
+  // stay untranslated after navigating unless we nudge it again.
   useEffect(() => {
-    if (lang !== 'hi') return
-    let attempts = 0
-    const id = setInterval(() => {
-      attempts += 1
-      const select = document.querySelector('select.goog-te-combo')
-      if (select) {
-        retriggerTranslation()
-        clearInterval(id)
-      } else if (attempts > 20) {
-        clearInterval(id)
-      }
-    }, 150)
-    return () => clearInterval(id)
+    if (lang === 'hi') {
+      applyGoogleTranslateWithRetry('hi')
+    }
   }, [location.pathname, lang])
 
   return <LanguageContext.Provider value={{ lang, t, toggleLang }}>{children}</LanguageContext.Provider>
