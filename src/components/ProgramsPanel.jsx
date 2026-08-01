@@ -42,6 +42,11 @@ export default function ProgramsPanel() {
   const [videoFile, setVideoFile] = useState(null)
   const [videoProgress, setVideoProgress] = useState(0)
 
+  const [existingThumbnailUrl, setExistingThumbnailUrl] = useState('')
+  const [existingThumbnailType, setExistingThumbnailType] = useState('')
+  const [thumbnailFile, setThumbnailFile] = useState(null)
+  const [thumbnailProgress, setThumbnailProgress] = useState(0)
+
   function loadData() {
     setLoading(true)
     supabase
@@ -73,6 +78,10 @@ export default function ProgramsPanel() {
     setExistingVideoUrl('')
     setVideoFile(null)
     setVideoProgress(0)
+    setExistingThumbnailUrl('')
+    setExistingThumbnailType('')
+    setThumbnailFile(null)
+    setThumbnailProgress(0)
     setError('')
   }
 
@@ -89,8 +98,11 @@ export default function ProgramsPanel() {
     setParticipants(Array.isArray(program.participants) ? program.participants : [])
     setExistingPhotos(Array.isArray(program.photos) ? program.photos : [])
     setExistingVideoUrl(program.video_url || '')
+    setExistingThumbnailUrl(program.thumbnail_url || '')
+    setExistingThumbnailType(program.thumbnail_type || '')
     setNewPhotoFiles([])
     setVideoFile(null)
+    setThumbnailFile(null)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
@@ -138,6 +150,26 @@ export default function ProgramsPanel() {
         videoUrl = result.url
       }
 
+      // Upload thumbnail (single image OR single video), if a new one was picked
+      let thumbnailUrl = existingThumbnailUrl
+      let thumbnailType = existingThumbnailType
+      if (thumbnailFile) {
+        if (thumbnailFile.type.startsWith('video/')) {
+          if (!isCloudinaryConfigured) throw new Error('Cloudinary is not configured yet — thumbnail video upload is unavailable.')
+          setThumbnailProgress(0)
+          const result = await uploadVideoToCloudinary(thumbnailFile, setThumbnailProgress)
+          thumbnailUrl = result.url
+          thumbnailType = 'video'
+        } else {
+          const compressed = await compressImage(thumbnailFile)
+          const path = `thumb-${Date.now()}-${compressed.name}`
+          const { error: thumbUploadError } = await supabase.storage.from('program-photos').upload(path, compressed)
+          if (thumbUploadError) throw new Error('Thumbnail upload failed. Please try again.')
+          thumbnailUrl = supabase.storage.from('program-photos').getPublicUrl(path).data.publicUrl
+          thumbnailType = 'image'
+        }
+      }
+
       const payload = {
         title: form.title.trim(),
         category: form.category,
@@ -148,6 +180,8 @@ export default function ProgramsPanel() {
         participants,
         photos: [...existingPhotos, ...uploadedPhotoUrls],
         video_url: videoUrl || null,
+        thumbnail_url: thumbnailUrl || null,
+        thumbnail_type: thumbnailUrl ? thumbnailType : null,
       }
 
       if (form.id) {
@@ -165,6 +199,7 @@ export default function ProgramsPanel() {
     } finally {
       setSaving(false)
       setVideoProgress(0)
+      setThumbnailProgress(0)
     }
   }
 
@@ -288,10 +323,38 @@ export default function ProgramsPanel() {
           />
         </div>
 
-        {/* Photos */}
+        {/* Thumbnail — single image or video used as the card cover */}
         <div>
           <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-maroon-deep">
-            <Upload size={14} /> Photos
+            <Upload size={14} /> Thumbnail (single image or video — shown as the card cover)
+          </label>
+          {existingThumbnailUrl && !thumbnailFile && (
+            <div className="mb-2">
+              {existingThumbnailType === 'video' ? (
+                <video src={existingThumbnailUrl} muted className="h-24 rounded-sm border border-gold/40" />
+              ) : (
+                <img src={existingThumbnailUrl} alt="" className="h-24 rounded-sm border border-gold/40 object-cover" />
+              )}
+            </div>
+          )}
+          <input
+            type="file"
+            accept="image/*,video/*"
+            onChange={(e) => setThumbnailFile(e.target.files?.[0] || null)}
+            className="text-sm text-stone"
+          />
+          {thumbnailFile && <p className="mt-1 text-xs text-stone">Selected: {thumbnailFile.name}</p>}
+          {saving && thumbnailFile && thumbnailFile.type.startsWith('video/') && (
+            <div className="mt-2 flex items-center gap-2 text-xs text-stone">
+              <Loader2 size={13} className="animate-spin" /> Uploading thumbnail video… {thumbnailProgress}%
+            </div>
+          )}
+        </div>
+
+        {/* Photos — multiple images shown in the gallery on the detail page */}
+        <div>
+          <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-maroon-deep">
+            <Upload size={14} /> Gallery Photos (multiple)
           </label>
           {existingPhotos.length > 0 && (
             <div className="mb-3 flex flex-wrap gap-2">
@@ -322,7 +385,7 @@ export default function ProgramsPanel() {
         {/* Video */}
         <div>
           <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-maroon-deep">
-            <Film size={14} /> Video (uploaded to Cloudinary)
+            <Film size={14} /> Program Video (main video, shown on the detail page)
           </label>
           {existingVideoUrl && !videoFile && (
             <video src={existingVideoUrl} controls className="mb-2 h-32 rounded-sm border border-gold/40" />
@@ -366,8 +429,12 @@ export default function ProgramsPanel() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {programs.map((p) => (
               <div key={p.id} className="ledger-plaque space-y-2 p-4">
-                {p.photos?.[0] && (
-                  <img src={p.photos[0]} alt="" className="h-32 w-full rounded-sm object-cover" />
+                {(p.thumbnail_url || p.photos?.[0]) && (
+                  p.thumbnail_url && p.thumbnail_type === 'video' ? (
+                    <video src={p.thumbnail_url} muted className="h-32 w-full rounded-sm object-cover" />
+                  ) : (
+                    <img src={p.thumbnail_url || p.photos[0]} alt="" className="h-32 w-full rounded-sm object-cover" />
+                  )
                 )}
                 <p className="eyebrow text-maroon/70">{p.category}</p>
                 <p className="font-display font-semibold text-maroon-deep">{p.title}</p>
