@@ -40,7 +40,9 @@ export default function NoticePopup() {
   if (!open || !notice) return null
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-5" onClick={handleClose}>
+    // notranslate: keep this popup's language fixed regardless of the
+    // site-wide translate toggle, per request.
+    <div className="notranslate fixed inset-0 z-[60] flex items-center justify-center bg-black/50 px-5" onClick={handleClose}>
       <div className="ledger-plaque relative w-full max-w-sm overflow-hidden p-0 text-center" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
