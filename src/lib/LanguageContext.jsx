@@ -11,9 +11,8 @@ const STORAGE_KEY = 'kushwaha-lang'
 
 // Finds Google's auto-generated hidden <select> and switches it directly.
 // This is the standard, popup-free way to drive the widget: setting a
-// cookie and reloading the page (the previous approach) raced with
-// Google's own script and briefly showed its banner/UI. Driving the
-// select in place avoids a reload entirely.
+// cookie and reloading the page raced with Google's own script and
+// briefly showed its banner/UI, so we drive the select in place instead.
 function applyGoogleTranslate(lang) {
   const select = document.querySelector('select.goog-te-combo')
   if (!select) return false
@@ -48,6 +47,16 @@ export function LanguageProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, next)
     applyGoogleTranslateWithRetry(next)
   }
+
+  // Keep <html lang="…"> in sync with what's actually rendered. Once the
+  // widget translates the visible text to Hindi, the browser's own
+  // built-in translate prompt (separate from our widget, and outside the
+  // DOM so CSS can't hide it) compares the real content language against
+  // this attribute — leaving it stuck on "en" is what was triggering
+  // that native popup.
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
 
   // Re-apply on client-side route changes: Google Translate only scans
   // the DOM once on load, and this is an SPA, so newly rendered pages
