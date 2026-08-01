@@ -11,6 +11,7 @@ import momentsCollage from '../assets/moments-collage.jpg'
 import HeroCarousel from '../components/HeroCarousel'
 import { CornerFlourish } from '../components/Ornament'
 import MarqueeStrip from '../components/MarqueeStrip'
+import RecentProgramsSection from '../components/RecentProgramsSection'
 import { supabase } from '../lib/supabase'
 
 const MEMBER_COUNT_BASE = 500
@@ -170,6 +171,8 @@ export default function Home() {
       </section>
 
       <Activities />
+
+      <RecentProgramsSection />
 
       {/* NEWS PREVIEW */}
       <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
