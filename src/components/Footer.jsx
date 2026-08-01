@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
+import { useLanguage } from '../lib/LanguageContext'
 
 // lucide-react no longer ships brand/logo marks, so these three
 // social icons are simple hand-drawn SVGs kept consistent in weight
@@ -34,6 +35,7 @@ function YoutubeIcon(props) {
 }
 
 export default function Footer() {
+  const { t } = useLanguage()
   return (
     <footer className="bg-maroon-deep text-cream/85">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 lg:grid-cols-[1.3fr_1fr_1fr] lg:px-8">
@@ -57,12 +59,12 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="eyebrow text-gold-light">Quick Links</h3>
+          <h3 className="eyebrow text-gold-light">{t('Quick Links')}</h3>
           <ul className="mt-4 space-y-2.5 text-sm">
             {navigation.map((item) => (
               <li key={item.label}>
                 <Link to={item.to} className="text-cream/75 hover:text-saffron">
-                  {item.label}
+                  {t(item.label)}
                 </Link>
               </li>
             ))}
@@ -70,7 +72,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="eyebrow text-gold-light">Reach Us</h3>
+          <h3 className="eyebrow text-gold-light">{t('Reach Us')}</h3>
           <ul className="mt-4 space-y-3 text-sm text-cream/75">
             <li className="flex items-start gap-2.5">
               <MapPin size={17} className="mt-0.5 shrink-0 text-saffron" />
@@ -93,18 +95,18 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-5 text-xs text-cream/55 lg:px-8">
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
           <Link to="/privacy-policy" className="hover:text-saffron">
-            Privacy Policy
+            {t('Privacy Policy')}
           </Link>
           <Link to="/terms-and-conditions" className="hover:text-saffron">
-            Terms &amp; Conditions
+            {t('Terms & Conditions')}
           </Link>
           <Link to="/refund-policy" className="hover:text-saffron">
-            Refund &amp; Cancellation Policy
+            {t('Refund & Cancellation Policy')}
           </Link>
         </div>
         <div className="flex flex-col items-center gap-1 sm:flex-row sm:justify-between sm:gap-4">
           <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
-          <span>Regd. Community Welfare Association · Est. {site.established}</span>
+          <span>Regd. {t('COMMUNITY WELFARE ASSOCIATION').replace(/^./, (c) => c.toUpperCase())} · Est. {site.established}</span>
         </div>
       </div>
     </footer>

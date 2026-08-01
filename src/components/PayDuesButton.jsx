@@ -4,6 +4,7 @@ import QRCode from 'react-qr-code'
 import { supabase } from '../lib/supabase'
 import { donationMethods } from '../data/content'
 import { Field } from './FormField'
+import { useLanguage } from '../lib/LanguageContext'
 
 const STEP = { PHONE: 'phone', LIST: 'list', QR: 'qr', DONE: 'done', CLEAR: 'clear' }
 
@@ -12,6 +13,7 @@ function monthLabel(dateStr) {
 }
 
 export default function PayDuesButton() {
+  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState(STEP.PHONE)
   const [phone, setPhone] = useState('')
@@ -71,7 +73,7 @@ export default function PayDuesButton() {
         onClick={() => setOpen(true)}
         className="rounded-sm border border-maroon-deep px-6 py-3 text-sm font-semibold text-maroon-deep transition hover:bg-maroon-deep hover:text-cream-paper"
       >
-        Pay Monthly Due
+        {t('Pay Monthly Due')}
       </button>
 
       {open && (

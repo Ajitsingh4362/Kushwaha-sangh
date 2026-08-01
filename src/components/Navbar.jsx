@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { Menu, X, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown, Languages } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
 import { useDonateModal } from '../lib/DonateModalContext'
+import { useLanguage } from '../lib/LanguageContext'
 
 function NavItem({ item, onNavigate, mobile = false }) {
   const [open, setOpen] = useState(false)
+  const { t } = useLanguage()
 
   if (item.children) {
     if (mobile) {
@@ -18,7 +20,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
             aria-expanded={open}
             className="flex w-full items-center justify-between gap-1 py-2 text-sm font-medium tracking-wide text-blue-900"
           >
-            {item.label}
+            {t(item.label)}
             <ChevronDown size={16} strokeWidth={2.5} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
           </button>
           {open && (
@@ -30,7 +32,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
                   onClick={onNavigate}
                   className="py-2 text-sm text-blue-900/80"
                 >
-                  {child.label}
+                  {t(child.label)}
                 </Link>
               ))}
             </div>
@@ -49,7 +51,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
           to={item.to}
           className="flex items-center gap-1 py-2 text-sm font-medium tracking-wide text-blue-900"
         >
-          {item.label}
+          {t(item.label)}
           <ChevronDown size={14} strokeWidth={2.5} />
         </NavLink>
         {open && (
@@ -61,7 +63,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
                 onClick={onNavigate}
                 className="block px-4 py-2.5 text-sm text-blue-900"
               >
-                {child.label}
+                {t(child.label)}
               </Link>
             ))}
           </div>
@@ -80,14 +82,30 @@ function NavItem({ item, onNavigate, mobile = false }) {
         }`
       }
     >
-      {item.label}
+      {t(item.label)}
     </NavLink>
+  )
+}
+
+function LanguageToggle({ className = '' }) {
+  const { lang, toggleLang } = useLanguage()
+  return (
+    <button
+      type="button"
+      onClick={toggleLang}
+      aria-label="Switch language"
+      className={`flex items-center gap-1.5 rounded-sm border border-gold/40 px-2.5 py-1.5 text-xs font-semibold text-blue-900 transition hover:border-saffron ${className}`}
+    >
+      <Languages size={14} />
+      {lang === 'en' ? 'हिंदी' : 'English'}
+    </button>
   )
 }
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const { openModal } = useDonateModal()
+  const { t } = useLanguage()
 
   return (
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
@@ -96,7 +114,7 @@ export default function Navbar() {
           <img src={logo} alt={`${site.name} logo`} className="h-16 w-16 rounded-full object-contain" />
           <span className="flex flex-col leading-tight">
             <span className="font-display text-lg font-semibold uppercase text-blue-900">{site.name}</span>
-            <span className="eyebrow text-gold-light/80">{site.tagline}</span>
+            <span className="eyebrow text-gold-light/80">{t('COMMUNITY WELFARE ASSOCIATION')}</span>
           </span>
         </Link>
 
@@ -106,22 +124,28 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <button
-          type="button"
-          onClick={openModal}
-          className="ml-6 hidden rounded-sm border border-saffron bg-saffron px-4 py-2 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light lg:block"
-        >
-          Donate
-        </button>
+        <div className="hidden items-center gap-3 lg:flex">
+          <LanguageToggle />
+          <button
+            type="button"
+            onClick={openModal}
+            className="rounded-sm border border-saffron bg-saffron px-4 py-2 text-sm font-semibold text-maroon-deep transition hover:bg-saffron-light"
+          >
+            {t('Donate')}
+          </button>
+        </div>
 
-        <button
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
-          onClick={() => setMobileOpen((v) => !v)}
-          className="text-blue-900 lg:hidden"
-        >
-          {mobileOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <LanguageToggle />
+          <button
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+            onClick={() => setMobileOpen((v) => !v)}
+            className="text-blue-900"
+          >
+            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
@@ -141,7 +165,7 @@ export default function Navbar() {
             }}
             className="mt-4 block w-full rounded-sm border border-saffron bg-saffron px-4 py-2 text-center text-sm font-semibold text-maroon-deep"
           >
-            Donate
+            {t('Donate')}
           </button>
         </div>
       )}
