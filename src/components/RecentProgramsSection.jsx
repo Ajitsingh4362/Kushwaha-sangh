@@ -34,19 +34,26 @@ export default function RecentProgramsSection() {
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
-          {programs.map((p) => (
+          {programs.map((p) => {
+            const cover = p.thumbnail_url || p.photos?.[0]
+            const coverIsVideo = p.thumbnail_url && p.thumbnail_type === 'video'
+            return (
             <Link
               key={p.id}
-              to="/programs"
+              to={`/programs/${p.id}`}
               className="ledger-plaque group flex flex-col overflow-hidden text-left transition hover:-translate-y-0.5 hover:shadow-lg"
             >
               <div className="aspect-video w-full overflow-hidden bg-cream-paper">
-                {p.photos?.[0] ? (
-                  <img
-                    src={p.photos[0]}
-                    alt={p.title}
-                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-                  />
+                {cover ? (
+                  coverIsVideo ? (
+                    <video src={cover} muted playsInline className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                  ) : (
+                    <img
+                      src={cover}
+                      alt={p.title}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  )
                 ) : (
                   <div className="grid h-full place-items-center text-stone/50">No photo</div>
                 )}
@@ -69,7 +76,8 @@ export default function RecentProgramsSection() {
                 )}
               </div>
             </Link>
-          ))}
+            )
+          })}
         </div>
 
         <div className="mt-8 text-center">
