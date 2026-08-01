@@ -98,3 +98,22 @@ select:focus-visible {
   background-image: radial-gradient(theme('colors.maroon.DEFAULT' / 6%) 1px, transparent 1px);
   background-size: 3px 3px;
 }
+
+/* Google Translate widget: hide default UI chrome, we drive it via our own toggle button */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon,
+#google_translate_element {
+  display: none !important;
+}
+body {
+  top: 0 !important;
+  position: static !important;
+}
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
