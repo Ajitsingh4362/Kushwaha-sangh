@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Plus, Globe, CheckCircle2, Landmark, ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { Plus, Globe, CheckCircle2, Landmark, ChevronDown, ChevronUp, Search, Trash2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
-function DonationRow({ d, onVerify, saving }) {
+function DonationRow({ d, onVerify, onDelete, saving }) {
   return (
     <tr>
       <td className="py-3 pr-4 text-stone">
@@ -16,7 +16,7 @@ function DonationRow({ d, onVerify, saving }) {
         {[d.donor_email, d.donor_phone].filter(Boolean).join(' / ') || '—'}
       </td>
       <td className="py-3 pr-4 text-ink">₹{Number(d.amount).toLocaleString('en-IN')}</td>
-      <td className="py-3">
+      <td className="py-3 pr-4">
         {d.status === 'verified' ? (
           <span className="flex items-center gap-1 text-xs font-medium text-green-700">
             <CheckCircle2 size={14} /> Verified
@@ -30,6 +30,15 @@ function DonationRow({ d, onVerify, saving }) {
             Mark Verified
           </button>
         )}
+      </td>
+      <td className="py-3">
+        <button
+          onClick={() => onDelete(d)}
+          disabled={saving}
+          className="flex items-center gap-1 text-xs font-medium text-red-700 hover:underline disabled:opacity-60"
+        >
+          <Trash2 size={12} /> Delete
+        </button>
       </td>
     </tr>
   )
@@ -81,6 +90,15 @@ export default function DonationsPanel() {
   async function markVerified(id) {
     setSaving(true)
     await supabase.from('donations').update({ status: 'verified' }).eq('id', id)
+    setSaving(false)
+    loadData()
+  }
+
+  async function handleDeleteDonation(d) {
+    const label = d.is_anonymous ? 'this anonymous donation' : `the donation from "${d.members?.name || d.donor_name || 'this donor'}"`
+    if (!window.confirm(`Delete ${label}? This cannot be undone.`)) return
+    setSaving(true)
+    await supabase.from('donations').delete().eq('id', d.id)
     setSaving(false)
     loadData()
   }
@@ -190,16 +208,17 @@ export default function DonationsPanel() {
                 <th className="py-2 pr-4 font-medium">Donor</th>
                 <th className="py-2 pr-4 font-medium">Contact</th>
                 <th className="py-2 pr-4 font-medium">Amount</th>
-                <th className="py-2 font-medium">Status</th>
+                <th className="py-2 pr-4 font-medium">Status</th>
+                <th className="py-2 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gold/15">
               {websiteDonations.map((d) => (
-                <DonationRow key={d.id} d={d} onVerify={markVerified} saving={saving} />
+                <DonationRow key={d.id} d={d} onVerify={markVerified} onDelete={handleDeleteDonation} saving={saving} />
               ))}
               {websiteDonations.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="py-6 text-center text-stone">
+                  <td colSpan={6} className="py-6 text-center text-stone">
                     {donations.filter((d) => d.payment_method === 'upi_qr').length === 0
                       ? 'No website donations yet — they\u2019ll appear here the moment someone uses \u201cDonate Now\u201d on the site.'
                       : 'No donations match your search/filter.'}
@@ -324,7 +343,8 @@ export default function DonationsPanel() {
                   <th className="py-2 pr-4 font-medium">Date</th>
                   <th className="py-2 pr-4 font-medium">Donor</th>
                   <th className="py-2 pr-4 font-medium">Amount</th>
-                  <th className="py-2 font-medium">Note</th>
+                  <th className="py-2 pr-4 font-medium">Note</th>
+                  <th className="py-2 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gold/15">
@@ -337,7 +357,16 @@ export default function DonationsPanel() {
                       {d.is_anonymous ? 'Anonymous' : d.members?.name || d.donor_name || '—'}
                     </td>
                     <td className="py-3 pr-4 text-ink">₹{Number(d.amount).toLocaleString('en-IN')}</td>
-                    <td className="py-3 text-stone">{d.note || '—'}</td>
+                    <td className="py-3 pr-4 text-stone">{d.note || '—'}</td>
+                    <td className="py-3">
+                      <button
+                        onClick={() => handleDeleteDonation(d)}
+                        disabled={saving}
+                        className="flex items-center gap-1 text-xs font-medium text-red-700 hover:underline disabled:opacity-60"
+                      >
+                        <Trash2 size={12} /> Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -348,3 +377,4 @@ export default function DonationsPanel() {
     </div>
   )
 }
+
