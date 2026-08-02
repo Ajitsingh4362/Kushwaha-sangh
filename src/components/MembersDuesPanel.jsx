@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CheckCircle2, XCircle, Clock, Plus } from 'lucide-react'
+import { CheckCircle2, XCircle, Clock, Plus, Download } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -10,6 +10,27 @@ function currentMonthStart() {
 
 function monthLabel(dateStr) {
   return new Date(dateStr).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+}
+
+function csvEscape(value) {
+  const str = String(value ?? '')
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return `"${str.replace(/"/g, '""')}"`
+  }
+  return str
+}
+
+function downloadCSV(filename, headers, rows) {
+  const lines = [headers.map(csvEscape).join(','), ...rows.map((row) => row.map(csvEscape).join(','))]
+  const blob = new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
 }
 
 export default function MembersDuesPanel() {
@@ -77,6 +98,44 @@ export default function MembersDuesPanel() {
 
   function pendingMonths(memberId) {
     return duesForMember(memberId).filter((d) => d.status !== 'verified')
+  }
+
+  function exportThisMonthCSV() {
+    const rows = members.map((m) => {
+      const due = duesForMember(m.id).find((d) => d.due_month === selectedMonth)
+      const pending = pendingMonths(m.id)
+      return [
+        m.name,
+        m.phone || '',
+        m.member_type === 'karyakarni' ? 'Executive Committee' : 'Regular',
+        due ? (due.status === 'verified' ? 'Paid' : due.status === 'declared' ? 'Declared' : 'Unpaid') : 'Not generated',
+        due?.paid_date || '',
+        pending.length > 0 ? pending.map((d) => monthLabel(d.due_month)).join('; ') : 'Clear',
+      ]
+    })
+    downloadCSV(
+      `dues-${selectedMonth}.csv`,
+      ['Name', 'Phone', 'Membership Type', `Status — ${monthLabel(selectedMonth)}`, 'Paid Date', 'Pending Months'],
+      rows
+    )
+  }
+
+  function exportFullHistoryCSV() {
+    const rows = dues
+      .slice()
+      .sort((a, b) => (a.due_month < b.due_month ? 1 : -1))
+      .map((d) => {
+        const m = members.find((mem) => mem.id === d.member_id)
+        return [
+          m?.name || 'Unknown',
+          m?.phone || '',
+          monthLabel(d.due_month),
+          m?.monthly_due ?? '',
+          d.status === 'verified' ? 'Paid' : d.status === 'declared' ? 'Declared' : 'Unpaid',
+          d.paid_date || '',
+        ]
+      })
+    downloadCSV('dues-full-history.csv', ['Name', 'Phone', 'Month', 'Amount (₹)', 'Status', 'Paid Date'], rows)
   }
 
   const totalMembers = members.length
@@ -155,23 +214,39 @@ export default function MembersDuesPanel() {
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h3 className="font-display text-lg font-semibold text-maroon-deep">Dues — {monthLabel(selectedMonth)}</h3>
-        <div>
-          <label htmlFor="month_filter" className="mr-2 text-xs font-medium text-stone">
-            Month:
-          </label>
-          <select
-            id="month_filter"
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-            className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+        <div className="flex flex-wrap items-center gap-3">
+          <div>
+            <label htmlFor="month_filter" className="mr-2 text-xs font-medium text-stone">
+              Month:
+            </label>
+            <select
+              id="month_filter"
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+            >
+              {availableMonths.map((m) => (
+                <option key={m} value={m}>
+                  {monthLabel(m)}
+                  {m === thisMonth ? ' (Current)' : ''}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="button"
+            onClick={exportThisMonthCSV}
+            className="flex items-center gap-1.5 rounded-sm border border-gold/50 px-3 py-1.5 text-xs font-medium text-ink hover:border-saffron"
           >
-            {availableMonths.map((m) => (
-              <option key={m} value={m}>
-                {monthLabel(m)}
-                {m === thisMonth ? ' (Current)' : ''}
-              </option>
-            ))}
-          </select>
+            <Download size={13} /> Export This Month
+          </button>
+          <button
+            type="button"
+            onClick={exportFullHistoryCSV}
+            className="flex items-center gap-1.5 rounded-sm border border-gold/50 px-3 py-1.5 text-xs font-medium text-ink hover:border-saffron"
+          >
+            <Download size={13} /> Export Full History
+          </button>
         </div>
       </div>
 
@@ -252,3 +327,4 @@ export default function MembersDuesPanel() {
     </div>
   )
 }
+
