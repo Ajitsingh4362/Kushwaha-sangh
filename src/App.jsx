@@ -25,6 +25,7 @@ import AdminDonations from './pages/AdminDonations'
 import AdminCommittee from './pages/AdminCommittee'
 import AdminGallery from './pages/AdminGallery'
 import AdminPrograms from './pages/AdminPrograms'
+import AdminExpenses from './pages/AdminExpenses'
 import AdminNoticeBoard from './pages/AdminNoticeBoard'
 import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
@@ -77,6 +78,7 @@ export default function App() {
                 <Route path="committee" element={<AdminCommittee />} />
                 <Route path="gallery" element={<AdminGallery />} />
                 <Route path="programs" element={<AdminPrograms />} />
+                <Route path="expenses" element={<AdminExpenses />} />
                 <Route path="notices" element={<AdminNoticeBoard />} />
               </Route>
             </Routes>
