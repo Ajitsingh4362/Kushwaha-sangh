@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Pencil, X, Receipt, Eye } from 'lucide-react'
+import { Plus, Trash2, Pencil, X, Receipt, Eye, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field, TextAreaField, SelectField } from './FormField'
 
@@ -35,6 +35,7 @@ export default function ExpensesPanel() {
   const [receiptFile, setReceiptFile] = useState(null)
 
   const [monthFilter, setMonthFilter] = useState('all')
+  const [search, setSearch] = useState('')
 
   function loadData() {
     setLoading(true)
@@ -144,7 +145,10 @@ export default function ExpensesPanel() {
   }
 
   const months = Array.from(new Set(expenses.map((e) => e.expense_date?.slice(0, 7)).filter(Boolean))).sort().reverse()
-  const filtered = monthFilter === 'all' ? expenses : expenses.filter((e) => e.expense_date?.slice(0, 7) === monthFilter)
+  const filtered = (monthFilter === 'all' ? expenses : expenses.filter((e) => e.expense_date?.slice(0, 7) === monthFilter)).filter((e) => {
+    const q = search.toLowerCase()
+    return !q || e.title.toLowerCase().includes(q) || (e.paid_to || '').toLowerCase().includes(q) || e.category.toLowerCase().includes(q)
+  })
 
   const totalAll = expenses.reduce((sum, e) => sum + Number(e.amount), 0)
   const totalFiltered = filtered.reduce((sum, e) => sum + Number(e.amount), 0)
@@ -274,7 +278,18 @@ export default function ExpensesPanel() {
           <h3 className="font-display text-lg font-semibold text-maroon-deep">
             Expense History {monthFilter !== 'all' && `— ₹${totalFiltered.toLocaleString('en-IN')}`}
           </h3>
-          {months.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            <div className="relative">
+              <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+              <input
+                type="text"
+                placeholder="Search title, category, paid to…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="min-w-[200px] border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+              />
+            </div>
+            {months.length > 0 && (
             <select
               value={monthFilter}
               onChange={(e) => setMonthFilter(e.target.value)}
@@ -287,7 +302,8 @@ export default function ExpensesPanel() {
                 </option>
               ))}
             </select>
-          )}
+            )}
+          </div>
         </div>
 
         {loading ? (
