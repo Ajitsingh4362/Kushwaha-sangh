@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Upload } from 'lucide-react'
+import { Plus, Trash2, Upload, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { Field } from './FormField'
@@ -19,6 +19,8 @@ export default function GalleryPanel() {
   const [file, setFile] = useState(null)
   const [category, setCategory] = useState('events')
   const [caption, setCaption] = useState('')
+  const [search, setSearch] = useState('')
+  const [filterCategory, setFilterCategory] = useState('all')
 
   function loadData() {
     setLoading(true)
@@ -71,6 +73,12 @@ export default function GalleryPanel() {
     setSaving(false)
     loadData()
   }
+
+  const filteredPhotos = photos.filter((p) => {
+    const matchesSearch = !search || (p.caption || '').toLowerCase().includes(search.toLowerCase())
+    const matchesCategory = filterCategory === 'all' || p.category === filterCategory
+    return matchesSearch && matchesCategory
+  })
 
   if (loading) return <p className="text-stone">Loading gallery…</p>
 
@@ -127,9 +135,37 @@ export default function GalleryPanel() {
       </form>
 
       <div>
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">Gallery ({photos.length})</h3>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h3 className="font-display text-lg font-semibold text-maroon-deep">
+            Gallery ({filteredPhotos.length}{filteredPhotos.length !== photos.length ? ` of ${photos.length}` : ''})
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <div className="relative">
+              <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+              <input
+                type="text"
+                placeholder="Search caption…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+              />
+            </div>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+            >
+              <option value="all">All categories</option>
+              {CATEGORIES.map((c) => (
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {photos.map((p) => (
+          {filteredPhotos.map((p) => (
             <div key={p.id} className="group relative aspect-square overflow-hidden border border-gold/40">
               <img src={p.url} alt={p.caption || p.category} className="h-full w-full object-cover" />
               <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-black/50 px-2 py-1">
@@ -140,7 +176,11 @@ export default function GalleryPanel() {
               </div>
             </div>
           ))}
-          {photos.length === 0 && <p className="col-span-full text-center text-stone">No photos yet.</p>}
+          {filteredPhotos.length === 0 && (
+            <p className="col-span-full text-center text-stone">
+              {photos.length === 0 ? 'No photos yet.' : 'No photos match your search/filter.'}
+            </p>
+          )}
         </div>
       </div>
     </div>
