@@ -3,6 +3,7 @@ import { Plus, Trash2, Upload, X, Pencil, Film, Loader2, Search } from 'lucide-r
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { uploadVideoToCloudinary, isCloudinaryConfigured } from '../lib/cloudinary'
+import { generateCertificatePdf } from '../lib/certificate'
 import { Field, TextAreaField, SelectField } from './FormField'
 
 export const PROGRAM_CATEGORIES = [
@@ -49,6 +50,7 @@ export default function ProgramsPanel() {
   const [existingThumbnailType, setExistingThumbnailType] = useState('')
   const [thumbnailFile, setThumbnailFile] = useState(null)
   const [thumbnailProgress, setThumbnailProgress] = useState(0)
+  const [certProgress, setCertProgress] = useState('')
 
   function loadData() {
     setLoading(true)
@@ -189,12 +191,55 @@ export default function ProgramsPanel() {
         thumbnail_type: thumbnailUrl ? thumbnailType : null,
       }
 
+      let programId = form.id
       if (form.id) {
         const { error: updateError } = await supabase.from('programs').update(payload).eq('id', form.id)
         if (updateError) throw updateError
       } else {
-        const { error: insertError } = await supabase.from('programs').insert(payload)
+        const { data: inserted, error: insertError } = await supabase.from('programs').insert(payload).select('id').single()
         if (insertError) throw insertError
+        programId = inserted.id
+      }
+
+      // Auto-generate a certificate PDF for any participant who doesn't have one yet.
+      if (participants.length > 0) {
+        const needsCert = participants.some((p) => !p.certificate_url)
+        if (needsCert) {
+          const updatedParticipants = []
+          for (let i = 0; i < participants.length; i++) {
+            const p = participants[i]
+            if (p.certificate_url) {
+              updatedParticipants.push(p)
+              continue
+            }
+            setCertProgress(`Generating certificates… ${i + 1}/${participants.length}`)
+            try {
+              const { blob, certificateId } = await generateCertificatePdf({
+                participantName: p.name,
+                programTitle: form.title.trim(),
+                programDate: form.program_date,
+                location: form.location.trim() || null,
+              })
+              const path = `${programId}/${certificateId}.pdf`
+              const { error: certUploadError } = await supabase.storage.from('certificates').upload(path, blob, {
+                contentType: 'application/pdf',
+                upsert: true,
+              })
+              if (certUploadError) {
+                updatedParticipants.push(p)
+                continue
+              }
+              const certUrl = supabase.storage.from('certificates').getPublicUrl(path).data.publicUrl
+              updatedParticipants.push({ ...p, certificate_url: certUrl, certificate_id: certificateId })
+            } catch {
+              // If certificate generation fails for one participant (e.g. offline),
+              // keep going — the program save itself should never be blocked by this.
+              updatedParticipants.push(p)
+            }
+          }
+          setCertProgress('')
+          await supabase.from('programs').update({ participants: updatedParticipants }).eq('id', programId)
+        }
       }
 
       resetForm()
@@ -205,6 +250,7 @@ export default function ProgramsPanel() {
       setSaving(false)
       setVideoProgress(0)
       setThumbnailProgress(0)
+      setCertProgress('')
     }
   }
 
@@ -423,6 +469,16 @@ export default function ProgramsPanel() {
 
         {error && <p className="text-sm text-red-700">{error}</p>}
 
+        {certProgress && (
+          <div className="flex items-center gap-2 text-xs text-stone">
+            <Loader2 size={13} className="animate-spin" /> {certProgress}
+          </div>
+        )}
+        <p className="text-xs text-stone">
+          A certificate is automatically generated for every participant listed above when you save — no extra
+          step needed. Certificates are downloadable from this program&rsquo;s public page.
+        </p>
+
         <button
           type="submit"
           disabled={saving}
@@ -505,3 +561,4 @@ export default function ProgramsPanel() {
     </div>
   )
 }
+
