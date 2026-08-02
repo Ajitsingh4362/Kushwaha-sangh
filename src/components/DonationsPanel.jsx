@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Globe, CheckCircle2, Landmark, ChevronDown, ChevronUp } from 'lucide-react'
+import { Plus, Globe, CheckCircle2, Landmark, ChevronDown, ChevronUp, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -42,6 +42,8 @@ export default function DonationsPanel() {
   const [saving, setSaving] = useState(false)
   const [showManualForm, setShowManualForm] = useState(false)
   const [donorType, setDonorType] = useState('member')
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
   const [form, setForm] = useState({
     member_id: '',
     donor_name: '',
@@ -106,9 +108,18 @@ export default function DonationsPanel() {
     loadData()
   }
 
+  function matchesSearchAndStatus(d) {
+    const q = search.toLowerCase()
+    const name = d.is_anonymous ? 'anonymous' : (d.members?.name || d.donor_name || '').toLowerCase()
+    const contact = [d.donor_email, d.donor_phone].filter(Boolean).join(' ').toLowerCase()
+    const matchesSearch = !q || name.includes(q) || contact.includes(q)
+    const matchesStatus = statusFilter === 'all' || d.status === statusFilter
+    return matchesSearch && matchesStatus
+  }
+
   // Website submissions = anything that came through the public "Donate Now" flow
-  const websiteDonations = donations.filter((d) => d.payment_method === 'upi_qr')
-  const manualDonations = donations.filter((d) => d.payment_method !== 'upi_qr')
+  const websiteDonations = donations.filter((d) => d.payment_method === 'upi_qr').filter(matchesSearchAndStatus)
+  const manualDonations = donations.filter((d) => d.payment_method !== 'upi_qr').filter(matchesSearchAndStatus)
 
   const verifiedTotal = donations.filter((d) => d.status === 'verified').reduce((sum, d) => sum + Number(d.amount), 0)
   const pendingCount = websiteDonations.filter((d) => d.status === 'declared').length
@@ -117,6 +128,29 @@ export default function DonationsPanel() {
 
   return (
     <div className="space-y-10">
+      {/* SEARCH & FILTER */}
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative">
+          <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+          <input
+            type="text"
+            placeholder="Search donor name, email, or phone…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="min-w-[240px] border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+          />
+        </div>
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+        >
+          <option value="all">All statuses</option>
+          <option value="verified">Verified</option>
+          <option value="declared">Awaiting verification</option>
+        </select>
+      </div>
+
       {/* SUMMARY */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
         <div className="ledger-plaque p-5">
@@ -166,8 +200,9 @@ export default function DonationsPanel() {
               {websiteDonations.length === 0 && (
                 <tr>
                   <td colSpan={5} className="py-6 text-center text-stone">
-                    No website donations yet — they&rsquo;ll appear here the moment someone uses &ldquo;Donate
-                    Now&rdquo; on the site.
+                    {donations.filter((d) => d.payment_method === 'upi_qr').length === 0
+                      ? 'No website donations yet — they\u2019ll appear here the moment someone uses \u201cDonate Now\u201d on the site.'
+                      : 'No donations match your search/filter.'}
                   </td>
                 </tr>
               )}
