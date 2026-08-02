@@ -18,8 +18,9 @@ export default function MembersDuesPanel() {
   const [loading, setLoading] = useState(true)
   const [newMember, setNewMember] = useState({ name: '', phone: '', member_type: 'regular' })
   const [saving, setSaving] = useState(false)
+  const [selectedMonth, setSelectedMonth] = useState(currentMonthStart())
 
-  const month = currentMonthStart()
+  const thisMonth = currentMonthStart()
 
   function loadData() {
     setLoading(true)
@@ -79,8 +80,12 @@ export default function MembersDuesPanel() {
   }
 
   const totalMembers = members.length
-  const paidThisMonth = dues.filter((d) => d.due_month === month && d.status === 'verified').length
+  const paidThisMonth = dues.filter((d) => d.due_month === selectedMonth && d.status === 'verified').length
   const awaitingVerification = dues.filter((d) => d.status === 'declared').length
+
+  const availableMonths = Array.from(new Set([thisMonth, ...dues.map((d) => d.due_month)]))
+    .sort()
+    .reverse()
 
   if (loading) return <p className="text-stone">Loading members…</p>
 
@@ -93,11 +98,11 @@ export default function MembersDuesPanel() {
           <p className="mt-1 font-display text-2xl font-bold text-maroon-deep">{totalMembers}</p>
         </div>
         <div className="ledger-plaque p-5">
-          <span className="ledger-number">Paid This Month</span>
+          <span className="ledger-number">Paid — {monthLabel(selectedMonth)}</span>
           <p className="mt-1 font-display text-2xl font-bold text-green-700">{paidThisMonth}</p>
         </div>
         <div className="ledger-plaque p-5">
-          <span className="ledger-number">Unpaid This Month</span>
+          <span className="ledger-number">Unpaid — {monthLabel(selectedMonth)}</span>
           <p className="mt-1 font-display text-2xl font-bold text-red-700">{totalMembers - paidThisMonth}</p>
         </div>
         <div className="ledger-plaque p-5">
@@ -148,7 +153,27 @@ export default function MembersDuesPanel() {
         </button>
       </form>
 
-      <h3 className="font-display text-lg font-semibold text-maroon-deep">Dues — {monthLabel(month)}</h3>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-display text-lg font-semibold text-maroon-deep">Dues — {monthLabel(selectedMonth)}</h3>
+        <div>
+          <label htmlFor="month_filter" className="mr-2 text-xs font-medium text-stone">
+            Month:
+          </label>
+          <select
+            id="month_filter"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+          >
+            {availableMonths.map((m) => (
+              <option key={m} value={m}>
+                {monthLabel(m)}
+                {m === thisMonth ? ' (Current)' : ''}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-left text-sm">
@@ -156,7 +181,7 @@ export default function MembersDuesPanel() {
             <tr className="border-b border-gold/30 text-xs uppercase tracking-wide text-stone">
               <th className="py-2 pr-4 font-medium">Name</th>
               <th className="py-2 pr-4 font-medium">Phone</th>
-              <th className="py-2 pr-4 font-medium">This Month</th>
+              <th className="py-2 pr-4 font-medium">{monthLabel(selectedMonth)}</th>
               <th className="py-2 pr-4 font-medium">Pending Months</th>
               <th className="py-2 font-medium">Action</th>
             </tr>
@@ -164,7 +189,7 @@ export default function MembersDuesPanel() {
           <tbody className="divide-y divide-gold/15">
             {members.map((m) => {
               const pending = pendingMonths(m.id)
-              const thisMonthDue = duesForMember(m.id).find((d) => d.due_month === month)
+              const thisMonthDue = duesForMember(m.id).find((d) => d.due_month === selectedMonth)
               return (
                 <tr key={m.id}>
                   <td className="py-3 pr-4 font-medium text-ink">{m.name}</td>
