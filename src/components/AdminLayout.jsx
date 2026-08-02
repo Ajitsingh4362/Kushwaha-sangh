@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart } from 'lucide-react'
+import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart, Wallet } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import logo from '../assets/logo.png'
@@ -14,6 +14,7 @@ const navItems = [
   { to: '/admin/committee', label: 'Committee', icon: UsersRound },
   { to: '/admin/gallery', label: 'Gallery', icon: ImageIcon },
   { to: '/admin/programs', label: 'Programs', icon: CalendarHeart },
+  { to: '/admin/expenses', label: 'Expenses', icon: Wallet },
   { to: '/admin/notices', label: 'Notice Board', icon: Megaphone },
 ]
 
