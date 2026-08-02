@@ -41,9 +41,10 @@ function formatDate(dateStr) {
  * @param {string} params.programDate  (YYYY-MM-DD)
  * @param {string} [params.location]
  * @param {string} [params.certificateId]  auto-generated if omitted
+ * @param {string} [params.logoUrl]  URL of the Sangh logo image to embed (PNG or JPG)
  * @returns {Promise<{ blob: Blob, certificateId: string }>}
  */
-export async function generateCertificatePdf({ participantName, programTitle, programDate, location, certificateId }) {
+export async function generateCertificatePdf({ participantName, programTitle, programDate, location, certificateId, logoUrl }) {
   const PDFLib = await loadPdfLib()
   const { PDFDocument, StandardFonts, rgb } = PDFLib
 
@@ -85,22 +86,47 @@ export async function generateCertificatePdf({ participantName, programTitle, pr
     page.drawText(text, { x: (width - textWidth) / 2, y, size, font, color })
   }
 
-  centerText('KUSHWAHA SANGH', height - 100, serif, 22, maroon)
-  centerText('Community Welfare Association', height - 122, body, 11, ink)
+  // Logo — embedded if a URL was provided and it loads successfully.
+  // Certificate generation should never fail just because the logo couldn't load.
+  let logoBottomY = height - 100
+  if (logoUrl) {
+    try {
+      const res = await fetch(logoUrl)
+      const bytes = await res.arrayBuffer()
+      const isPng = logoUrl.toLowerCase().includes('.png') || res.headers.get('content-type')?.includes('png')
+      const logoImage = isPng ? await doc.embedPng(bytes) : await doc.embedJpg(bytes)
+      const logoSize = 60
+      const logoDims = logoImage.scale(logoSize / Math.max(logoImage.width, logoImage.height))
+      page.drawImage(logoImage, {
+        x: (width - logoDims.width) / 2,
+        y: height - 70 - logoDims.height,
+        width: logoDims.width,
+        height: logoDims.height,
+      })
+      logoBottomY = height - 80 - logoDims.height
+    } catch {
+      // Logo failed to load/embed — continue without it rather than blocking the certificate.
+      logoBottomY = height - 100
+    }
+  }
 
-  centerText('Certificate of Participation', height - 175, serif, 30, maroon)
+  centerText('KUSHWAHA SANGH', logoBottomY, serif, 22, maroon)
+  centerText('Community Welfare Association', logoBottomY - 22, body, 11, ink)
 
-  centerText('This is to certify that', height - 235, serifItalic, 14, ink)
-  centerText(participantName, height - 275, serif, 26, maroon)
+  const titleY = logoBottomY - 75
+  centerText('Certificate of Participation', titleY, serif, 30, maroon)
+
+  centerText('This is to certify that', titleY - 60, serifItalic, 14, ink)
+  centerText(participantName, titleY - 100, serif, 26, maroon)
 
   const line1 = `has actively participated in`
-  centerText(line1, height - 315, body, 13, ink)
-  centerText(programTitle, height - 340, serif, 17, ink)
+  centerText(line1, titleY - 140, body, 13, ink)
+  centerText(programTitle, titleY - 165, serif, 17, ink)
 
   const line2 = location
     ? `held on ${formatDate(programDate)} at ${location}, organized by Kushwaha Sangh.`
     : `held on ${formatDate(programDate)}, organized by Kushwaha Sangh.`
-  centerText(line2, height - 368, body, 12, ink)
+  centerText(line2, titleY - 193, body, 12, ink)
 
   // Footer: certificate ID (left) + signature line (right)
   const footerY = 90
@@ -129,3 +155,4 @@ export async function generateCertificatePdf({ participantName, programTitle, pr
   const blob = new Blob([bytes], { type: 'application/pdf' })
   return { blob, certificateId: id }
 }
+
