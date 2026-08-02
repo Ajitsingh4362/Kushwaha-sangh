@@ -5,6 +5,7 @@ import { compressImage } from '../lib/compressImage'
 import { uploadVideoToCloudinary, isCloudinaryConfigured } from '../lib/cloudinary'
 import { generateCertificatePdf } from '../lib/certificate'
 import { Field, TextAreaField, SelectField } from './FormField'
+import logo from '../assets/logo.png'
 
 export const PROGRAM_CATEGORIES = [
   'Blood Donation Camp',
@@ -219,6 +220,7 @@ export default function ProgramsPanel() {
                 programTitle: form.title.trim(),
                 programDate: form.program_date,
                 location: form.location.trim() || null,
+                logoUrl: logo,
               })
               const path = `${programId}/${certificateId}.pdf`
               const { error: certUploadError } = await supabase.storage.from('certificates').upload(path, blob, {
@@ -561,4 +563,5 @@ export default function ProgramsPanel() {
     </div>
   )
 }
+
 
