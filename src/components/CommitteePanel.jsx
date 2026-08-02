@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Upload } from 'lucide-react'
+import { Plus, Trash2, Upload, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { Field } from './FormField'
@@ -17,6 +17,8 @@ export default function CommitteePanel() {
   const [error, setError] = useState('')
   const [file, setFile] = useState(null)
   const [form, setForm] = useState({ name: '', designation: '', reg_no: '', tier: 'member' })
+  const [search, setSearch] = useState('')
+  const [filterTier, setFilterTier] = useState('all')
 
   function loadData() {
     setLoading(true)
@@ -80,6 +82,13 @@ export default function CommitteePanel() {
     loadData()
   }
 
+  const filteredMembers = members.filter((m) => {
+    const q = search.toLowerCase()
+    const matchesSearch = !q || m.name.toLowerCase().includes(q) || m.designation.toLowerCase().includes(q)
+    const matchesTier = filterTier === 'all' || m.tier === filterTier
+    return matchesSearch && matchesTier
+  })
+
   if (loading) return <p className="text-stone">Loading committee…</p>
 
   return (
@@ -136,9 +145,37 @@ export default function CommitteePanel() {
       </form>
 
       <div>
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">Committee ({members.length})</h3>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h3 className="font-display text-lg font-semibold text-maroon-deep">
+            Committee ({filteredMembers.length}{filteredMembers.length !== members.length ? ` of ${members.length}` : ''})
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <div className="relative">
+              <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+              <input
+                type="text"
+                placeholder="Search name or designation…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+              />
+            </div>
+            <select
+              value={filterTier}
+              onChange={(e) => setFilterTier(e.target.value)}
+              className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+            >
+              <option value="all">All tiers</option>
+              {TIERS.map((t) => (
+                <option key={t.value} value={t.value}>
+                  {t.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {members.map((m) => (
+          {filteredMembers.map((m) => (
             <div key={m.id} className="ledger-plaque flex flex-col items-center p-4 text-center">
               {m.photo_url ? (
                 <img src={m.photo_url} alt={m.name} className="h-20 w-20 rounded-md object-cover" />
@@ -159,7 +196,11 @@ export default function CommitteePanel() {
               </button>
             </div>
           ))}
-          {members.length === 0 && <p className="col-span-full text-center text-stone">No committee members yet.</p>}
+          {filteredMembers.length === 0 && (
+            <p className="col-span-full text-center text-stone">
+              {members.length === 0 ? 'No committee members yet.' : 'No members match your search/filter.'}
+            </p>
+          )}
         </div>
       </div>
     </div>
