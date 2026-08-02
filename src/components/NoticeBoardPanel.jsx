@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Upload, Eye, EyeOff, Timer } from 'lucide-react'
+import { Plus, Trash2, Upload, Eye, EyeOff, Timer, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { Field, TextAreaField } from './FormField'
@@ -13,6 +13,8 @@ export default function NoticeBoardPanel() {
   const [form, setForm] = useState({ title: '', body: '' })
   const [delaySeconds, setDelaySeconds] = useState('0')
   const [savingDelay, setSavingDelay] = useState(false)
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
 
   function loadData() {
     setLoading(true)
@@ -98,6 +100,13 @@ export default function NoticeBoardPanel() {
     loadData()
   }
 
+  const filteredNotices = notices.filter((n) => {
+    const q = search.toLowerCase()
+    const matchesSearch = !q || n.title.toLowerCase().includes(q) || (n.body || '').toLowerCase().includes(q)
+    const matchesStatus = statusFilter === 'all' || (statusFilter === 'active' ? n.active : !n.active)
+    return matchesSearch && matchesStatus
+  })
+
   if (loading) return <p className="text-stone">Loading notices…</p>
 
   return (
@@ -154,9 +163,34 @@ export default function NoticeBoardPanel() {
       </form>
 
       <div>
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">All Notices ({notices.length})</h3>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h3 className="font-display text-lg font-semibold text-maroon-deep">
+            All Notices ({filteredNotices.length}{filteredNotices.length !== notices.length ? ` of ${notices.length}` : ''})
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <div className="relative">
+              <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+              <input
+                type="text"
+                placeholder="Search title or details…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+            >
+              <option value="all">All</option>
+              <option value="active">Active only</option>
+              <option value="hidden">Hidden only</option>
+            </select>
+          </div>
+        </div>
         <div className="mt-4 space-y-4">
-          {notices.map((n) => (
+          {filteredNotices.map((n) => (
             <div key={n.id} className="ledger-plaque flex flex-wrap items-start justify-between gap-4 p-5">
               <div className="flex gap-4">
                 {n.image_url && (
@@ -189,7 +223,11 @@ export default function NoticeBoardPanel() {
               </div>
             </div>
           ))}
-          {notices.length === 0 && <p className="ledger-plaque p-5 text-center text-sm text-stone">No notices posted yet.</p>}
+          {filteredNotices.length === 0 && (
+            <p className="ledger-plaque p-5 text-center text-sm text-stone">
+              {notices.length === 0 ? 'No notices posted yet.' : 'No notices match your search/filter.'}
+            </p>
+          )}
         </div>
       </div>
     </div>
