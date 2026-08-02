@@ -24,7 +24,7 @@ export default function DonateQRButton() {
       >
         {t('Join Us')}
       </Link>
-      <LanguageToggle className="lg:hidden" />
+      <LanguageToggle />
     </div>
   )
 }
