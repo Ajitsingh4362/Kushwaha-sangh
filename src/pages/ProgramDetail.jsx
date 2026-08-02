@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { ArrowLeft, Calendar, MapPin, Users, X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Calendar, MapPin, Users, X, ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CornerFlourish, OrnamentDivider } from '../components/Ornament'
 
@@ -206,6 +206,7 @@ export default function ProgramDetail() {
                     <th className="px-4 py-2.5 font-semibold">#</th>
                     <th className="px-4 py-2.5 font-semibold">Name</th>
                     <th className="px-4 py-2.5 font-semibold">Detail</th>
+                    <th className="px-4 py-2.5 font-semibold">Certificate</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gold/15">
@@ -214,6 +215,20 @@ export default function ProgramDetail() {
                       <td className="px-4 py-2 text-stone">{idx + 1}</td>
                       <td className="px-4 py-2 text-ink">{p.name}</td>
                       <td className="px-4 py-2 text-stone">{p.detail || '—'}</td>
+                      <td className="px-4 py-2">
+                        {p.certificate_url ? (
+                          <a
+                            href={p.certificate_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1 text-xs font-medium text-maroon-deep hover:underline"
+                          >
+                            <Download size={12} /> Download
+                          </a>
+                        ) : (
+                          <span className="text-xs text-stone">—</span>
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -235,3 +250,4 @@ export default function ProgramDetail() {
     </>
   )
 }
+
