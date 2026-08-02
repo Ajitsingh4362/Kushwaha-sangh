@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Trash2, Upload, X, Pencil, Film, Loader2 } from 'lucide-react'
+import { Plus, Trash2, Upload, X, Pencil, Film, Loader2, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { compressImage } from '../lib/compressImage'
 import { uploadVideoToCloudinary, isCloudinaryConfigured } from '../lib/cloudinary'
@@ -32,6 +32,8 @@ export default function ProgramsPanel() {
   const [error, setError] = useState('')
 
   const [form, setForm] = useState(EMPTY_FORM)
+  const [search, setSearch] = useState('')
+  const [filterCategory, setFilterCategory] = useState('all')
   const [formKey, setFormKey] = useState(0)
   const [participants, setParticipants] = useState([]) // [{ name, detail }]
   const [participantName, setParticipantName] = useState('')
@@ -213,6 +215,13 @@ export default function ProgramsPanel() {
     setSaving(false)
     loadData()
   }
+
+  const filteredPrograms = programs.filter((p) => {
+    const q = search.toLowerCase()
+    const matchesSearch = !q || p.title.toLowerCase().includes(q) || (p.location || '').toLowerCase().includes(q)
+    const matchesCategory = filterCategory === 'all' || p.category === filterCategory
+    return matchesSearch && matchesCategory
+  })
 
   return (
     <div className="space-y-8">
@@ -425,12 +434,40 @@ export default function ProgramsPanel() {
       </form>
 
       <div>
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">All Programs ({programs.length})</h3>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h3 className="font-display text-lg font-semibold text-maroon-deep">
+            All Programs ({filteredPrograms.length}{filteredPrograms.length !== programs.length ? ` of ${programs.length}` : ''})
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            <div className="relative">
+              <Search size={14} className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-stone" />
+              <input
+                type="text"
+                placeholder="Search title or location…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="min-w-[200px] border border-gold/40 bg-cream-paper py-1.5 pl-8 pr-3 text-sm text-ink focus:border-saffron"
+              />
+            </div>
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className="border border-gold/40 bg-cream-paper px-3 py-1.5 text-sm text-ink focus:border-saffron"
+            >
+              <option value="all">All categories</option>
+              {PROGRAM_CATEGORIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
         {loading ? (
           <p className="mt-4 text-stone">Loading…</p>
         ) : (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {programs.map((p) => (
+            {filteredPrograms.map((p) => (
               <div key={p.id} className="ledger-plaque space-y-2 p-4">
                 {(p.thumbnail_url || p.photos?.[0]) && (
                   p.thumbnail_url && p.thumbnail_type === 'video' ? (
@@ -457,7 +494,11 @@ export default function ProgramsPanel() {
                 </div>
               </div>
             ))}
-            {programs.length === 0 && <p className="col-span-full text-center text-stone">No programs added yet.</p>}
+            {filteredPrograms.length === 0 && (
+              <p className="col-span-full text-center text-stone">
+                {programs.length === 0 ? 'No programs added yet.' : 'No programs match your search/filter.'}
+              </p>
+            )}
           </div>
         )}
       </div>
