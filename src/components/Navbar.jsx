@@ -5,7 +5,6 @@ import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
 import { useDonateModal } from '../lib/DonateModalContext'
 import { useLanguage } from '../lib/LanguageContext'
-import LanguageToggle from './LanguageToggle'
 
 function NavItem({ item, onNavigate, mobile = false }) {
   const [open, setOpen] = useState(false)
@@ -111,7 +110,6 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 lg:flex">
-          <LanguageToggle />
           <button
             type="button"
             onClick={openModal}
