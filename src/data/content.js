@@ -8,9 +8,9 @@
 export const site = {
   name: 'Kushwaha Sangh',
   tagline: 'Community Welfare Association',
-  established: '1998', // placeholder — replace with real founding year
+  established: '2017', // founded 2017, officially registered 2023
   mission:
-    'Bringing together the achievers of our community to uplift every family through education, healthcare and mutual support.',
+    'To unite every member of the Kushwaha community under one umbrella, ensuring that no individual stands alone in times of crisis.',
   whatsapp: '910000000000', // placeholder number, digits only, country code first
   email: 'contact@kushwahasangh.org', // placeholder
   phone: '+91 82924 53335',
@@ -178,3 +178,4 @@ export const donationMethods = {
     bankBranch: 'Bank Name, Branch',
   },
 }
+
