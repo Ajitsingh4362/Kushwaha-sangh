@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import WhatsAppButton from './components/WhatsAppButton'
+import HelpButton from './components/HelpButton'
 import Home from './pages/Home'
 import About from './pages/About'
 import Committee from './pages/Committee'
@@ -26,6 +26,7 @@ import AdminCommittee from './pages/AdminCommittee'
 import AdminGallery from './pages/AdminGallery'
 import AdminPrograms from './pages/AdminPrograms'
 import AdminExpenses from './pages/AdminExpenses'
+import AdminHelp from './pages/AdminHelp'
 import AdminNoticeBoard from './pages/AdminNoticeBoard'
 import AdminLayout from './components/AdminLayout'
 import NotFound from './pages/NotFound'
@@ -44,7 +45,7 @@ function PublicChrome({ children }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
-      <WhatsAppButton />
+      <HelpButton />
       <DonateModal />
       <NoticePopup />
     </>
@@ -79,6 +80,7 @@ export default function App() {
                 <Route path="gallery" element={<AdminGallery />} />
                 <Route path="programs" element={<AdminPrograms />} />
                 <Route path="expenses" element={<AdminExpenses />} />
+                <Route path="help" element={<AdminHelp />} />
                 <Route path="notices" element={<AdminNoticeBoard />} />
               </Route>
             </Routes>
@@ -110,3 +112,4 @@ export default function App() {
     </AuthProvider>
   )
 }
+
