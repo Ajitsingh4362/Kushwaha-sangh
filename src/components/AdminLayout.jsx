@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart, Wallet } from 'lucide-react'
+import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart, Wallet, MessageCircleQuestion } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import logo from '../assets/logo.png'
@@ -16,12 +16,30 @@ const navItems = [
   { to: '/admin/programs', label: 'Programs', icon: CalendarHeart },
   { to: '/admin/expenses', label: 'Expenses', icon: Wallet },
   { to: '/admin/notices', label: 'Notice Board', icon: Megaphone },
+  { to: '/admin/help', label: 'Help Requests', icon: MessageCircleQuestion },
 ]
 
 export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [newHelpCount, setNewHelpCount] = useState(0)
   const navigate = useNavigate()
   const { session } = useAuth()
+
+  useEffect(() => {
+    function loadCount() {
+      supabase
+        .from('help_requests')
+        .select('id', { count: 'exact', head: true })
+        .eq('status', 'new')
+        .then(({ count }) => setNewHelpCount(count || 0))
+    }
+    loadCount()
+    const channel = supabase
+      .channel('admin-help-notifications')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'help_requests' }, () => loadCount())
+      .subscribe()
+    return () => supabase.removeChannel(channel)
+  }, [])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -95,9 +113,18 @@ export default function AdminLayout() {
             <p className="text-sm text-stone">{today}</p>
           </div>
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-full border border-gold/40 text-gold-deep">
+            <button
+              onClick={() => navigate('/admin/help')}
+              aria-label="Help request notifications"
+              className="relative grid h-9 w-9 place-items-center rounded-full border border-gold/40 text-gold-deep hover:border-saffron"
+            >
               <Bell size={16} />
-            </span>
+              {newHelpCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-semibold text-white">
+                  {newHelpCount > 9 ? '9+' : newHelpCount}
+                </span>
+              )}
+            </button>
             <a
               href="/"
               target="_blank"
@@ -116,3 +143,4 @@ export default function AdminLayout() {
     </div>
   )
 }
+
