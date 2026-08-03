@@ -86,9 +86,12 @@ export async function generateCertificatePdf({ participantName, programTitle, pr
     page.drawText(text, { x: (width - textWidth) / 2, y, size, font, color })
   }
 
-  // Logo — embedded if a URL was provided and it loads successfully.
-  // Certificate generation should never fail just because the logo couldn't load.
-  let logoBottomY = height - 100
+  // Logo — placed in the top-left corner, embedded if a URL was provided
+  // and it loads successfully. A solid white backdrop is drawn behind it
+  // first: some PDF viewers render a PNG's alpha channel as a grey/checkered
+  // patch instead of true transparency, and this guarantees a clean white
+  // background under the logo regardless of viewer. Certificate generation
+  // should never fail just because the logo couldn't load.
   if (logoUrl) {
     try {
       const res = await fetch(logoUrl)
@@ -97,19 +100,24 @@ export async function generateCertificatePdf({ participantName, programTitle, pr
       const logoImage = isPng ? await doc.embedPng(bytes) : await doc.embedJpg(bytes)
       const logoSize = 60
       const logoDims = logoImage.scale(logoSize / Math.max(logoImage.width, logoImage.height))
-      page.drawImage(logoImage, {
-        x: (width - logoDims.width) / 2,
-        y: height - 70 - logoDims.height,
-        width: logoDims.width,
-        height: logoDims.height,
+      const logoX = margin + 30
+      const logoY = height - 60 - logoDims.height
+
+      const pad = 4
+      page.drawRectangle({
+        x: logoX - pad,
+        y: logoY - pad,
+        width: logoDims.width + pad * 2,
+        height: logoDims.height + pad * 2,
+        color: rgb(1, 1, 1),
       })
-      logoBottomY = height - 80 - logoDims.height
+      page.drawImage(logoImage, { x: logoX, y: logoY, width: logoDims.width, height: logoDims.height })
     } catch {
-      // Logo failed to load/embed — continue without it rather than blocking the certificate.
-      logoBottomY = height - 100
+      // Logo failed to load/embed — continue without it.
     }
   }
 
+  const logoBottomY = height - 100
   centerText('KUSHWAHA SANGH', logoBottomY, serif, 22, maroon)
   centerText('Community Welfare Association', logoBottomY - 22, body, 11, ink)
 
@@ -155,4 +163,5 @@ export async function generateCertificatePdf({ participantName, programTitle, pr
   const blob = new Blob([bytes], { type: 'application/pdf' })
   return { blob, certificateId: id }
 }
+
 
