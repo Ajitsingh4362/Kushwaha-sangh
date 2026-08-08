@@ -54,10 +54,10 @@ export default function AdminLayout() {
   })
 
   return (
-    <div className="flex min-h-screen bg-cream">
+    <div className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 transform bg-maroon-deep text-cream-paper transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 transform overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:static lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -104,8 +104,8 @@ export default function AdminLayout() {
       )}
 
       {/* Main area */}
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-4 border-b border-gold/20 bg-cream-paper px-5 py-4">
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between gap-4 border-b border-gold/20 bg-cream-paper px-5 py-4">
           <div className="flex items-center gap-3">
             <button onClick={() => setMobileOpen(true)} className="text-maroon-deep lg:hidden">
               <Menu size={24} />
@@ -136,7 +136,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <main className="flex-1 px-5 py-8 lg:px-8">
+        <main className="flex-1 overflow-y-auto px-5 py-8 [-webkit-overflow-scrolling:touch] lg:px-8">
           <Outlet />
         </main>
       </div>
