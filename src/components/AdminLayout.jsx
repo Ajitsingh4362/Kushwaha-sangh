@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart, Wallet, MessageCircleQuestion } from 'lucide-react'
+import { LayoutDashboard, Users, HeartHandshake, LogOut, Bell, ExternalLink, Menu, IdCard, ClipboardCheck, UsersRound, ImageIcon, Megaphone, CalendarHeart, Wallet, MessageCircleQuestion, Download } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useAuth } from '../lib/AuthContext'
 import logo from '../assets/logo.png'
@@ -22,8 +22,37 @@ const navItems = [
 export default function AdminLayout() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [newHelpCount, setNewHelpCount] = useState(0)
+  const [installPrompt, setInstallPrompt] = useState(null)
+  const [isStandalone, setIsStandalone] = useState(false)
+  const [showIosHelp, setShowIosHelp] = useState(false)
   const navigate = useNavigate()
   const { session } = useAuth()
+
+  // PWA install: Android/Chrome deta hai beforeinstallprompt event; iOS pe
+  // koi prompt nahi aata, isliye wahan manual "Add to Home Screen" steps dikhate hain.
+  useEffect(() => {
+    const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true
+    setIsStandalone(standalone)
+
+    const onBeforeInstall = (e) => {
+      e.preventDefault()
+      setInstallPrompt(e)
+    }
+    window.addEventListener('beforeinstallprompt', onBeforeInstall)
+    return () => window.removeEventListener('beforeinstallprompt', onBeforeInstall)
+  }, [])
+
+  const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent)
+
+  async function installApp() {
+    if (installPrompt) {
+      installPrompt.prompt()
+      await installPrompt.userChoice
+      setInstallPrompt(null)
+    } else if (isIos) {
+      setShowIosHelp(true)
+    }
+  }
 
   useEffect(() => {
     function loadCount() {
@@ -90,6 +119,14 @@ export default function AdminLayout() {
 
         <div className="absolute bottom-0 left-0 right-0 border-t border-gold/20 p-3">
           <p className="truncate px-3 py-1 text-xs text-cream/60">{session?.user?.email}</p>
+          {!isStandalone && (installPrompt || isIos) && (
+            <button
+              onClick={installApp}
+              className="flex w-full items-center gap-3 rounded-sm px-3.5 py-2.5 text-sm font-medium text-gold-light transition hover:bg-cream-paper/5"
+            >
+              <Download size={17} /> Install App
+            </button>
+          )}
           <button
             onClick={handleLogout}
             className="flex w-full items-center gap-3 rounded-sm px-3.5 py-2.5 text-sm font-medium text-cream/80 transition hover:bg-cream-paper/5"
@@ -98,6 +135,31 @@ export default function AdminLayout() {
           </button>
         </div>
       </aside>
+
+      {showIosHelp && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-5"
+          onClick={() => setShowIosHelp(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-lg bg-cream-paper p-6 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <p className="mb-3 font-display text-lg font-semibold text-maroon-deep">📲 Install this app on iPhone</p>
+            <ol className="mb-5 list-decimal space-y-2 pl-5 text-sm text-ink">
+              <li>Safari ke bottom bar mein <strong>Share</strong> icon (□↑) par tap karein</li>
+              <li>Neeche scroll karke <strong>"Add to Home Screen"</strong> par tap karein</li>
+              <li><strong>"Add"</strong> par tap karein — icon home screen pe aa jayega</li>
+            </ol>
+            <button
+              onClick={() => setShowIosHelp(false)}
+              className="w-full rounded-sm bg-maroon-deep py-2.5 text-sm font-medium text-cream-paper"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
 
       {mobileOpen && (
         <div className="fixed inset-0 z-30 bg-black/40 lg:hidden" onClick={() => setMobileOpen(false)} />
