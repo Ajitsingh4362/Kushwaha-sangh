@@ -4,7 +4,7 @@
 // (Supabase data, donations ledger, member/dues info) always comes fresh
 // from the network so nothing stale or wrong is ever shown.
 
-const CACHE_NAME = 'kushwaha-sangh-shell-v1'
+const CACHE_NAME = 'kushwaha-sangh-shell-v2'
 const SHELL_ASSETS = [
   '/manifest.json',
   '/favicon-180.png',

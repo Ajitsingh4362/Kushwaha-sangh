@@ -86,7 +86,7 @@ export default function AdminLayout() {
     <div className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 transform flex-col overflow-hidden bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 transform flex-col overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -98,7 +98,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3 pb-8">
+        <nav className="flex flex-col gap-1 p-3 pb-8">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -117,7 +117,7 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="shrink-0 border-t border-gold/20 p-3">
+        <div className="sticky bottom-0 mt-auto border-t border-gold/20 bg-maroon-deep p-3">
           <p className="truncate px-3 py-1 text-xs text-cream/60">{session?.user?.email}</p>
           {!isStandalone && (installPrompt || isIos) && (
             <button
