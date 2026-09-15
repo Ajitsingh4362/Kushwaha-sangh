@@ -98,7 +98,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3 pb-8">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
