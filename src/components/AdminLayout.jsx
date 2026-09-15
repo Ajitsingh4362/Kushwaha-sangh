@@ -86,11 +86,11 @@ export default function AdminLayout() {
     <div className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 transform overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 transform flex-col overflow-hidden bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-center gap-3 border-b border-gold/20 px-5 py-5">
+        <div className="flex shrink-0 items-center gap-3 border-b border-gold/20 px-5 py-5">
           <img src={logo} alt="Kushwaha Sangh" className="h-11 w-11 rounded-full object-contain" />
           <div className="leading-tight">
             <p className="font-display text-sm font-semibold">Kushwaha Sangh</p>
@@ -98,7 +98,7 @@ export default function AdminLayout() {
           </div>
         </div>
 
-        <nav className="flex flex-col gap-1 p-3">
+        <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -117,7 +117,7 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 border-t border-gold/20 p-3">
+        <div className="shrink-0 border-t border-gold/20 p-3">
           <p className="truncate px-3 py-1 text-xs text-cream/60">{session?.user?.email}</p>
           {!isStandalone && (installPrompt || isIos) && (
             <button
