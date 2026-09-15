@@ -117,7 +117,7 @@ export default function AdminLayout() {
           ))}
         </nav>
 
-        <div className="sticky bottom-0 mt-auto border-t border-gold/20 bg-maroon-deep p-3">
+        <div className="border-t border-gold/20 p-3">
           <p className="truncate px-3 py-1 text-xs text-cream/60">{session?.user?.email}</p>
           {!isStandalone && (installPrompt || isIos) && (
             <button
