@@ -86,7 +86,7 @@ export default function AdminLayout() {
     <div className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 transform overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:static lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 shrink-0 transform overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -198,7 +198,7 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto px-5 py-8 [-webkit-overflow-scrolling:touch] lg:px-8">
+        <main className="flex-1 overflow-y-auto px-5 py-8 pb-24 [-webkit-overflow-scrolling:touch] lg:px-8">
           <Outlet />
         </main>
       </div>
