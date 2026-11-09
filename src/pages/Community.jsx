@@ -40,9 +40,14 @@ export default function Community() {
   const [page, setPage] = useState(1)
   const [showForm, setShowForm] = useState(location.hash === '#join')
 
+  // Opening /community#join (the नई सदस्यता tab) shows the form and
+  // scrolls to it — every time, even if the link is clicked again.
   useEffect(() => {
-    if (location.hash === '#join') setShowForm(true)
-  }, [location.hash])
+    if (location.hash !== '#join') return
+    setShowForm(true)
+    const id = setTimeout(() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 120)
+    return () => clearTimeout(id)
+  }, [location.key, location.hash])
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
