@@ -38,6 +38,7 @@ export const navigation = [
     ],
   },
   { label: 'सदस्यता', to: '/membership' },
+  { label: 'समुदाय', to: '/community' },
   { label: 'दान करें', to: '/donate' },
   { label: 'गैलरी', to: '/gallery' },
   { label: 'कार्यक्रम', to: '/programs' },

@@ -13,6 +13,7 @@ import Programs from './pages/Programs'
 import ProgramDetail from './pages/ProgramDetail'
 import News from './pages/News'
 import Contact from './pages/Contact'
+import Community from './pages/Community'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
 import RefundPolicy from './pages/RefundPolicy'
@@ -95,6 +96,7 @@ export default function App() {
                 <Route path="/programs" element={<Programs />} />
                 <Route path="/programs/:id" element={<ProgramDetail />} />
                 <Route path="/news" element={<News />} />
+                <Route path="/community" element={<Community />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
