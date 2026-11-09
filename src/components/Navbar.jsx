@@ -93,11 +93,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt={`${site.name} का लोगो`} className="h-16 w-16 rounded-full object-contain" />
-          <span className="flex flex-col leading-tight">
-            <span className="font-display text-lg font-semibold text-blue-900">{site.name}</span>
-            <span className="eyebrow text-gold-light/80">सामुदायिक कल्याण संघ</span>
-          </span>
+          <img src={logo} alt="सीतामढ़ी कुशवाहा संघ का लोगो" className="h-16 w-16 rounded-full object-contain" />
+          <span className="font-display text-lg font-semibold leading-tight text-blue-900">सीतामढ़ी कुशवाहा संघ</span>
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
