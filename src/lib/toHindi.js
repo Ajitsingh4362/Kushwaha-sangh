@@ -15,7 +15,8 @@ const NAME_WORDS = {
   smt: 'श्रीमती', 'smt.': 'श्रीमती', mrs: 'श्रीमती', 'mrs.': 'श्रीमती', ms: 'सुश्री', 'ms.': 'सुश्री', prof: 'प्रो.', 'prof.': 'प्रो.',
   // surnames / common second names
   kumar: 'कुमार', kumari: 'कुमारी', devi: 'देवी', singh: 'सिंह', prasad: 'प्रसाद', kushwaha: 'कुशवाहा',
-  kushwah: 'कुशवाहा', koeri: 'कोइरी', koiri: 'कोइरी', mahto: 'महतो', mahato: 'महतो', mehta: 'मेहता',
+  kushwah: 'कुशवाहा', kushvaha: 'कुशवाहा', kuswaha: 'कुशवाहा', kushawaha: 'कुशवाहा', kushwaaha: 'कुशवाहा',
+  kushwha: 'कुशवाहा', bharti: 'भारती', bharati: 'भारती', urf: 'उर्फ़', alias: 'उर्फ़', koeri: 'कोइरी', koiri: 'कोइरी', mahto: 'महतो', mahato: 'महतो', mehta: 'मेहता',
   maurya: 'मौर्य', mourya: 'मौर्य', shakya: 'शाक्य', saini: 'सैनी', bhagat: 'भगत', bhagta: 'भगत',
   chaudhary: 'चौधरी', choudhary: 'चौधरी', chaudhari: 'चौधरी', choudhury: 'चौधरी', rai: 'राय', ray: 'राय',
   sah: 'साह', sahu: 'साहू', shah: 'शाह', gupta: 'गुप्ता', yadav: 'यादव', mandal: 'मंडल', thakur: 'ठाकुर',
@@ -222,19 +223,60 @@ const OCCUPATION_WORDS = {
   and: 'और', '&': 'और', '/': '/', '-': '-', ',': ',',
 }
 
+// Occupations: matched phrase-by-phrase (up to 4 words), per comma-
+// separated part. If any word of a part is unknown, that part is shown
+// exactly as entered rather than half-translated.
+const OCCUPATION_MORE = {
+  'ex service man': 'पूर्व सैनिक', 'ex serviceman': 'पूर्व सैनिक', 'ex-serviceman': 'पूर्व सैनिक',
+  'ex army': 'पूर्व सैनिक', 'retired army': 'सेवानिवृत्त सैनिक', 'air force': 'वायु सेना', airforce: 'वायु सेना',
+  navy: 'नौसेना', 'health department': 'स्वास्थ्य विभाग', 'education department': 'शिक्षा विभाग',
+  department: 'विभाग', dept: 'विभाग', education: 'शिक्षा', ex: 'पूर्व', 'head master': 'प्रधानाध्यापक',
+  'head teacher': 'प्रधानाध्यापक', hardware: 'हार्डवेयर', plastic: 'प्लास्टिक', 'pediatric doctor': 'शिशु रोग विशेषज्ञ',
+  'paediatric doctor': 'शिशु रोग विशेषज्ञ', pediatrician: 'शिशु रोग विशेषज्ञ', pediatric: 'शिशु रोग',
+  paediatric: 'शिशु रोग', laparoscopy: 'लेप्रोस्कोपिक', laparoscopic: 'लेप्रोस्कोपिक', specialist: 'विशेषज्ञ',
+  physician: 'फ़िज़िशियन', dentist: 'दंत चिकित्सक', dental: 'दंत', 'dental surgeon': 'दंत सर्जन',
+  orthopedic: 'हड्डी रोग', orthopaedic: 'हड्डी रोग', gynecologist: 'स्त्री रोग विशेषज्ञ', gynaecologist: 'स्त्री रोग विशेषज्ञ',
+  'general surgeon': 'जनरल सर्जन', 'block office': 'प्रखंड कार्यालय', bdo: 'बीडीओ', co: 'सीओ', sdo: 'एसडीओ',
+  inspector: 'इंस्पेक्टर', constable: 'सिपाही', 'sub inspector': 'सब-इंस्पेक्टर', rail: 'रेल', post: 'डाक',
+  'post office': 'डाकघर', hospital: 'अस्पताल', school: 'विद्यालय', college: 'कॉलेज', university: 'विश्वविद्यालय',
+  owner: 'मालिक', clinic: 'क्लिनिक', medicine: 'दवा', electrical: 'इलेक्ट्रिकल', electronics: 'इलेक्ट्रॉनिक्स',
+  cloth: 'कपड़ा', 'cloth business': 'कपड़ा व्यवसाय', grocery: 'किराना', 'real estate': 'रियल एस्टेट',
+  builder: 'बिल्डर', transport: 'परिवहन', 'insurance agent': 'बीमा एजेंट', agent: 'एजेंट', insurance: 'बीमा',
+}
+
+function occupationPart(part) {
+  const words = part.toLowerCase().replace(/\./g, '').split(/\s+/).filter(Boolean)
+  const lookup = (k) => OCCUPATION_PHRASES[k] ?? OCCUPATION_MORE[k] ?? OCCUPATION_WORDS[k]
+  const out = []
+  let i = 0
+  while (i < words.length) {
+    let hit = null
+    for (let n = Math.min(4, words.length - i); n >= 1; n--) {
+      const v = lookup(words.slice(i, i + n).join(' '))
+      if (v !== undefined) {
+        hit = [v, n]
+        break
+      }
+    }
+    if (!hit) return part.trim() // unknown word: keep this part as entered
+    out.push(hit[0])
+    i += hit[1]
+  }
+  return out.join(' ')
+}
+
 export function occupationToHindi(text) {
   if (!text || DEVANAGARI.test(text)) return text
-  const key = text.trim().toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ')
-  if (OCCUPATION_PHRASES[key]) return OCCUPATION_PHRASES[key]
   return text
-    .trim()
-    .split(/(\s+|\/|,|&)/)
-    .map((part) => {
-      const w = part.toLowerCase().replace(/\./g, '').trim()
-      if (!w) return part
-      return OCCUPATION_WORDS[w] ?? part
-    })
-    .join('')
+    .split(/\s*,\s*/)
+    .filter(Boolean)
+    .map((part) =>
+      part
+        .split(/\s*([/&])\s*/)
+        .map((p) => (p === '/' ? '/' : p === '&' ? ' और ' : occupationPart(p)))
+        .join('')
+    )
+    .join(', ')
 }
 
 const DESIGNATIONS = {

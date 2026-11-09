@@ -15,8 +15,8 @@ import { nameToHindi, occupationToHindi } from '../lib/toHindi'
 const PAGE_SIZE = 20
 
 const TYPE_HI = {
-  karyakarni: 'कार्यकारिणी',
-  regular: 'सामान्य',
+  karyakarni: 'कार्यकारिणी सदस्य',
+  regular: 'सामान्य सदस्य',
 }
 
 // Page numbers to show: always first and last, plus neighbours of the
@@ -63,14 +63,17 @@ export default function Community() {
     })
   }, [])
 
-  // Serial numbers follow joining order and stay fixed while searching.
+  // कार्यकारिणी members first, then सामान्य; joining order within each.
+  // Serial numbers follow that order and stay fixed while searching.
   const rows = useMemo(
     () =>
-      members.map((m, i) => ({
+      [...members]
+        .sort((a, b) => (b.member_type === 'karyakarni') - (a.member_type === 'karyakarni'))
+        .map((m, i) => ({
         serial: i + 1,
         name: nameToHindi(m.name),
         nameOriginal: m.name || '',
-        type: TYPE_HI[m.member_type] || 'सामान्य',
+        type: TYPE_HI[m.member_type] || 'सामान्य सदस्य',
         occupation: occupationToHindi(m.occupation),
       })),
     [members]
@@ -155,7 +158,7 @@ export default function Community() {
                   <tr>
                     <th scope="col" className="w-12 whitespace-nowrap px-3 py-3 font-semibold sm:w-20 sm:px-4">क्रम</th>
                     <th scope="col" className="px-3 py-3 font-semibold sm:px-4">नाम</th>
-                    <th scope="col" className="px-3 py-3 font-semibold sm:px-4">सदस्यता</th>
+                    <th scope="col" className="px-3 py-3 font-semibold sm:px-4">सदस्य का प्रकार</th>
                     <th scope="col" className="hidden px-4 py-3 font-semibold sm:table-cell">व्यवसाय</th>
                   </tr>
                 </thead>
@@ -167,7 +170,7 @@ export default function Community() {
                         <span className="font-medium text-ink">{r.name}</span>
                         {r.occupation && <span className="block text-xs text-stone sm:hidden">{r.occupation}</span>}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-2.5 text-stone sm:px-4">{r.type}</td>
+                      <td className="px-3 py-2.5 text-stone sm:whitespace-nowrap sm:px-4">{r.type}</td>
                       <td className="hidden px-4 py-2.5 text-stone sm:table-cell">{r.occupation || '—'}</td>
                     </tr>
                   ))}
