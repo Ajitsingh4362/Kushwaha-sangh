@@ -47,7 +47,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
       >
         <NavLink
           to={item.to}
-          className="flex items-center gap-1 py-2 text-sm font-medium tracking-wide text-blue-900"
+          className="flex items-center gap-1 whitespace-nowrap py-2 text-sm font-medium tracking-wide text-blue-900"
         >
           {item.label}
           <ChevronDown size={14} strokeWidth={2.5} />
@@ -75,7 +75,7 @@ function NavItem({ item, onNavigate, mobile = false }) {
       to={item.to}
       onClick={onNavigate}
       className={({ isActive }) =>
-        `py-2 text-sm font-medium tracking-wide transition-colors ${
+        `whitespace-nowrap py-2 text-sm font-medium tracking-wide transition-colors ${
           'text-blue-900'
         }`
       }
@@ -91,19 +91,19 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 bg-maroon-deep/98 backdrop-blur border-b border-gold/25">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={logo} alt="सीतामढ़ी कुशवाहा संघ का लोगो" className="h-16 w-16 rounded-full object-contain" />
-          <span className="font-display text-xl font-semibold leading-tight text-blue-900 sm:text-2xl">सीतामढ़ी कुशवाहा संघ</span>
+      <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-4 px-4 py-3 sm:px-5 xl:px-6">
+        <Link to="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+          <img src={logo} alt="सीतामढ़ी कुशवाहा संघ का लोगो" className="h-14 w-14 shrink-0 rounded-full object-contain sm:h-16 sm:w-16" />
+          <span className="whitespace-nowrap font-display text-[1.4rem] font-bold leading-tight text-blue-900 sm:text-[1.7rem] xl:text-[1.85rem]">सीतामढ़ी कुशवाहा संघ</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav className="hidden items-center gap-6 xl:flex">
           {navigation.map((item) => (
             <NavItem key={item.label} item={item} />
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden shrink-0 items-center gap-3 xl:flex">
           <button
             type="button"
             onClick={openModal}
@@ -113,7 +113,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex shrink-0 items-center gap-2 xl:hidden">
           <button
             aria-label={mobileOpen ? 'मेन्यू बंद करें' : 'मेन्यू खोलें'}
             aria-expanded={mobileOpen}
@@ -126,7 +126,7 @@ export default function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-gold/25 bg-cream px-5 pb-5 lg:hidden">
+        <div className="border-t border-gold/25 bg-cream px-5 pb-5 xl:hidden">
           <nav className="flex flex-col divide-y divide-gold/10">
             {navigation.map((item) => (
               <div key={item.label} className="py-1">
