@@ -6,8 +6,19 @@ import { Field } from '../components/FormField'
 import PageHero from '../components/PageHero'
 import logo from '../assets/logo.png'
 
+// Committee logins use a short ID instead of an email. Supabase Auth
+// still needs an email, so an ID without "@" is turned into
+// <id>@kushwahasangh.org — create the user with that email in
+// Supabase (Authentication → Users). Full emails keep working too.
+const LOGIN_DOMAIN = 'kushwahasangh.org'
+
+function idToEmail(id) {
+  const clean = id.trim().toLowerCase()
+  return clean.includes('@') ? clean : `${clean}@${LOGIN_DOMAIN}`
+}
+
 export default function AdminLogin() {
-  const [email, setEmail] = useState('')
+  const [loginId, setLoginId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -17,10 +28,10 @@ export default function AdminLogin() {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({ email: idToEmail(loginId), password })
     setLoading(false)
     if (error) {
-      setError(error.message)
+      setError(error.message === 'Invalid login credentials' ? 'Wrong ID or password.' : error.message)
       return
     }
     navigate('/admin')
@@ -38,17 +49,22 @@ export default function AdminLogin() {
             </span>
           </div>
           <Field
-            id="email"
-            label="Email"
-            type="email"
+            id="login-id"
+            label="ID"
+            type="text"
+            autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
           />
           <Field
             id="password"
             label="Password"
             type="password"
+            autoComplete="current-password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
