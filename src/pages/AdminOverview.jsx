@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import ActiveMembersModal from '../components/ActiveMembersModal'
 import AdminModal from '../components/AdminModal'
 import ApplicationsPanel from '../components/ApplicationsPanel'
+import UnpaidDuesModal from '../components/UnpaidDuesModal'
 
 function currentMonthStart() {
   const d = new Date()
@@ -46,6 +47,7 @@ export default function AdminOverview() {
   const [stats, setStats] = useState(null)
   const [showMembers, setShowMembers] = useState(false)
   const [showApplications, setShowApplications] = useState(false)
+  const [showUnpaid, setShowUnpaid] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -123,6 +125,7 @@ export default function AdminOverview() {
               value={stats.unpaidThisMonth}
               label="Unpaid This Month"
               accent={stats.unpaidThisMonth > 0 ? 'text-red-700' : 'text-green-700'}
+              onClick={() => setShowUnpaid(true)}
             />
             <StatCard
               icon={ShieldCheck}
@@ -157,6 +160,8 @@ export default function AdminOverview() {
       )}
 
       {showMembers && <ActiveMembersModal onClose={() => setShowMembers(false)} />}
+
+      {showUnpaid && <UnpaidDuesModal month={currentMonthStart()} onClose={() => setShowUnpaid(false)} />}
 
       {showApplications && (
         <AdminModal
