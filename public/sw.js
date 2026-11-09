@@ -1,10 +1,18 @@
 // Kushwaha Sangh — service worker
-// Goal: make the site/admin dashboard installable as an app on mobile.
-// Only the static app shell (icons/manifest) is cached — everything else
-// (Supabase data, donations ledger, member/dues info) always comes fresh
-// from the network so nothing stale or wrong is ever shown.
+// Goal: make the site/admin dashboard installable as an app on mobile,
+// WITHOUT ever showing an old version of the site after a deploy.
+//
+// - Page loads (/, /community, /admin, …): always from the network, so a new
+//   deploy shows up on a normal refresh. The cached copy is used only offline.
+// - /assets/* (JS/CSS with a content hash in the file name): cached forever —
+//   a new deploy gets new file names, so these can never be stale.
+// - Icons/manifest: cached.
+// - Supabase and other sites: never touched.
+//
+// v2 cached every page cache-first, which served an old index.html (and so
+// the old site) until a hard refresh. Bumping the name deletes that cache.
 
-const CACHE_NAME = 'kushwaha-sangh-shell-v2'
+const CACHE_NAME = 'kushwaha-sangh-shell-v3'
 const SHELL_ASSETS = [
   '/manifest.json',
   '/favicon-180.png',
@@ -12,10 +20,6 @@ const SHELL_ASSETS = [
   '/icons/icon-512.png',
   '/icons/apple-touch-icon.png',
 ]
-
-function isNetworkFirst(url) {
-  return url.pathname === '/' || url.pathname.endsWith('.html')
-}
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -33,6 +37,14 @@ self.addEventListener('activate', (event) => {
   )
 })
 
+function putInCache(req, res) {
+  if (res.ok) {
+    const copy = res.clone()
+    caches.open(CACHE_NAME).then((cache) => cache.put(req, copy))
+  }
+  return res
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request
   const url = new URL(req.url)
@@ -40,29 +52,21 @@ self.addEventListener('fetch', (event) => {
   // Never touch Supabase / third-party calls or non-GET requests.
   if (req.method !== 'GET' || url.origin !== self.location.origin) return
 
-  if (isNetworkFirst(url)) {
+  // Page loads: network first, offline fallback to the last app shell.
+  if (req.mode === 'navigate' || url.pathname.endsWith('.html')) {
     event.respondWith(
-      fetch(req).then((res) => {
-        if (res.ok) {
-          const copy = res.clone()
-          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy))
-        }
-        return res
-      }).catch(() => caches.match(req).then((cached) => cached || caches.match('/index.html')))
+      fetch(req, { cache: 'no-store' })
+        .then((res) => putInCache('/index.html', res))
+        .catch(() => caches.match('/index.html'))
     )
     return
   }
 
-  event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) return cached
-      return fetch(req).then((res) => {
-        if (res.ok) {
-          const copy = res.clone()
-          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy))
-        }
-        return res
-      })
-    })
-  )
+  // Hashed build files and shell assets: cache first.
+  if (url.pathname.startsWith('/assets/') || SHELL_ASSETS.includes(url.pathname)) {
+    event.respondWith(caches.match(req).then((cached) => cached || fetch(req).then((res) => putInCache(req, res))))
+    return
+  }
+
+  // Everything else (sitemap, images in /public, sw.js …): plain network.
 })
