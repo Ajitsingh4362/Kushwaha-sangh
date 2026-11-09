@@ -3,12 +3,12 @@ import { site } from '../data/content'
 
 export default function PrivacyPolicy() {
   return (
-    <>
+    <div lang="en">
       <PageHero eyebrow="Legal" title="Privacy Policy" blurb={`Last updated: [date] — replace with the date this policy goes live.`} />
 
       <section className="mx-auto max-w-3xl space-y-6 px-5 py-16 text-[0.95rem] leading-relaxed text-ink-light lg:px-8">
         <p>
-          {site.name} (&ldquo;the Sangh&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This
+          {site.nameEn} (&ldquo;the Sangh&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) respects your privacy. This
           policy explains what information we collect through this website, how we use it, and the choices
           you have.
         </p>
@@ -81,6 +81,6 @@ export default function PrivacyPolicy() {
           DPDP Act) before relying on it as your final policy.
         </p>
       </section>
-    </>
+    </div>
   )
 }

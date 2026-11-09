@@ -1,20 +1,22 @@
 // ---------------------------------------------------------------
 // All editable site content lives here. Replace placeholder values
 // (names, numbers, photos, addresses) with the Sangh's real details.
-// Keeping content separate from components makes future edits and
-// an eventual Hindi-language version much easier to wire up.
+// The public site is Hindi-only; the admin panel and the legal
+// policy pages stay in English (they use the *En fields below).
 // ---------------------------------------------------------------
 
 export const site = {
-  name: 'Kushwaha Sangh',
-  tagline: 'Community Welfare Association',
+  name: 'कुशवाहा संघ',
+  nameEn: 'Kushwaha Sangh', // used by the English policy pages
+  tagline: 'सामुदायिक कल्याण संघ',
   established: '2017', // founded 2017, officially registered 2023
   mission:
-    'To unite every member of the Kushwaha community under one umbrella, ensuring that no individual stands alone in times of crisis.',
+    'कुशवाहा समाज के हर सदस्य को एक सूत्र में जोड़ना, ताकि संकट की घड़ी में कोई भी व्यक्ति अकेला न रहे।',
   whatsapp: '910000000000', // placeholder number, digits only, country code first
   email: 'contact@kushwahasangh.org', // placeholder
   phone: '+91 82924 53335',
-  address: 'Kushwaha Hostel, Sitamarhi, Bihar 843302',
+  address: 'कुशवाहा छात्रावास, सीतामढ़ी, बिहार 843302',
+  addressEn: 'Kushwaha Hostel, Sitamarhi, Bihar 843302',
   socials: {
     facebook: '#',
     instagram: '#',
@@ -23,72 +25,72 @@ export const site = {
 }
 
 export const navigation = [
-  { label: 'Home', to: '/' },
-  { label: 'About', to: '/about' },
-  { label: 'Committee', to: '/committee' },
+  { label: 'होम', to: '/' },
+  { label: 'हमारे बारे में', to: '/about' },
+  { label: 'समिति', to: '/committee' },
   {
-    label: 'Welfare Programs',
+    label: 'कल्याण कार्यक्रम',
     to: '/welfare',
     children: [
-      { label: "Girls' Hostel", to: '/welfare#hostel' },
-      { label: 'Health Assistance', to: '/welfare#health' },
-      { label: "Achievers' Wall", to: '/welfare#achievers' },
+      { label: 'बालिका छात्रावास', to: '/welfare#hostel' },
+      { label: 'स्वास्थ्य सहायता', to: '/welfare#health' },
+      { label: 'प्रतिभा सम्मान', to: '/welfare#achievers' },
     ],
   },
-  { label: 'Membership', to: '/membership' },
-  { label: 'Donate', to: '/donate' },
-  { label: 'Gallery', to: '/gallery' },
-  { label: 'Programs', to: '/programs' },
-  { label: 'News', to: '/news' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'सदस्यता', to: '/membership' },
+  { label: 'दान करें', to: '/donate' },
+  { label: 'गैलरी', to: '/gallery' },
+  { label: 'कार्यक्रम', to: '/programs' },
+  { label: 'समाचार', to: '/news' },
+  { label: 'संपर्क', to: '/contact' },
 ]
 
 export const stats = [
-  { label: 'Registered Members', value: '500+', id: 'REG-M' },
-  { label: 'Hostel Fund Progress', value: '49%', id: 'REG-H' },
-  { label: 'Families Assisted', value: '310', id: 'REG-F' },
-  { label: 'Years of Service', value: '10', id: 'REG-Y' },
+  { label: 'पंजीकृत सदस्य', value: '500+', id: 'REG-M' },
+  { label: 'छात्रावास कोष की प्रगति', value: '49%', id: 'REG-H' },
+  { label: 'सहायता प्राप्त परिवार', value: '310', id: 'REG-F' },
+  { label: 'सेवा के वर्ष', value: '10', id: 'REG-Y' },
 ]
 
 export const pillars = [
   {
     id: 'hostel',
-    title: "Girls' Hostel",
+    title: 'बालिका छात्रावास',
     blurb:
-      'A planned residence for young women from the community pursuing education away from home — currently raising funds to build it.',
+      'घर से दूर पढ़ाई कर रही समाज की बेटियों के लिए प्रस्तावित आवास, जिसके निर्माण के लिए अभी धन जुटाया जा रहा है।',
     number: '01',
   },
   {
     id: 'health',
-    title: 'Health Assistance',
+    title: 'स्वास्थ्य सहायता',
     blurb:
-      'Financial support toward treatment and emergency medical care for members facing illness.',
+      'बीमारी से जूझ रहे सदस्यों को इलाज और आपातकालीन चिकित्सा के लिए आर्थिक सहायता।',
     number: '02',
   },
   {
     id: 'achievers',
-    title: "Achievers' Wall",
+    title: 'प्रतिभा सम्मान',
     blurb:
-      'Recognition and prizes for students and professionals from the community who excel.',
+      'उत्कृष्ट प्रदर्शन करने वाले समाज के विद्यार्थियों और पेशेवरों का सम्मान और पुरस्कार।',
     number: '03',
   },
 ]
 
 export const committee = {
   president: {
-    name: 'President\u2019s Name',
-    designation: 'Adhyaksh (President)',
+    name: 'अध्यक्ष का नाम',
+    designation: 'अध्यक्ष',
     regNo: 'OB-001',
-    note: 'Leading the Sangh since [year]. Add a short welcome note here.',
+    note: '[वर्ष] से संघ का नेतृत्व कर रहे हैं। यहाँ एक छोटा स्वागत संदेश जोड़ें।',
   },
   officers: [
-    { name: 'Secretary\u2019s Name', designation: 'Sachiv (General Secretary)', regNo: 'OB-002' },
-    { name: 'Treasurer\u2019s Name', designation: 'Kosha-Adhyaksh (Treasurer)', regNo: 'OB-003' },
-    { name: 'Vice President\u2019s Name', designation: 'Up-Adhyaksh (Vice President)', regNo: 'OB-004' },
+    { name: 'सचिव का नाम', designation: 'महासचिव', regNo: 'OB-002' },
+    { name: 'कोषाध्यक्ष का नाम', designation: 'कोषाध्यक्ष', regNo: 'OB-003' },
+    { name: 'उपाध्यक्ष का नाम', designation: 'उपाध्यक्ष', regNo: 'OB-004' },
   ],
   members: Array.from({ length: 8 }).map((_, i) => ({
-    name: 'Member Name',
-    designation: 'Executive Committee Member',
+    name: 'सदस्य का नाम',
+    designation: 'कार्यकारिणी सदस्य',
     regNo: `EC-${String(i + 5).padStart(3, '0')}`,
   })),
 }
@@ -96,71 +98,70 @@ export const committee = {
 export const hostelInfo = {
   status: 'upcoming', // 'upcoming' — hostel is a planned initiative, not yet built
   intro:
-    'The Sangh is raising funds to build its first residential hostel for girls from the community pursuing higher education — a safe, affordable place to stay close to college campuses.',
+    'संघ उच्च शिक्षा प्राप्त कर रही समाज की बेटियों के लिए अपना पहला आवासीय छात्रावास बनाने हेतु धन जुटा रहा है। यह कॉलेजों के पास रहने की एक सुरक्षित और किफ़ायती जगह होगी।',
   facilities: [
-    'Furnished shared rooms',
-    'Three meals a day',
-    'Study hall and library corner',
-    'Round-the-clock warden supervision',
-    'CCTV-monitored premises',
-    'Medical first-aid on site',
+    'सुसज्जित साझा कमरे',
+    'दिन में तीन बार भोजन',
+    'अध्ययन कक्ष और पुस्तकालय',
+    'चौबीसों घंटे वार्डन की देखरेख',
+    'सीसीटीवी निगरानी वाला परिसर',
+    'परिसर में प्राथमिक चिकित्सा सुविधा',
   ],
-  plannedCapacity: '60 beds (planned)',
+  plannedCapacity: '60 बिस्तर (प्रस्तावित)',
   fundGoal: '\u20b950,00,000', // placeholder — replace with the real target
   fundRaised: '\u20b924,50,000', // placeholder — replace with real progress
   progressPercent: 49,
-  progressNote: 'Funds raised so far toward the construction goal — replace with live figures.',
-  progressNote: 'Current occupancy against total capacity — replace with live figures.',
+  progressNote: 'निर्माण लक्ष्य की ओर अब तक जुटाई गई राशि।',
 }
 
 export const healthInfo = {
   intro:
-    'Members facing medical emergencies or ongoing treatment costs can apply for assistance from the Sangh\u2019s health fund. Applications are reviewed by the committee on a rolling basis.',
+    'चिकित्सा आपातकाल या लंबे इलाज के खर्च का सामना कर रहे सदस्य संघ के स्वास्थ्य कोष से सहायता के लिए आवेदन कर सकते हैं। समिति आवेदनों की समीक्षा लगातार करती रहती है।',
   steps: [
-    { title: 'Submit application', detail: 'Fill the request form with patient and treatment details.' },
-    { title: 'Committee review', detail: 'The welfare committee reviews cases within 7\u201310 days.' },
-    { title: 'Fund disbursal', detail: 'Approved assistance is transferred directly toward treatment costs.' },
+    { title: 'आवेदन जमा करें', detail: 'मरीज़ और इलाज की जानकारी के साथ अनुरोध फ़ॉर्म भरें।' },
+    { title: 'समिति द्वारा समीक्षा', detail: 'कल्याण समिति 7\u201310 दिनों में मामले की समीक्षा करती है।' },
+    { title: 'सहायता राशि का भुगतान', detail: 'स्वीकृत सहायता राशि सीधे इलाज के खर्च के लिए भेजी जाती है।' },
   ],
   disclaimer:
-    'Assistance amounts depend on available fund balance and case severity, and are not guaranteed.',
+    'सहायता राशि कोष में उपलब्ध धन और मामले की गंभीरता पर निर्भर करती है, और इसकी गारंटी नहीं है।',
 }
 
 export const achievers = [
-  { name: 'Achiever Name', achievement: 'Class 12 Board Topper, [Year]', category: 'Academics' },
-  { name: 'Achiever Name', achievement: 'Selected — Civil Services, [Year]', category: 'Public Service' },
-  { name: 'Achiever Name', achievement: 'State-level Athletics Medallist', category: 'Sports' },
-  { name: 'Achiever Name', achievement: 'Engineering Gold Medallist, [University]', category: 'Academics' },
-  { name: 'Achiever Name', achievement: 'Community Service Recognition', category: 'Service' },
-  { name: 'Achiever Name', achievement: 'National-level Science Olympiad', category: 'Academics' },
+  { name: 'प्रतिभा का नाम', achievement: 'कक्षा 12 बोर्ड टॉपर, [वर्ष]', category: 'शिक्षा' },
+  { name: 'प्रतिभा का नाम', achievement: 'सिविल सेवा में चयन, [वर्ष]', category: 'लोक सेवा' },
+  { name: 'प्रतिभा का नाम', achievement: 'राज्य स्तरीय एथलेटिक्स पदक विजेता', category: 'खेल' },
+  { name: 'प्रतिभा का नाम', achievement: 'इंजीनियरिंग स्वर्ण पदक विजेता, [विश्वविद्यालय]', category: 'शिक्षा' },
+  { name: 'प्रतिभा का नाम', achievement: 'समाज सेवा सम्मान', category: 'सेवा' },
+  { name: 'प्रतिभा का नाम', achievement: 'राष्ट्रीय स्तर विज्ञान ओलंपियाड', category: 'शिक्षा' },
 ]
 
 export const newsItems = [
   {
-    title: 'Annual General Meeting announced',
+    title: 'वार्षिक आम सभा की घोषणा',
     date: '2026-08-15',
-    summary: 'All members are invited to the AGM. Agenda and venue details to follow by circular.',
+    summary: 'सभी सदस्य वार्षिक आम सभा में आमंत्रित हैं। कार्यसूची और स्थान की जानकारी परिपत्र द्वारा दी जाएगी।',
   },
   {
-    title: 'Hostel renovation — phase two complete',
+    title: 'छात्रावास नवीनीकरण का दूसरा चरण पूरा',
     date: '2026-06-02',
-    summary: 'New study hall and additional rooms are now ready for the upcoming academic year.',
+    summary: 'आगामी शैक्षणिक सत्र के लिए नया अध्ययन कक्ष और अतिरिक्त कमरे अब तैयार हैं।',
   },
   {
-    title: 'Scholarship applications open',
+    title: 'छात्रवृत्ति के लिए आवेदन शुरू',
     date: '2026-05-10',
-    summary: 'Students from the community can apply for this year\u2019s merit scholarships before the deadline.',
+    summary: 'समाज के विद्यार्थी अंतिम तिथि से पहले इस वर्ष की मेधा छात्रवृत्ति के लिए आवेदन कर सकते हैं।',
   },
   {
-    title: 'Health fund crosses milestone',
+    title: 'स्वास्थ्य कोष ने पार किया अहम पड़ाव',
     date: '2026-03-22',
-    summary: 'Thanks to member donations, the health assistance fund has supported its 300th family.',
+    summary: 'सदस्यों के दान की बदौलत स्वास्थ्य सहायता कोष ने अपने 300वें परिवार की मदद की है।',
   },
 ]
 
 export const galleryCategories = [
-  { id: 'events', label: 'Sangh Events', count: 10 },
-  { id: 'ceremonies', label: 'Felicitation Ceremonies', count: 6 },
-  { id: 'health', label: 'Health Camps', count: 5 },
+  { id: 'events', label: 'संघ के कार्यक्रम', count: 10 },
+  { id: 'ceremonies', label: 'सम्मान समारोह', count: 6 },
+  { id: 'health', label: 'स्वास्थ्य शिविर', count: 5 },
 ]
 
 export const transparency = [
@@ -175,7 +176,7 @@ export const donationMethods = {
     accountName: 'Kushwaha Sangh',
     accountNo: 'XXXXXXXXXXXX',
     ifsc: 'XXXX0000000',
-    bankBranch: 'Bank Name, Branch',
+    bankBranch: 'बैंक का नाम, शाखा',
   },
 }
 

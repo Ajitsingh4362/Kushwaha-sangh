@@ -3,19 +3,19 @@ import { site } from '../data/content'
 
 export default function TermsAndConditions() {
   return (
-    <>
+    <div lang="en">
       <PageHero eyebrow="Legal" title="Terms &amp; Conditions" blurb="Last updated: [date] — replace with the date these terms go live." />
 
       <section className="mx-auto max-w-3xl space-y-6 px-5 py-16 text-[0.95rem] leading-relaxed text-ink-light lg:px-8">
         <p>
-          By using this website or making a donation to {site.name}, you agree to the terms below. If you do
+          By using this website or making a donation to {site.nameEn}, you agree to the terms below. If you do
           not agree, please do not use the site or make a payment.
         </p>
 
         <div>
           <h2 className="font-display text-xl font-semibold text-maroon-deep">1. About the Sangh</h2>
           <p className="mt-2">
-            {site.name} is a community welfare association running programs including a girls&rsquo; hostel
+            {site.nameEn} is a community welfare association running programs including a girls&rsquo; hostel
             fund, a health-assistance fund, membership registration, and recognition of community achievers.
           </p>
         </div>
@@ -84,6 +84,6 @@ export default function TermsAndConditions() {
           regulations before final launch.
         </p>
       </section>
-    </>
+    </div>
   )
 }

@@ -9,12 +9,12 @@ export default function Contact() {
 
   return (
     <>
-      <PageHero eyebrow="Get in Touch" title="Contact Us" blurb="Questions, suggestions or help requests — we're here." />
+      <PageHero eyebrow="संपर्क करें" title="हमसे संपर्क करें" blurb="सवाल, सुझाव या मदद का अनुरोध, हम आपके लिए यहाँ हैं।" />
 
       <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
         <div className="grid gap-10 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-2xl font-bold text-maroon-deep">Reach the Sangh Office</h2>
+            <h2 className="font-display text-2xl font-bold text-maroon-deep">संघ कार्यालय से संपर्क करें</h2>
             <ul className="mt-6 space-y-5 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={20} className="mt-0.5 shrink-0 text-saffron" />
@@ -32,7 +32,7 @@ export default function Contact() {
 
             <div className="mt-7 aspect-video overflow-hidden border border-gold/40">
               <iframe
-                title="Sangh location on Google Maps"
+                title="Google Maps पर संघ का स्थान"
                 src="https://maps.google.com/maps?q=Sitamarhi%20Kushwaha%20Sangh&z=14&output=embed"
                 className="h-full w-full border-0"
                 loading="lazy"
@@ -45,7 +45,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="mt-3 flex items-center gap-1.5 text-sm font-medium text-saffron hover:underline"
             >
-              <MapPin size={15} /> Open in Google Maps
+              <MapPin size={15} /> Google Maps में खोलें
             </a>
           </div>
 
@@ -53,8 +53,8 @@ export default function Contact() {
             {submitted ? (
               <div className="flex flex-col items-center py-10 text-center">
                 <CheckCircle2 size={42} className="text-saffron" />
-                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">Message sent</p>
-                <p className="mt-1 text-sm text-stone">Someone from the committee will get back to you shortly.</p>
+                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">संदेश भेज दिया गया</p>
+                <p className="mt-1 text-sm text-stone">समिति का कोई सदस्य जल्द ही आपसे संपर्क करेगा।</p>
               </div>
             ) : (
               <form
@@ -64,19 +64,19 @@ export default function Contact() {
                 }}
                 className="space-y-4"
               >
-                <h3 className="font-display text-lg font-semibold text-maroon-deep">Send an Enquiry</h3>
-                <Field id="name" label="Your Name" type="text" required />
-                <Field id="email" label="Email Address" type="email" required />
-                <Field id="phone" label="Phone Number" type="tel" />
-                <TextAreaField id="message" label="Message" required />
+                <h3 className="font-display text-lg font-semibold text-maroon-deep">अपना सवाल भेजें</h3>
+                <Field id="name" label="आपका नाम" type="text" required />
+                <Field id="email" label="ईमेल पता" type="email" required />
+                <Field id="phone" label="फ़ोन नंबर" type="tel" />
+                <TextAreaField id="message" label="संदेश" required />
                 <button
                   type="submit"
                   className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon"
                 >
-                  Send Message
+                  संदेश भेजें
                 </button>
                 <p className="text-center text-xs text-stone">
-                  Connect this form to an email service or backend before launch.
+                  यह फ़ॉर्म अभी चालू नहीं है। जल्दी जवाब के लिए कृपया ऊपर दिए फ़ोन नंबर या ईमेल पर संपर्क करें।
                 </p>
               </form>
             )}

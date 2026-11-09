@@ -3,10 +3,11 @@ import { Link, useParams } from 'react-router-dom'
 import { ArrowLeft, Calendar, MapPin, Users, X, ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { CornerFlourish, OrnamentDivider } from '../components/Ornament'
+import { programCategoryHi } from '../data/programCategoriesHi'
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+  return new Date(dateStr).toLocaleDateString('hi-IN', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 
 function Lightbox({ photos, index, onClose, onPrev, onNext }) {
@@ -26,7 +27,7 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4" onClick={onClose}>
       <button
         onClick={onClose}
-        aria-label="Close"
+        aria-label="बंद करें"
         className="absolute right-4 top-4 text-cream-paper/80 hover:text-cream-paper"
       >
         <X size={28} />
@@ -38,7 +39,7 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
             e.stopPropagation()
             onPrev()
           }}
-          aria-label="Previous photo"
+          aria-label="पिछली तस्वीर"
           className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/70 sm:left-6"
         >
           <ChevronLeft size={28} />
@@ -58,7 +59,7 @@ function Lightbox({ photos, index, onClose, onPrev, onNext }) {
             e.stopPropagation()
             onNext()
           }}
-          aria-label="Next photo"
+          aria-label="अगली तस्वीर"
           className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/70 sm:right-6"
         >
           <ChevronRight size={28} />
@@ -98,16 +99,16 @@ export default function ProgramDetail() {
 
   if (loading) {
     return (
-      <section className="mx-auto max-w-4xl px-5 py-20 text-center text-stone">Loading…</section>
+      <section className="mx-auto max-w-4xl px-5 py-20 text-center text-stone">लोड हो रहा है…</section>
     )
   }
 
   if (notFound) {
     return (
       <section className="mx-auto max-w-4xl px-5 py-20 text-center">
-        <p className="text-stone">This program could not be found.</p>
+        <p className="text-stone">यह कार्यक्रम नहीं मिला।</p>
         <Link to="/programs" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-maroon-deep hover:underline">
-          <ArrowLeft size={15} /> Back to Programs
+          <ArrowLeft size={15} /> सभी कार्यक्रम
         </Link>
       </section>
     )
@@ -123,9 +124,9 @@ export default function ProgramDetail() {
 
         <div className="relative mx-auto max-w-3xl px-5 text-center">
           <Link to="/programs" className="mb-5 inline-flex items-center gap-1.5 text-sm text-cream/80 hover:text-cream-paper">
-            <ArrowLeft size={15} /> Back to Programs
+            <ArrowLeft size={15} /> सभी कार्यक्रम
           </Link>
-          <p className="eyebrow text-gold-light">{program.category}</p>
+          <p className="eyebrow text-gold-light">{programCategoryHi(program.category)}</p>
           <h1 className="mt-3 font-display text-3xl font-bold sm:text-4xl">{program.title}</h1>
           <OrnamentDivider className="mx-auto mt-5 h-4 w-40 text-gold-light/70" />
 
@@ -140,7 +141,7 @@ export default function ProgramDetail() {
             )}
             {program.participant_count != null && (
               <span className="flex items-center gap-1.5 font-medium text-saffron-light">
-                <Users size={15} /> {program.participant_count} participated
+                <Users size={15} /> {program.participant_count} लोगों ने भाग लिया
               </span>
             )}
           </div>
@@ -168,7 +169,7 @@ export default function ProgramDetail() {
         {/* Main video, if separate from thumbnail */}
         {program.video_url && (
           <div className="mt-8">
-            <p className="mb-2 font-display text-lg font-semibold text-maroon-deep">Program Video</p>
+            <p className="mb-2 font-display text-lg font-semibold text-maroon-deep">कार्यक्रम का वीडियो</p>
             <video src={program.video_url} controls className="w-full rounded-sm border border-gold/40" />
           </div>
         )}
@@ -177,7 +178,7 @@ export default function ProgramDetail() {
         {program.photos?.length > 0 && (
           <div className="mt-10">
             <p className="mb-3 font-display text-lg font-semibold text-maroon-deep">
-              Photos ({program.photos.length})
+              तस्वीरें ({program.photos.length})
             </p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {program.photos.map((url, idx) => (
@@ -197,16 +198,16 @@ export default function ProgramDetail() {
         {program.participants?.length > 0 && (
           <div className="mt-10">
             <p className="mb-3 font-display text-lg font-semibold text-maroon-deep">
-              Participants ({program.participants.length})
+              प्रतिभागी ({program.participants.length})
             </p>
             <div className="ledger-plaque overflow-hidden">
               <table className="w-full text-left text-sm">
                 <thead className="bg-cream-paper text-maroon-deep">
                   <tr>
                     <th className="px-4 py-2.5 font-semibold">#</th>
-                    <th className="px-4 py-2.5 font-semibold">Name</th>
-                    <th className="px-4 py-2.5 font-semibold">Detail</th>
-                    <th className="px-4 py-2.5 font-semibold">Certificate</th>
+                    <th className="px-4 py-2.5 font-semibold">नाम</th>
+                    <th className="px-4 py-2.5 font-semibold">विवरण</th>
+                    <th className="px-4 py-2.5 font-semibold">प्रमाण-पत्र</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gold/15">
@@ -223,7 +224,7 @@ export default function ProgramDetail() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-xs font-medium text-maroon-deep hover:underline"
                           >
-                            <Download size={12} /> Download
+                            <Download size={12} /> डाउनलोड करें
                           </a>
                         ) : (
                           <span className="text-xs text-stone">—</span>

@@ -36,15 +36,15 @@ export default function Committee() {
   return (
     <>
       <PageHero
-        eyebrow="Padadhikari"
-        title="Committee"
-        blurb="The office-bearers and executive members who run the Sangh's day-to-day work."
+        eyebrow="पदाधिकारी"
+        title="समिति"
+        blurb="संघ के रोज़मर्रा के कामकाज को संभालने वाले पदाधिकारी और कार्यकारिणी सदस्य।"
       />
 
       {loading ? (
-        <p className="py-16 text-center text-stone">Loading committee…</p>
+        <p className="py-16 text-center text-stone">समिति की जानकारी लोड हो रही है…</p>
       ) : members.length === 0 ? (
-        <p className="py-16 text-center text-stone">Committee details will appear here soon.</p>
+        <p className="py-16 text-center text-stone">समिति की जानकारी जल्द ही यहाँ दिखाई देगी।</p>
       ) : (
         <>
           {president && (
@@ -64,7 +64,7 @@ export default function Committee() {
           {officers.length > 0 && (
             <section className="bg-cream-deep/60 py-16">
               <div className="mx-auto max-w-6xl px-5 lg:px-8">
-                <p className="eyebrow text-center text-maroon/70">Office Bearers</p>
+                <p className="eyebrow text-center text-maroon/70">पदाधिकारी</p>
                 <div className="mt-8 grid gap-6 sm:grid-cols-3">
                   {officers.map((o) => (
                     <PersonPlaque key={o.id} name={o.name} designation={o.designation} regNo={o.reg_no} photoUrl={o.photo_url} />
@@ -76,7 +76,7 @@ export default function Committee() {
 
           {executives.length > 0 && (
             <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
-              <p className="eyebrow text-center text-maroon/70">Executive Committee</p>
+              <p className="eyebrow text-center text-maroon/70">कार्यकारिणी समिति</p>
               <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
                 {executives.map((m) => (
                   <PersonPlaque key={m.id} name={m.name} designation={m.designation} regNo={m.reg_no} photoUrl={m.photo_url} />

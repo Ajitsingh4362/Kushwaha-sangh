@@ -36,7 +36,6 @@ import ProtectedRoute from './components/ProtectedRoute'
 import { DonateModalProvider } from './lib/DonateModalContext'
 import DonateModal from './components/DonateModal'
 import NoticePopup from './components/NoticePopup'
-import { LanguageProvider } from './lib/LanguageContext'
 
 function PublicChrome({ children }) {
   return (
@@ -58,7 +57,6 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <LanguageProvider>
         <DonateModalProvider>
         <div className="flex min-h-screen flex-col">
           {isAdminSection ? (
@@ -108,7 +106,6 @@ export default function App() {
           )}
         </div>
       </DonateModalProvider>
-      </LanguageProvider>
     </AuthProvider>
   )
 }

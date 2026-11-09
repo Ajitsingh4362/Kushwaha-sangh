@@ -4,10 +4,11 @@ import { MapPin, Calendar, Users } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import PageHero from '../components/PageHero'
 import { PROGRAM_CATEGORIES } from '../components/ProgramsPanel'
+import { programCategoryHi } from '../data/programCategoriesHi'
 
 function formatDate(dateStr) {
   if (!dateStr) return ''
-  return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })
+  return new Date(dateStr).toLocaleDateString('hi-IN', { day: '2-digit', month: 'long', year: 'numeric' })
 }
 
 function ProgramCard({ program }) {
@@ -31,11 +32,11 @@ function ProgramCard({ program }) {
             />
           )
         ) : (
-          <div className="grid h-full place-items-center text-stone/50">No photo</div>
+          <div className="grid h-full place-items-center text-stone/50">फ़ोटो उपलब्ध नहीं</div>
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1.5 p-4">
-        <p className="eyebrow text-maroon/70">{program.category}</p>
+        <p className="eyebrow text-maroon/70">{programCategoryHi(program.category)}</p>
         <p className="font-display text-base font-semibold text-maroon-deep">{program.title}</p>
         <p className="flex items-center gap-1 text-xs text-stone">
           <Calendar size={12} /> {formatDate(program.program_date)}
@@ -47,7 +48,7 @@ function ProgramCard({ program }) {
         )}
         {program.participant_count != null && (
           <p className="mt-1 flex items-center gap-1 text-xs font-medium text-saffron-dark">
-            <Users size={12} /> {program.participant_count} participated
+            <Users size={12} /> {program.participant_count} लोगों ने भाग लिया
           </p>
         )}
       </div>
@@ -76,9 +77,9 @@ export default function Programs() {
   return (
     <>
       <PageHero
-        eyebrow="Sangh Activities"
-        title="Programs & Camps"
-        blurb="Blood donation camps, health checkups, cultural events, and community drives — everything the Sangh organizes, with full details."
+        eyebrow="संघ की गतिविधियाँ"
+        title="कार्यक्रम और शिविर"
+        blurb="रक्तदान शिविर, स्वास्थ्य जाँच, सांस्कृतिक कार्यक्रम और सामाजिक अभियान, संघ के सभी आयोजन पूरी जानकारी के साथ।"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-12 lg:px-8">
@@ -93,15 +94,15 @@ export default function Programs() {
                   : 'border-gold/40 text-maroon-deep hover:border-saffron'
               }`}
             >
-              {cat}
+              {cat === 'All' ? 'सभी' : programCategoryHi(cat)}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <p className="mt-8 text-stone">Loading programs…</p>
+          <p className="mt-8 text-stone">कार्यक्रम लोड हो रहे हैं…</p>
         ) : filtered.length === 0 ? (
-          <p className="mt-8 text-stone">No programs to show yet — check back soon.</p>
+          <p className="mt-8 text-stone">अभी दिखाने के लिए कोई कार्यक्रम नहीं है, कृपया बाद में देखें।</p>
         ) : (
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((p) => (

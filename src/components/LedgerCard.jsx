@@ -3,7 +3,7 @@ import AnimatedCounter from './AnimatedCounter'
 export function LedgerCard({ regNo, title, subtitle, children, className = '' }) {
   return (
     <div className={`ledger-plaque animate-rise p-6 ${className}`}>
-      {regNo && <div className="ledger-number mb-2">Regd. {regNo}</div>}
+      {regNo && <div className="ledger-number mb-2">पंजी. सं. {regNo}</div>}
       {title && <div className="font-display text-lg font-semibold text-maroon-deep">{title}</div>}
       {subtitle && <div className="mt-0.5 text-sm text-stone">{subtitle}</div>}
       {children}
@@ -48,6 +48,7 @@ export function PersonPlaque({ name, designation, regNo, note, photoUrl, feature
         >
           {name
             .replace(/\u2019s Name/i, '')
+            .replace(/ का नाम$/, '')
             .trim()
             .split(' ')
             .map((w) => w[0])
@@ -60,7 +61,7 @@ export function PersonPlaque({ name, designation, regNo, note, photoUrl, feature
         {name}
       </div>
       <div className="mt-0.5 text-sm text-saffron">{designation}</div>
-      {regNo && <div className="ledger-number mt-2">Regd. {regNo}</div>}
+      {regNo && <div className="ledger-number mt-2">पंजी. सं. {regNo}</div>}
       {note && <p className="mt-3 max-w-xs text-sm leading-relaxed text-stone">{note}</p>}
     </div>
   )

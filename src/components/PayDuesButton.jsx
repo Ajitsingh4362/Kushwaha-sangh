@@ -4,16 +4,14 @@ import QRCode from 'react-qr-code'
 import { supabase } from '../lib/supabase'
 import { donationMethods } from '../data/content'
 import { Field } from './FormField'
-import { useLanguage } from '../lib/LanguageContext'
 
 const STEP = { PHONE: 'phone', LIST: 'list', QR: 'qr', DONE: 'done', CLEAR: 'clear' }
 
 function monthLabel(dateStr) {
-  return new Date(dateStr).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })
+  return new Date(dateStr).toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' })
 }
 
 export default function PayDuesButton() {
-  const { t } = useLanguage()
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState(STEP.PHONE)
   const [phone, setPhone] = useState('')
@@ -40,7 +38,7 @@ export default function PayDuesButton() {
     setLoading(false)
 
     if (rpcError) {
-      setError('Something went wrong. Please try again.')
+      setError('कुछ गड़बड़ हो गई। कृपया दोबारा कोशिश करें।')
       return
     }
     if (!data || data.length === 0) {
@@ -58,7 +56,7 @@ export default function PayDuesButton() {
     const { error: rpcError } = await supabase.rpc('declare_dues_paid', { p_phone: phone, p_due_ids: dueIds })
     setLoading(false)
     if (rpcError) {
-      setError('Could not save — please try again or contact the committee.')
+      setError('जानकारी सेव नहीं हो पाई। कृपया दोबारा कोशिश करें या समिति से संपर्क करें।')
       return
     }
     setStep(STEP.DONE)
@@ -73,7 +71,7 @@ export default function PayDuesButton() {
         onClick={() => setOpen(true)}
         className="rounded-sm border border-maroon-deep px-6 py-3 text-sm font-semibold text-maroon-deep transition hover:bg-maroon-deep hover:text-cream-paper"
       >
-        {t('Pay Monthly Due')}
+        मासिक शुल्क भरें
       </button>
 
       {open && (
@@ -82,7 +80,7 @@ export default function PayDuesButton() {
             <button
               type="button"
               onClick={resetAndClose}
-              aria-label="Close"
+              aria-label="बंद करें"
               className="absolute right-3 top-3 text-stone hover:text-maroon"
             >
               <X size={20} />
@@ -91,19 +89,18 @@ export default function PayDuesButton() {
             {step === STEP.PHONE && (
               <form onSubmit={handleLookup} className="space-y-4 text-left">
                 <h3 className="text-center font-display text-lg font-semibold text-maroon-deep">
-                  Pay Your Monthly Due
+                  अपना मासिक शुल्क भरें
                 </h3>
                 <p className="text-center text-sm text-stone">
-                  Enter the phone number you registered with as a member.
+                  सदस्यता के समय दर्ज कराया गया अपना फ़ोन नंबर डालें।
                 </p>
                 <p className="rounded-sm bg-cream-deep/60 p-2.5 text-center text-xs text-stone">
-                  Note: our online records start from <strong>August 2026</strong>. The Sangh itself has
-                  been active for 10 years, but dues from before this system was built aren&rsquo;t tracked
-                  here.
+                  ध्यान दें: हमारा ऑनलाइन रिकॉर्ड <strong>अगस्त 2026</strong> से शुरू होता है। संघ 10 वर्षों से
+                  सक्रिय है, लेकिन इस व्यवस्था के शुरू होने से पहले का बकाया शुल्क यहाँ दर्ज नहीं है।
                 </p>
                 <Field
                   id="phone"
-                  label="Phone Number"
+                  label="फ़ोन नंबर"
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -115,7 +112,7 @@ export default function PayDuesButton() {
                   disabled={loading}
                   className="flex w-full items-center justify-center gap-1.5 rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper disabled:opacity-60"
                 >
-                  <Search size={15} /> {loading ? 'Checking…' : 'Check My Dues'}
+                  <Search size={15} /> {loading ? 'जाँच हो रही है…' : 'मेरा बकाया देखें'}
                 </button>
               </form>
             )}
@@ -123,17 +120,17 @@ export default function PayDuesButton() {
             {step === STEP.CLEAR && (
               <div className="flex flex-col items-center py-4">
                 <CheckCircle2 size={40} className="text-saffron" />
-                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">All clear! 🎉</p>
+                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">कोई बकाया नहीं! 🎉</p>
                 <p className="mt-1 text-sm text-stone">
-                  No pending dues found for this number — either you&rsquo;re fully paid up, or this number
-                  isn&rsquo;t registered yet. Contact the committee if that seems wrong.
+                  इस नंबर पर कोई बकाया शुल्क नहीं मिला। या तो आपका पूरा भुगतान हो चुका है, या यह नंबर अभी
+                  पंजीकृत नहीं है। अगर यह गलत लगे तो समिति से संपर्क करें।
                 </p>
                 <button
                   type="button"
                   onClick={resetAndClose}
                   className="mt-5 rounded-sm bg-maroon-deep px-5 py-2 text-sm font-semibold text-cream-paper"
                 >
-                  Close
+                  बंद करें
                 </button>
               </div>
             )}
@@ -141,22 +138,22 @@ export default function PayDuesButton() {
             {step === STEP.LIST && (
               <div className="text-left">
                 <h3 className="text-center font-display text-lg font-semibold text-maroon-deep">
-                  Hi {memberName}
+                  नमस्ते, {memberName}
                 </h3>
-                <p className="mt-1 text-center text-sm text-stone">You have {pending.length} month(s) pending:</p>
+                <p className="mt-1 text-center text-sm text-stone">आपके {pending.length} महीने का शुल्क बकाया है:</p>
                 <ul className="mt-4 space-y-2 text-sm">
                   {pending.map((d) => (
                     <li key={d.due_id} className="flex justify-between border-b border-gold/20 pb-1.5">
                       <span>{monthLabel(d.due_month)}</span>
                       <span className="font-ledger text-gold-deep">
                         ₹{Number(d.amount)}
-                        {d.status === 'declared' && <span className="ml-1 text-[0.65rem] text-stone">(pending verify)</span>}
+                        {d.status === 'declared' && <span className="ml-1 text-[0.65rem] text-stone">(सत्यापन बाकी)</span>}
                       </span>
                     </li>
                   ))}
                 </ul>
                 <div className="mt-3 flex justify-between font-display font-semibold text-maroon-deep">
-                  <span>Total</span>
+                  <span>कुल</span>
                   <span>₹{total}</span>
                 </div>
                 <button
@@ -164,16 +161,16 @@ export default function PayDuesButton() {
                   onClick={() => setStep(STEP.QR)}
                   className="mt-5 w-full rounded-sm bg-saffron px-5 py-2.5 text-sm font-semibold text-maroon-deep"
                 >
-                  Continue to Pay
+                  भुगतान के लिए आगे बढ़ें
                 </button>
               </div>
             )}
 
             {step === STEP.QR && (
               <>
-                <h3 className="font-display text-lg font-semibold text-maroon-deep">Scan &amp; Pay ₹{total}</h3>
+                <h3 className="font-display text-lg font-semibold text-maroon-deep">स्कैन करके ₹{total} भरें</h3>
                 <p className="mt-1 text-xs text-stone">
-                  Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.) to pay.
+                  भुगतान के लिए किसी भी UPI ऐप (Google Pay, PhonePe, Paytm आदि) से स्कैन करें।
                 </p>
                 <div className="mx-auto mt-5 w-fit bg-white p-3">
                   <QRCode value={`upi://pay?pa=${donationMethods.upiId}&pn=Kushwaha%20Sangh&am=${total}&cu=INR`} size={180} />
@@ -186,7 +183,7 @@ export default function PayDuesButton() {
                   disabled={loading}
                   className="mt-5 w-full rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper disabled:opacity-60"
                 >
-                  {loading ? 'Saving…' : "I've Paid"}
+                  {loading ? 'सेव हो रहा है…' : 'मैंने भुगतान कर दिया'}
                 </button>
               </>
             )}
@@ -194,16 +191,16 @@ export default function PayDuesButton() {
             {step === STEP.DONE && (
               <div className="flex flex-col items-center py-4">
                 <CheckCircle2 size={40} className="text-saffron" />
-                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">Thank you! 🙏</p>
+                <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">धन्यवाद! 🙏</p>
                 <p className="mt-1 text-sm text-stone">
-                  The committee will verify your payment shortly and clear it from your record.
+                  समिति जल्द ही आपके भुगतान का सत्यापन करके इसे आपके रिकॉर्ड से हटा देगी।
                 </p>
                 <button
                   type="button"
                   onClick={resetAndClose}
                   className="mt-5 rounded-sm bg-maroon-deep px-5 py-2 text-sm font-semibold text-cream-paper"
                 >
-                  Close
+                  बंद करें
                 </button>
               </div>
             )}

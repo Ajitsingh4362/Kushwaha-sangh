@@ -27,7 +27,7 @@ export default function AdminLogin() {
   }
 
   return (
-    <>
+    <div lang="en">
       <PageHero eyebrow="Committee Access" title="Admin Login" blurb="For Sangh committee members only." />
       <section className="mx-auto max-w-sm px-5 py-16 lg:px-8">
         <form onSubmit={handleSubmit} className="ledger-plaque space-y-4 p-7">
@@ -63,6 +63,6 @@ export default function AdminLogin() {
           </button>
         </form>
       </section>
-    </>
+    </div>
   )
 }

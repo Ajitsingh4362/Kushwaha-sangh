@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail } from 'lucide-react'
 import { site, navigation } from '../data/content'
 import logo from '../assets/logo.png'
-import { useLanguage } from '../lib/LanguageContext'
 
 // lucide-react no longer ships brand/logo marks, so these three
 // social icons are simple hand-drawn SVGs kept consistent in weight
@@ -35,13 +34,12 @@ function YoutubeIcon(props) {
 }
 
 export default function Footer() {
-  const { t } = useLanguage()
   return (
     <footer className="bg-maroon-deep text-cream/85">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 lg:grid-cols-[1.3fr_1fr_1fr] lg:px-8">
         <div>
           <div className="flex items-center gap-3">
-            <img src={logo} alt={`${site.name} logo`} className="h-16 w-16 rounded-full object-contain" />
+            <img src={logo} alt={`${site.name} का लोगो`} className="h-16 w-16 rounded-full object-contain" />
             <span className="font-display text-xl font-semibold text-cream-paper">{site.name}</span>
           </div>
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-cream/70">{site.mission}</p>
@@ -59,12 +57,12 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="eyebrow text-gold-light">{t('Quick Links')}</h3>
+          <h3 className="eyebrow text-gold-light">महत्वपूर्ण लिंक</h3>
           <ul className="mt-4 space-y-2.5 text-sm">
             {navigation.map((item) => (
               <li key={item.label}>
                 <Link to={item.to} className="text-cream/75 hover:text-saffron">
-                  {t(item.label)}
+                  {item.label}
                 </Link>
               </li>
             ))}
@@ -72,7 +70,7 @@ export default function Footer() {
         </div>
 
         <div>
-          <h3 className="eyebrow text-gold-light">{t('Reach Us')}</h3>
+          <h3 className="eyebrow text-gold-light">संपर्क सूत्र</h3>
           <ul className="mt-4 space-y-3 text-sm text-cream/75">
             <li className="flex items-start gap-2.5">
               <MapPin size={17} className="mt-0.5 shrink-0 text-saffron" />
@@ -95,18 +93,18 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center gap-3 px-5 py-5 text-xs text-cream/55 lg:px-8">
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-1.5">
           <Link to="/privacy-policy" className="hover:text-saffron">
-            {t('Privacy Policy')}
+            गोपनीयता नीति
           </Link>
           <Link to="/terms-and-conditions" className="hover:text-saffron">
-            {t('Terms & Conditions')}
+            नियम एवं शर्तें
           </Link>
           <Link to="/refund-policy" className="hover:text-saffron">
-            {t('Refund & Cancellation Policy')}
+            धनवापसी एवं रद्दीकरण नीति
           </Link>
         </div>
         <div className="flex flex-col items-center gap-1 sm:flex-row sm:justify-between sm:gap-4">
-          <span>© {new Date().getFullYear()} {site.name}. All rights reserved.</span>
-          <span>Regd. {t('COMMUNITY WELFARE ASSOCIATION').replace(/^./, (c) => c.toUpperCase())} · Est. {site.established}</span>
+          <span>© {new Date().getFullYear()} {site.name}। सर्वाधिकार सुरक्षित।</span>
+          <span>पंजीकृत सामुदायिक कल्याण संघ · स्थापना {site.established}</span>
         </div>
       </div>
     </footer>

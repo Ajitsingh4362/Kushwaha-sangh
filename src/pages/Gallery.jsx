@@ -13,14 +13,14 @@ import a7 from '../assets/activities/activity-7.jpg'
 import a8 from '../assets/activities/activity-8.jpg'
 
 const seedPhotos = [
-  { src: a1, category: 'ceremonies', label: 'Felicitation Ceremonies' },
-  { src: a2, category: 'events', label: 'Sangh Events' },
-  { src: a3, category: 'ceremonies', label: 'Felicitation Ceremonies' },
-  { src: a4, category: 'events', label: 'Sangh Events' },
-  { src: a5, category: 'ceremonies', label: 'Felicitation Ceremonies' },
-  { src: a6, category: 'ceremonies', label: 'Felicitation Ceremonies' },
-  { src: a7, category: 'ceremonies', label: 'Felicitation Ceremonies' },
-  { src: a8, category: 'events', label: 'Sangh Events' },
+  { src: a1, category: 'ceremonies', label: 'सम्मान समारोह' },
+  { src: a2, category: 'events', label: 'संघ के कार्यक्रम' },
+  { src: a3, category: 'ceremonies', label: 'सम्मान समारोह' },
+  { src: a4, category: 'events', label: 'संघ के कार्यक्रम' },
+  { src: a5, category: 'ceremonies', label: 'सम्मान समारोह' },
+  { src: a6, category: 'ceremonies', label: 'सम्मान समारोह' },
+  { src: a7, category: 'ceremonies', label: 'सम्मान समारोह' },
+  { src: a8, category: 'events', label: 'संघ के कार्यक्रम' },
 ]
 
 const categoryLabels = Object.fromEntries(galleryCategories.map((c) => [c.id, c.label]))
@@ -112,9 +112,9 @@ export default function Gallery() {
   return (
     <>
       <PageHero
-        eyebrow="In Pictures"
-        title="Gallery"
-        blurb="Hostel life, Sangh events, felicitation ceremonies and health camps."
+        eyebrow="तस्वीरों में"
+        title="गैलरी"
+        blurb="संघ के कार्यक्रम, सम्मान समारोह और स्वास्थ्य शिविर।"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
@@ -127,7 +127,7 @@ export default function Gallery() {
                 : 'border-gold/40 text-ink hover:border-saffron'
             }`}
           >
-            All
+            सभी
           </button>
           {galleryCategories.map((c) => (
             <button
@@ -145,7 +145,7 @@ export default function Gallery() {
         </div>
 
         {active === 'all' && filtered.length > SHOWCASE_SIZE && (
-          <p className="mt-3 text-xs text-stone">Showing a rotating selection — refreshes every little while.</p>
+          <p className="mt-3 text-xs text-stone">कुछ चुनी हुई तस्वीरें दिखाई जा रही हैं, जो थोड़ी-थोड़ी देर में बदलती रहती हैं।</p>
         )}
 
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -161,7 +161,7 @@ export default function Gallery() {
           {tiles.length === 0 && (
             <div className="col-span-full flex flex-col items-center gap-1.5 py-10 text-center text-stone/70">
               <ImageIcon size={22} strokeWidth={1.5} />
-              <span className="text-sm">No photos in this category yet.</span>
+              <span className="text-sm">इस श्रेणी में अभी कोई तस्वीर नहीं है।</span>
             </div>
           )}
         </div>
@@ -175,7 +175,7 @@ export default function Gallery() {
           <button
             type="button"
             onClick={() => setLightboxIndex(null)}
-            aria-label="Close"
+            aria-label="बंद करें"
             className="absolute right-5 top-5 text-cream-paper hover:text-saffron"
           >
             <X size={28} />
@@ -188,7 +188,7 @@ export default function Gallery() {
                 e.stopPropagation()
                 showPrev()
               }}
-              aria-label="Previous photo"
+              aria-label="पिछली तस्वीर"
               className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/60 sm:left-5"
             >
               <ChevronLeft size={28} />
@@ -209,7 +209,7 @@ export default function Gallery() {
                 e.stopPropagation()
                 showNext()
               }}
-              aria-label="Next photo"
+              aria-label="अगली तस्वीर"
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 text-cream-paper hover:bg-black/60 sm:right-5"
             >
               <ChevronRight size={28} />

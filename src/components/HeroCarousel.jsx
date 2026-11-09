@@ -29,7 +29,7 @@ export default function HeroCarousel({ images }) {
         {images.map((img, i) => (
           <button
             key={img.src}
-            aria-label={`Show slide ${i + 1}`}
+            aria-label={`स्लाइड ${i + 1} दिखाएँ`}
             onClick={() => setIndex(i)}
             className={`h-2 w-2 rounded-full transition ${i === index ? 'bg-saffron' : 'bg-cream-paper/60'}`}
           />

@@ -17,8 +17,8 @@ import { supabase } from '../lib/supabase'
 const MEMBER_COUNT_BASE = 500
 
 const heroImages = [
-  { src: heroBanner, alt: 'Sitamarhi Kushwaha Sangh community gathering' },
-  { src: heroBanner2, alt: 'Sitamarhi Kushwaha Sangh — Ekta aur Sangathan hi hamari Shakti hai' },
+  { src: heroBanner, alt: 'सीतामढ़ी कुशवाहा संघ का सामाजिक समागम' },
+  { src: heroBanner2, alt: 'सीतामढ़ी कुशवाहा संघ — एकता और संगठन ही हमारी शक्ति है' },
 ]
 
 export default function Home() {
@@ -96,15 +96,15 @@ export default function Home() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <p className="eyebrow text-maroon/70">A Glimpse</p>
+            <p className="eyebrow text-maroon/70">एक झलक</p>
             <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">
-              Moments from Our Events
+              हमारे कार्यक्रमों के कुछ पल
             </h2>
           </div>
           <div className="mt-8 overflow-hidden rounded-sm border border-gold/40">
             <img
               src={momentsCollage}
-              alt="Collage of Sitamarhi Kushwaha Sangh felicitation ceremony moments"
+              alt="सीतामढ़ी कुशवाहा संघ के सम्मान समारोह के पलों का कोलाज"
               className="w-full object-cover"
             />
           </div>
@@ -115,12 +115,12 @@ export default function Home() {
       <section className="bg-cream-deep/60 py-16">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <p className="eyebrow text-maroon/70">What We Do</p>
+            <p className="eyebrow text-maroon/70">हम क्या करते हैं</p>
             <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep sm:text-4xl">
-              Samaj Welfare Programs
+              समाज कल्याण कार्यक्रम
             </h2>
             <p className="mt-3 text-stone">
-              The three pillars our members and donors support most directly.
+              तीन मुख्य स्तंभ, जिन्हें हमारे सदस्य और दानदाता सीधे सहयोग देते हैं।
             </p>
           </div>
 
@@ -160,7 +160,7 @@ export default function Home() {
                     {p.blurb}
                   </p>
                   <span className="mt-4 flex items-center gap-1.5 text-sm font-medium text-saffron">
-                    Learn more
+                    और जानें
                     <ArrowRight size={15} className="transition group-hover:translate-x-1" />
                   </span>
                 </Link>
@@ -178,11 +178,11 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 py-16 lg:px-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="eyebrow text-maroon/70">Stay Informed</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Latest News</h2>
+            <p className="eyebrow text-maroon/70">ताज़ा जानकारी</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">नवीनतम समाचार</h2>
           </div>
           <Link to="/news" className="flex items-center gap-1.5 text-sm font-medium text-saffron hover:underline">
-            View all notices <ArrowRight size={15} />
+            सभी सूचनाएँ देखें <ArrowRight size={15} />
           </Link>
         </div>
 
@@ -190,7 +190,7 @@ export default function Home() {
           {newsItems.slice(0, 3).map((item) => (
             <article key={item.title} className="border-l-2 border-gold/50 pl-5">
               <time className="font-ledger text-xs uppercase tracking-wide text-stone">
-                {new Date(item.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                {new Date(item.date).toLocaleDateString('hi-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
               </time>
               <h3 className="mt-1.5 font-display text-lg font-semibold text-maroon-deep">{item.title}</h3>
               <p className="mt-1.5 text-sm leading-relaxed text-stone">{item.summary}</p>
@@ -205,8 +205,8 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <HeartHandshake size={40} className="shrink-0 text-saffron" />
             <div>
-              <h2 className="font-display text-2xl font-bold">Every contribution keeps a program running</h2>
-              <p className="mt-1 text-cream/70">Support the hostel, health fund, and achiever scholarships.</p>
+              <h2 className="font-display text-2xl font-bold">आपका हर योगदान किसी कार्यक्रम को आगे बढ़ाता है</h2>
+              <p className="mt-1 text-cream/70">छात्रावास, स्वास्थ्य कोष और प्रतिभा छात्रवृत्ति में सहयोग करें।</p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -214,13 +214,13 @@ export default function Home() {
               to="/donate"
               className="rounded-sm bg-saffron px-6 py-3 font-semibold text-maroon-deep hover:bg-saffron-light"
             >
-              Donate Now
+              अभी दान करें
             </Link>
             <Link
               to="/membership"
               className="flex items-center gap-2 rounded-sm border border-gold/60 px-6 py-3 font-semibold hover:bg-cream-paper/10"
             >
-              <Users size={18} /> Join Us
+              <Users size={18} /> हमसे जुड़ें
             </Link>
           </div>
         </div>

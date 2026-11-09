@@ -6,43 +6,43 @@ const milestones = [
   {
     icon: Sparkles,
     year: '2017',
-    title: 'The Spark of Unity',
-    text: 'The initial gathering of community members to build a unified platform dedicated to social welfare, mutual assistance, and empowerment.',
+    title: 'एकता की पहली चिंगारी',
+    text: 'समाज कल्याण, आपसी सहयोग और सशक्तिकरण के लिए एक साझा मंच बनाने हेतु समाज के लोगों की पहली बैठक।',
   },
   {
     icon: ShieldCheck,
     year: '2023',
-    title: 'Official Recognition & Structure',
-    text: 'To scale our impact and operate with total transparency, the organization took a major leap forward by getting officially registered as a recognized association, establishing formal governance and dedicated welfare initiatives.',
+    title: 'आधिकारिक मान्यता और संगठन',
+    text: 'अपने कार्य का दायरा बढ़ाने और पूरी पारदर्शिता के साथ काम करने के लिए संघ ने एक बड़ा कदम उठाया और मान्यता प्राप्त संस्था के रूप में आधिकारिक पंजीकरण कराया। इसके साथ ही औपचारिक संचालन व्यवस्था और समर्पित कल्याण योजनाएँ शुरू हुईं।',
   },
   {
     icon: Rocket,
     year: '2026',
-    title: 'Digital Transformation',
-    text: 'Embracing the modern era, Kushwaha Sangh launched its official web platform to connect community members globally, enable real-time emergency assistance (such as blood donation drives and medical support), and share community updates seamlessly.',
+    title: 'डिजिटल बदलाव',
+    text: 'आधुनिक दौर के साथ कदम मिलाते हुए कुशवाहा संघ ने अपनी आधिकारिक वेबसाइट शुरू की, ताकि दुनिया भर में फैले समाज के लोग जुड़ सकें, आपात स्थिति में तुरंत मदद (जैसे रक्तदान अभियान और चिकित्सा सहायता) मिल सके, और समाज की जानकारी आसानी से साझा हो सके।',
   },
 ]
 
 const objectives = [
   {
     icon: HandHeart,
-    title: 'Mutual Welfare',
-    text: 'Standing by members through illness, hardship and emergencies with financial and community support.',
+    title: 'आपसी कल्याण',
+    text: 'बीमारी, कठिनाई और आपात स्थिति में आर्थिक और सामाजिक सहयोग के साथ सदस्यों के साथ खड़े रहना।',
   },
   {
     icon: GraduationCap,
-    title: 'Education First',
-    text: "Enabling access to education through the girls' hostel, scholarships and mentorship from senior members.",
+    title: 'शिक्षा सर्वोपरि',
+    text: 'बालिका छात्रावास, छात्रवृत्ति और वरिष्ठ सदस्यों के मार्गदर्शन से शिक्षा तक पहुँच आसान बनाना।',
   },
   {
     icon: Target,
-    title: 'Recognition',
-    text: 'Celebrating members who excel academically, professionally or in public service — motivating the next generation.',
+    title: 'सम्मान',
+    text: 'पढ़ाई, पेशे या लोक सेवा में आगे बढ़ने वाले सदस्यों का सम्मान, ताकि अगली पीढ़ी को प्रेरणा मिले।',
   },
   {
     icon: BookOpen,
-    title: 'Transparency',
-    text: 'Publishing yearly fund reports so every donor and member can see exactly how contributions are used.',
+    title: 'पारदर्शिता',
+    text: 'हर साल कोष का ब्योरा प्रकाशित करना, ताकि हर दानदाता और सदस्य देख सके कि योगदान का उपयोग कैसे हो रहा है।',
   },
 ]
 
@@ -50,32 +50,30 @@ export default function About() {
   return (
     <>
       <PageHero
-        eyebrow="Our Story"
-        title="About the Sangh"
-        blurb="A community coming together, one generation supporting the next."
+        eyebrow="हमारी कहानी"
+        title="संघ के बारे में"
+        blurb="एकजुट होता समाज, जहाँ एक पीढ़ी अगली पीढ़ी का सहारा बनती है।"
       />
 
       <section className="mx-auto max-w-4xl px-5 py-16 lg:px-8">
-        <p className="eyebrow text-maroon/70">History &amp; Objectives</p>
+        <p className="eyebrow text-maroon/70">इतिहास और उद्देश्य</p>
         <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">
-          The Journey of {site.name}: Rooted in Unity, Driven by Purpose
+          {site.name} की यात्रा: एकता में जड़ें, उद्देश्य से प्रेरित
         </h2>
         <div className="prose-note mt-5 space-y-4 text-[1.05rem] leading-relaxed text-ink-light">
           <p>
-            The story of {site.name} is a testament to the power of community, mutual support, and collective
-            vision.
+            {site.name} की कहानी समाज की ताकत, आपसी सहयोग और साझा सोच का प्रमाण है।
           </p>
           <p>
-            Back in 2017, a group of visionary community leaders and successful professionals came together with
-            a clear realization: individual success gains true meaning only when it helps elevate the entire
-            society. With the core objectives of fostering deep-rooted unity, bringing successful community
-            members onto a single platform, and creating a strong support network for those in need, the
-            foundation of this collective movement was laid.
+            वर्ष 2017 में समाज के कुछ दूरदर्शी नेता और सफल पेशेवर इस स्पष्ट सोच के साथ एक साथ आए कि
+            व्यक्तिगत सफलता का सच्चा अर्थ तभी है, जब वह पूरे समाज को ऊपर उठाने में मदद करे। समाज में
+            गहरी एकता लाने, सफल सदस्यों को एक मंच पर लाने और ज़रूरतमंदों के लिए मज़बूत सहायता तंत्र बनाने
+            के मूल उद्देश्यों के साथ इस सामूहिक आंदोलन की नींव रखी गई।
           </p>
           <p>
-            What began in 2017 as informal meetings and spontaneous grassroots relief work soon grew into a
-            dependable lifeline for families during medical emergencies, social distress, and financial
-            hardship.
+            2017 में अनौपचारिक बैठकों और ज़मीनी स्तर पर स्वतःस्फूर्त राहत कार्य से जो शुरुआत हुई, वह जल्द
+            ही चिकित्सा आपातकाल, सामाजिक संकट और आर्थिक तंगी के समय परिवारों के लिए एक भरोसेमंद सहारा
+            बन गई।
           </p>
         </div>
       </section>
@@ -83,8 +81,8 @@ export default function About() {
       <section className="bg-cream-deep/60 py-16">
         <div className="mx-auto max-w-5xl px-5 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <p className="eyebrow text-maroon/70">Our Journey</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Key Milestones</h2>
+            <p className="eyebrow text-maroon/70">हमारा सफ़र</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">प्रमुख पड़ाव</h2>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {milestones.map((m) => (
@@ -100,26 +98,26 @@ export default function About() {
       </section>
 
       <section className="mx-auto max-w-4xl px-5 py-16 lg:px-8">
-        <p className="eyebrow text-maroon/70">Our Purpose</p>
+        <p className="eyebrow text-maroon/70">हमारा उद्देश्य</p>
         <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">
-          Why {site.name} Exists Today
+          आज {site.name} क्यों ज़रूरी है
         </h2>
         <p className="prose-note mt-5 text-[1.05rem] leading-relaxed text-ink-light">
-          Today, {site.name} stands as a bridge between capability and need. Whether it is arranging rapid
-          emergency blood support in critical medical situations, assisting families during times of hardship, or
-          guiding the younger generation toward educational and career success, our mission remains unchanged.
+          आज {site.name} सामर्थ्य और ज़रूरत के बीच एक सेतु है। चाहे गंभीर चिकित्सा स्थिति में तुरंत रक्त
+          की व्यवस्था करना हो, कठिन समय में परिवारों की मदद करनी हो, या युवा पीढ़ी को शिक्षा और करियर में
+          सफलता की राह दिखानी हो, हमारा लक्ष्य वही है।
         </p>
       </section>
 
       <section className="bg-cream-deep/60 py-16">
         <div className="mx-auto max-w-6xl px-5 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <p className="eyebrow text-maroon/70">What We Stand For</p>
-            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Our Objectives</h2>
+            <p className="eyebrow text-maroon/70">हमारे मूल्य</p>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">हमारे उद्देश्य</h2>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {objectives.map((o) => {
-              const isDark = o.title === 'Education First' || o.title === 'Recognition'
+              const isDark = o.title === 'शिक्षा सर्वोपरि' || o.title === 'सम्मान'
               return (
                 <div
                   key={o.title}
@@ -152,8 +150,8 @@ export default function About() {
       </section>
 
       <section className="mx-auto max-w-4xl px-5 py-16 text-center lg:px-8">
-        <p className="eyebrow text-maroon/70">Our Mission</p>
-        <blockquote className="mt-3 font-display text-2xl font-semibold italic leading-snug text-maroon-deep sm:text-3xl">
+        <p className="eyebrow text-maroon/70">हमारा ध्येय</p>
+        <blockquote className="mt-3 font-display text-2xl font-semibold leading-snug text-maroon-deep sm:text-3xl">
           &ldquo;{site.mission}&rdquo;
         </blockquote>
       </section>

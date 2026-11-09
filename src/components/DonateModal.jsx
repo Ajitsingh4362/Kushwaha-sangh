@@ -42,7 +42,7 @@ export default function DonateModal() {
     e.preventDefault()
     setError('')
     if (!form.name || !form.amount) {
-      setError('Please enter your name and amount.')
+      setError('कृपया अपना नाम और राशि दर्ज करें।')
       return
     }
 
@@ -63,7 +63,7 @@ export default function DonateModal() {
     setSaving(false)
 
     if (insertError) {
-      setError('Could not save your details, but you can still scan and pay below.')
+      setError('आपकी जानकारी सेव नहीं हो पाई, फिर भी आप नीचे स्कैन करके भुगतान कर सकते हैं।')
     }
     setStep(STEP.QR)
   }
@@ -76,7 +76,7 @@ export default function DonateModal() {
         <button
           type="button"
           onClick={resetAndClose}
-          aria-label="Close"
+          aria-label="बंद करें"
           className="absolute right-3 top-3 text-stone hover:text-maroon"
         >
           <X size={20} />
@@ -84,10 +84,10 @@ export default function DonateModal() {
 
         {step === STEP.FORM && (
           <form onSubmit={handleFormSubmit} className="space-y-4 text-left">
-            <h3 className="text-center font-display text-lg font-semibold text-maroon-deep">Your Details</h3>
+            <h3 className="text-center font-display text-lg font-semibold text-maroon-deep">आपकी जानकारी</h3>
             <Field
               id="name"
-              label="Full Name"
+              label="पूरा नाम"
               type="text"
               value={form.name}
               onChange={(e) => setForm((v) => ({ ...v, name: e.target.value }))}
@@ -95,21 +95,21 @@ export default function DonateModal() {
             />
             <Field
               id="email"
-              label="Email (optional)"
+              label="ईमेल (वैकल्पिक)"
               type="email"
               value={form.email}
               onChange={(e) => setForm((v) => ({ ...v, email: e.target.value }))}
             />
             <Field
               id="phone"
-              label="Phone (optional)"
+              label="फ़ोन (वैकल्पिक)"
               type="tel"
               value={form.phone}
               onChange={(e) => setForm((v) => ({ ...v, phone: e.target.value }))}
             />
             <Field
               id="amount"
-              label="Amount (₹)"
+              label="राशि (₹)"
               type="number"
               value={form.amount}
               onChange={(e) => setForm((v) => ({ ...v, amount: e.target.value }))}
@@ -121,16 +121,16 @@ export default function DonateModal() {
               disabled={saving}
               className="w-full rounded-sm bg-saffron px-5 py-2.5 text-sm font-semibold text-maroon-deep disabled:opacity-60"
             >
-              {saving ? 'Saving…' : 'Continue to Pay'}
+              {saving ? 'सेव हो रहा है…' : 'भुगतान के लिए आगे बढ़ें'}
             </button>
           </form>
         )}
 
         {step === STEP.QR && (
           <>
-            <h3 className="font-display text-lg font-semibold text-maroon-deep">Scan to Donate</h3>
+            <h3 className="font-display text-lg font-semibold text-maroon-deep">दान के लिए स्कैन करें</h3>
             <p className="mt-1 text-xs text-stone">
-              Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.) to pay.
+              भुगतान के लिए किसी भी UPI ऐप (Google Pay, PhonePe, Paytm आदि) से स्कैन करें।
             </p>
             <div className="mx-auto mt-5 w-fit bg-white p-3">
               <QRCode
@@ -145,7 +145,7 @@ export default function DonateModal() {
               onClick={() => setStep(STEP.DONE)}
               className="mt-5 w-full rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper"
             >
-              I&rsquo;ve Paid
+              मैंने भुगतान कर दिया
             </button>
           </>
         )}
@@ -153,16 +153,16 @@ export default function DonateModal() {
         {step === STEP.DONE && (
           <div className="flex flex-col items-center py-4">
             <CheckCircle2 size={40} className="text-saffron" />
-            <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">Thank you! 🙏</p>
+            <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">धन्यवाद! 🙏</p>
             <p className="mt-1 text-sm text-stone">
-              The committee will verify your payment against Sangh records shortly.
+              समिति जल्द ही संघ के रिकॉर्ड से आपके भुगतान का सत्यापन करेगी।
             </p>
             <button
               type="button"
               onClick={resetAndClose}
               className="mt-5 rounded-sm bg-maroon-deep px-5 py-2 text-sm font-semibold text-cream-paper"
             >
-              Close
+              बंद करें
             </button>
           </div>
         )}

@@ -8,14 +8,14 @@ import a7 from '../assets/activities/activity-7.jpg'
 import a8 from '../assets/activities/activity-8.jpg'
 
 const activityPhotos = [
-  { id: 1, src: a1, alt: 'Certificate presented to a young achiever at the felicitation ceremony' },
-  { id: 2, src: a2, alt: 'Sitamarhi Kushwaha Sangh Pratibha Samman Samaroh stage banner' },
-  { id: 3, src: a3, alt: 'Guest presenting a memento at the felicitation ceremony' },
-  { id: 4, src: a4, alt: 'Students seated on stage during the recognition ceremony' },
-  { id: 5, src: a5, alt: 'Certificate handed to a young woman achiever' },
-  { id: 6, src: a6, alt: 'Committee members lighting the ceremonial lamp' },
-  { id: 7, src: a7, alt: 'Achiever receiving flowers and certificate on stage' },
-  { id: 8, src: a8, alt: 'Community members gathered at a Sangh event' },
+  { id: 1, src: a1, alt: 'सम्मान समारोह में एक युवा प्रतिभा को प्रमाण-पत्र प्रदान करते हुए' },
+  { id: 2, src: a2, alt: 'सीतामढ़ी कुशवाहा संघ प्रतिभा सम्मान समारोह का मंच बैनर' },
+  { id: 3, src: a3, alt: 'सम्मान समारोह में अतिथि स्मृति-चिह्न भेंट करते हुए' },
+  { id: 4, src: a4, alt: 'सम्मान समारोह के दौरान मंच पर बैठे विद्यार्थी' },
+  { id: 5, src: a5, alt: 'एक युवा प्रतिभाशाली छात्रा को प्रमाण-पत्र प्रदान करते हुए' },
+  { id: 6, src: a6, alt: 'समिति के सदस्य दीप प्रज्वलित करते हुए' },
+  { id: 7, src: a7, alt: 'मंच पर फूल और प्रमाण-पत्र प्राप्त करते हुए प्रतिभा' },
+  { id: 8, src: a8, alt: 'संघ के कार्यक्रम में एकत्रित समाज के सदस्य' },
 ]
 
 export default function Activities() {
@@ -25,8 +25,8 @@ export default function Activities() {
   return (
     <section className="overflow-hidden py-16">
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
-        <p className="eyebrow text-center text-maroon/70">Moments &amp; Milestones</p>
-        <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">Activities</h2>
+        <p className="eyebrow text-center text-maroon/70">यादगार पल और उपलब्धियाँ</p>
+        <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">गतिविधियाँ</h2>
       </div>
 
       <div className="group relative mt-10 [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">

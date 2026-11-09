@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useDonateModal } from '../lib/DonateModalContext'
 import PayDuesButton from './PayDuesButton'
-import { useLanguage } from '../lib/LanguageContext'
-import LanguageToggle from './LanguageToggle'
 
 export default function DonateQRButton() {
   const { openModal } = useDonateModal()
-  const { t } = useLanguage()
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-4 bg-cream-deep/60 py-8">
@@ -16,15 +13,14 @@ export default function DonateQRButton() {
         onClick={openModal}
         className="animate-blink rounded-sm bg-saffron px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-saffron-light"
       >
-        {t('Donate Now')}
+        अभी दान करें
       </button>
       <Link
         to="/membership"
         className="rounded-sm border border-maroon-deep px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-maroon-deep hover:text-cream-paper"
       >
-        {t('Join Us')}
+        हमसे जुड़ें
       </Link>
-      <LanguageToggle />
     </div>
   )
 }

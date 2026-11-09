@@ -1,12 +1,12 @@
 const lines = [
-  'Ekta aur Sangathan hi hamari Shakti hai',
-  'Together we rise, together we serve',
-  'Education today, empowerment tomorrow',
-  'No one has ever become poor by giving',
-  'Every member matters, every voice counts',
-  'Small contributions, lasting change',
-  'Community first, always',
-  'Building a future our children can be proud of',
+  'एकता और संगठन ही हमारी शक्ति है',
+  'साथ मिलकर आगे बढ़ें, साथ मिलकर सेवा करें',
+  'आज की शिक्षा, कल का सशक्तिकरण',
+  'देने से कोई कभी गरीब नहीं हुआ',
+  'हर सदस्य महत्वपूर्ण है, हर आवाज़ की कद्र है',
+  'छोटा योगदान, स्थायी बदलाव',
+  'समाज सबसे पहले, हमेशा',
+  'ऐसा भविष्य बनाएँ जिस पर हमारे बच्चे गर्व करें',
 ]
 
 export default function MarqueeStrip() {

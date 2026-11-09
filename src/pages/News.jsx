@@ -40,9 +40,9 @@ export default function News() {
   return (
     <>
       <PageHero
-        eyebrow="Announcements"
-        title="News &amp; Notices"
-        blurb="Circulars, updates and events from the Sangh."
+        eyebrow="घोषणाएँ"
+        title="समाचार और सूचनाएँ"
+        blurb="संघ के परिपत्र, ताज़ा जानकारी और कार्यक्रम।"
       />
 
       <section className="mx-auto max-w-3xl px-5 py-16 lg:px-8">
@@ -54,7 +54,7 @@ export default function News() {
                 <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-gold-deep">
                   <CalendarDays size={15} />
                   <time>
-                    {new Date(item.date).toLocaleDateString('en-IN', {
+                    {new Date(item.date).toLocaleDateString('hi-IN', {
                       day: '2-digit',
                       month: 'long',
                       year: 'numeric',
@@ -66,7 +66,7 @@ export default function News() {
               </div>
             </article>
           ))}
-          {combined.length === 0 && <p className="text-center text-stone">No news or notices yet.</p>}
+          {combined.length === 0 && <p className="text-center text-stone">अभी कोई समाचार या सूचना नहीं है।</p>}
         </div>
       </section>
     </>

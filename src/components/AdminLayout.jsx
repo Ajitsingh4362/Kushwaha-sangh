@@ -83,7 +83,7 @@ export default function AdminLayout() {
   })
 
   return (
-    <div className="flex h-screen overflow-hidden bg-cream">
+    <div lang="en" className="flex h-screen overflow-hidden bg-cream">
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-64 shrink-0 transform flex-col overflow-y-auto bg-maroon-deep text-cream-paper transition-transform lg:relative lg:translate-x-0 ${

@@ -34,8 +34,9 @@ function MembershipForm() {
     e.preventDefault()
     setError('')
 
-    if (form.caste.trim().toLowerCase() !== 'kushwaha') {
-      setError('This form is only for members of the Kushwaha community. Please enter "Kushwaha" in the Caste field.')
+    const caste = form.caste.trim().toLowerCase()
+    if (caste !== 'kushwaha' && caste !== 'कुशवाहा') {
+      setError('यह फ़ॉर्म केवल कुशवाहा समाज के सदस्यों के लिए है। कृपया जाति वाले खाने में "कुशवाहा" लिखें।')
       return
     }
 
@@ -60,9 +61,9 @@ function MembershipForm() {
     setSaving(false)
     if (insertError) {
       if (insertError.code === '23505') {
-        setError('An application with this phone number is already pending review. Please wait for the committee to respond.')
+        setError('इस फ़ोन नंबर से एक आवेदन पहले से समीक्षा के लिए लंबित है। कृपया समिति के जवाब का इंतज़ार करें।')
       } else {
-        setError('Something went wrong submitting your application. Please try again or contact us directly.')
+        setError('आवेदन जमा करने में कुछ गड़बड़ हो गई। कृपया दोबारा कोशिश करें या हमसे सीधे संपर्क करें।')
       }
       return
     }
@@ -74,10 +75,10 @@ function MembershipForm() {
       <div className="ledger-plaque flex flex-col items-center px-6 py-14 text-center">
         <CheckCircle2 size={44} className="text-saffron" />
         <h3 className="mt-4 font-display text-xl font-semibold text-maroon-deep">
-          Application received
+          आवेदन प्राप्त हुआ
         </h3>
         <p className="mt-2 max-w-sm text-sm text-stone">
-          The committee will verify your joining fee and confirm your membership by phone or email.
+          समिति आपके सदस्यता शुल्क का सत्यापन करके फ़ोन या ईमेल से आपकी सदस्यता की पुष्टि करेगी।
         </p>
       </div>
     )
@@ -86,9 +87,9 @@ function MembershipForm() {
   if (step === STEP.FEE) {
     return (
       <div className="ledger-plaque p-7 text-center">
-        <h3 className="font-display text-xl font-semibold text-maroon-deep">Joining Fee — ₹{JOINING_FEE}</h3>
+        <h3 className="font-display text-xl font-semibold text-maroon-deep">सदस्यता शुल्क: ₹{JOINING_FEE}</h3>
         <p className="mt-1 text-sm text-stone">
-          A one-time ₹{JOINING_FEE} joining fee applies to all new members. Scan and pay, then confirm below.
+          सभी नए सदस्यों के लिए ₹{JOINING_FEE} का एक बार का सदस्यता शुल्क है। स्कैन करके भुगतान करें, फिर नीचे पुष्टि करें।
         </p>
         <div className="mx-auto mt-5 w-fit bg-white p-3">
           <QRCode
@@ -97,7 +98,7 @@ function MembershipForm() {
           />
         </div>
         <p className="mt-4 font-ledger text-sm text-ink">{donationMethods.upiId}</p>
-        <p className="mt-1 text-xs text-stone">Scan with any UPI app (Google Pay, PhonePe, Paytm, etc.) to pay.</p>
+        <p className="mt-1 text-xs text-stone">भुगतान के लिए किसी भी UPI ऐप (Google Pay, PhonePe, Paytm आदि) से स्कैन करें।</p>
         {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
         <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <button
@@ -105,7 +106,7 @@ function MembershipForm() {
             onClick={() => setStep(STEP.DETAILS)}
             className="rounded-sm border border-gold/50 px-5 py-2.5 text-sm font-medium text-ink hover:border-saffron"
           >
-            Back
+            वापस जाएँ
           </button>
           <button
             type="button"
@@ -113,7 +114,7 @@ function MembershipForm() {
             disabled={saving}
             className="rounded-sm bg-maroon-deep px-5 py-2.5 text-sm font-semibold text-cream-paper disabled:opacity-60"
           >
-            {saving ? 'Submitting…' : "I've Paid — Submit Application"}
+            {saving ? 'जमा हो रहा है…' : 'भुगतान कर दिया, आवेदन जमा करें'}
           </button>
         </div>
       </div>
@@ -122,43 +123,43 @@ function MembershipForm() {
 
   return (
     <form onSubmit={handleDetailsSubmit} className="ledger-plaque space-y-5 p-7">
-      <h3 className="font-display text-xl font-semibold text-maroon-deep">New Membership Application</h3>
+      <h3 className="font-display text-xl font-semibold text-maroon-deep">नई सदस्यता के लिए आवेदन</h3>
       <p className="text-sm text-stone">
-        A one-time joining fee of <strong>₹{JOINING_FEE}</strong> applies — you&rsquo;ll pay it on the next step.
+        <strong>₹{JOINING_FEE}</strong> का एक बार का सदस्यता शुल्क देना होगा, जिसका भुगतान आप अगले चरण में करेंगे।
       </p>
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="fullName" label="Full Name" type="text" required value={form.fullName} onChange={update('fullName')} />
-        <Field id="dob" label="Date of Birth" type="date" value={form.dob} onChange={update('dob')} />
-        <Field id="phone" label="Phone Number" type="tel" required value={form.phone} onChange={update('phone')} />
-        <Field id="email" label="Email Address" type="email" value={form.email} onChange={update('email')} />
+        <Field id="fullName" label="पूरा नाम" type="text" required value={form.fullName} onChange={update('fullName')} />
+        <Field id="dob" label="जन्म तिथि" type="date" value={form.dob} onChange={update('dob')} />
+        <Field id="phone" label="फ़ोन नंबर" type="tel" required value={form.phone} onChange={update('phone')} />
+        <Field id="email" label="ईमेल पता" type="email" value={form.email} onChange={update('email')} />
         <Field
           id="address"
-          label="Current Address"
+          label="वर्तमान पता"
           type="text"
           className="sm:col-span-2"
           required
           value={form.address}
           onChange={update('address')}
         />
-        <Field id="occupation" label="Occupation" type="text" value={form.occupation} onChange={update('occupation')} />
+        <Field id="occupation" label="व्यवसाय" type="text" value={form.occupation} onChange={update('occupation')} />
         <div>
-          <Field id="caste" label="Caste" type="text" required value={form.caste} onChange={update('caste')} placeholder="Kushwaha" />
+          <Field id="caste" label="जाति" type="text" required value={form.caste} onChange={update('caste')} placeholder="कुशवाहा" />
           <p className="mt-1 text-xs text-stone">
-            This form is only for members of the Kushwaha community — please type &ldquo;Kushwaha&rdquo; here.
+            यह फ़ॉर्म केवल कुशवाहा समाज के सदस्यों के लिए है, कृपया यहाँ &ldquo;कुशवाहा&rdquo; लिखें।
           </p>
         </div>
       </div>
       <label className="flex items-start gap-2.5 text-sm text-stone">
         <input type="checkbox" required className="mt-1 accent-maroon" />
-        I agree to the Sangh&rsquo;s membership terms and consent to my name appearing in
-        the public member directory.
+        मैं संघ की सदस्यता की शर्तों से सहमत हूँ और सार्वजनिक सदस्य सूची में अपना नाम दिखाए जाने की
+        अनुमति देता/देती हूँ।
       </label>
       {error && <p className="text-sm text-red-700">{error}</p>}
       <button
         type="submit"
         className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon sm:w-auto"
       >
-        Continue to Joining Fee
+        सदस्यता शुल्क के लिए आगे बढ़ें
       </button>
     </form>
   )
@@ -168,10 +169,10 @@ function MemberPhotos() {
   return (
     <div className="grid gap-5 sm:grid-cols-2">
       <div className="ledger-plaque overflow-hidden p-3">
-        <img src={a4} alt="Members at a Sangh recognition ceremony" className="h-64 w-full object-cover" />
+        <img src={a4} alt="संघ के सम्मान समारोह में सदस्य" className="h-64 w-full object-cover" />
       </div>
       <div className="ledger-plaque overflow-hidden p-3">
-        <img src={a1} alt="A member being felicitated by the Sangh" className="h-64 w-full object-cover" />
+        <img src={a1} alt="संघ द्वारा एक सदस्य का सम्मान" className="h-64 w-full object-cover" />
       </div>
     </div>
   )
@@ -181,9 +182,9 @@ export default function Membership() {
   return (
     <>
       <PageHero
-        eyebrow="Join the Sangh"
-        title="Membership"
-        blurb="Register as a member, or search the community directory."
+        eyebrow="संघ से जुड़ें"
+        title="सदस्यता"
+        blurb="सदस्य के रूप में पंजीकरण करें और अपना मासिक शुल्क भरें।"
       />
 
       <div className="flex justify-center bg-cream-deep/60 py-8">
@@ -195,9 +196,9 @@ export default function Membership() {
       </section>
       <section className="bg-cream-deep/60 py-16">
         <div className="mx-auto max-w-4xl px-5 lg:px-8">
-          <p className="eyebrow text-center text-maroon/70">Our Members</p>
+          <p className="eyebrow text-center text-maroon/70">हमारे सदस्य</p>
           <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">
-            Faces of the Sangh
+            संघ के चेहरे
           </h2>
           <div className="mt-8">
             <MemberPhotos />

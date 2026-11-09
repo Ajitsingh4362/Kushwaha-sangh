@@ -12,9 +12,9 @@ function HostelSection() {
           <div>
             <div className="flex items-center gap-2.5">
               <Building2 size={22} className="text-saffron" />
-              <span className="eyebrow text-maroon/70">Pillar 01</span>
+              <span className="eyebrow text-maroon/70">स्तंभ 01</span>
             </div>
-            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Girls&rsquo; Hostel</h2>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">बालिका छात्रावास</h2>
             <p className="mt-4 leading-relaxed text-stone">{hostelInfo.intro}</p>
 
             <ul className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
@@ -28,10 +28,10 @@ function HostelSection() {
           </div>
 
           <div className="ledger-plaque animate-rise p-7">
-            <span className="ledger-number">Upcoming Initiative</span>
+            <span className="ledger-number">आगामी योजना</span>
             <div className="mt-3 flex items-baseline justify-between">
               <span className="font-display text-2xl font-bold text-maroon-deep">{hostelInfo.fundRaised}</span>
-              <span className="text-sm text-stone">raised of {hostelInfo.fundGoal}</span>
+              <span className="text-sm text-stone">{hostelInfo.fundGoal} में से जुटाए गए</span>
             </div>
             <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-gold/15">
               <div
@@ -40,17 +40,17 @@ function HostelSection() {
               />
             </div>
             <p className="mt-2 text-xs text-stone">{hostelInfo.progressNote}</p>
-            <p className="mt-1 text-xs text-stone">Planned capacity: {hostelInfo.plannedCapacity}</p>
+            <p className="mt-1 text-xs text-stone">प्रस्तावित क्षमता: {hostelInfo.plannedCapacity}</p>
 
             <div className="ledger-rule my-6" />
 
             <p className="text-sm leading-relaxed text-stone">
-              This hostel hasn&rsquo;t been built yet — it&rsquo;s the Sangh&rsquo;s next big goal. Once
-              ground is broken, photos of construction and the finished building will appear on the{' '}
+              यह छात्रावास अभी बना नहीं है, यह संघ का अगला बड़ा लक्ष्य है। निर्माण शुरू होने पर इसकी और
+              तैयार भवन की तस्वीरें{' '}
               <a href="/gallery" className="text-saffron underline">
-                Gallery
+                गैलरी
               </a>{' '}
-              page.
+              पेज पर दिखाई देंगी।
             </p>
             <div className="mt-4 grid grid-cols-3 gap-2">
               {[1, 2, 3].map((i) => (
@@ -58,7 +58,7 @@ function HostelSection() {
                   key={i}
                   className="flex aspect-square items-center justify-center border border-dashed border-gold/50 bg-cream text-xs text-stone/70"
                 >
-                  Concept {i}
+                  नमूना {i}
                 </div>
               ))}
             </div>
@@ -66,7 +66,7 @@ function HostelSection() {
               href="/donate"
               className="mt-5 block w-full rounded-sm bg-maroon-deep px-5 py-3 text-center text-sm font-semibold text-cream-paper transition hover:bg-maroon"
             >
-              Contribute to the Hostel Fund
+              छात्रावास कोष में योगदान दें
             </a>
           </div>
         </div>
@@ -90,9 +90,9 @@ function HealthSection() {
           <div>
             <div className="flex items-center gap-2.5">
               <HeartPulse size={22} className="text-saffron" />
-              <span className="eyebrow text-maroon/70">Pillar 02</span>
+              <span className="eyebrow text-maroon/70">स्तंभ 02</span>
             </div>
-            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Health Assistance</h2>
+            <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">स्वास्थ्य सहायता</h2>
             <p className="mt-4 leading-relaxed text-stone">{healthInfo.intro}</p>
 
             <ol className="mt-6 space-y-4">
@@ -106,7 +106,7 @@ function HealthSection() {
                 </li>
               ))}
             </ol>
-            <p className="mt-5 text-xs italic text-stone">{healthInfo.disclaimer}</p>
+            <p className="mt-5 text-xs text-stone">{healthInfo.disclaimer}</p>
           </div>
 
           <div className="ledger-plaque animate-rise p-7">
@@ -114,33 +114,33 @@ function HealthSection() {
               <div className="flex flex-col items-center py-8 text-center">
                 <CheckCircle2 size={40} className="text-saffron" />
                 <p className="mt-3 font-display text-lg font-semibold text-maroon-deep">
-                  Request received
+                  अनुरोध प्राप्त हुआ
                 </p>
                 <p className="mt-1 text-sm text-stone">
-                  The welfare committee will contact you within 7–10 days.
+                  कल्याण समिति 7–10 दिनों में आपसे संपर्क करेगी।
                 </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <h3 className="font-display text-lg font-semibold text-maroon-deep">
-                  Request Assistance
+                  सहायता के लिए अनुरोध करें
                 </h3>
-                <Field id="patientName" label="Patient / Member Name" type="text" required />
-                <Field id="phone" label="Contact Number" type="tel" required />
+                <Field id="patientName" label="मरीज़ / सदस्य का नाम" type="text" required />
+                <Field id="phone" label="संपर्क नंबर" type="tel" required />
                 <SelectField
                   id="assistanceType"
-                  label="Type of Assistance"
-                  options={['Surgery / Hospitalisation', 'Ongoing Treatment', 'Medicine Support', 'Other']}
+                  label="सहायता का प्रकार"
+                  options={['सर्जरी / अस्पताल में भर्ती', 'लगातार चल रहा इलाज', 'दवाइयों के लिए सहायता', 'अन्य']}
                 />
-                <TextAreaField id="details" label="Briefly describe the situation" required />
+                <TextAreaField id="details" label="स्थिति के बारे में संक्षेप में बताएँ" required />
                 <button
                   type="submit"
                   className="w-full rounded-sm bg-maroon-deep px-5 py-3 text-sm font-semibold text-cream-paper transition hover:bg-maroon"
                 >
-                  Submit Request
+                  अनुरोध भेजें
                 </button>
                 <p className="text-center text-xs text-stone">
-                  This form needs to be connected to a backend (e.g. Supabase or email service) before it goes live.
+                  यह फ़ॉर्म अभी चालू नहीं है। आपात स्थिति में कृपया सीधे समिति से फ़ोन पर संपर्क करें।
                 </p>
               </form>
             )}
@@ -157,19 +157,19 @@ function AchieversSection() {
       <div className="mx-auto max-w-6xl px-5 lg:px-8">
         <div className="flex items-center gap-2.5">
           <Trophy size={22} className="text-saffron" />
-          <span className="eyebrow text-maroon/70">Pillar 03</span>
+          <span className="eyebrow text-maroon/70">स्तंभ 03</span>
         </div>
-        <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">Achievers&rsquo; Wall</h2>
+        <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">प्रतिभा सम्मान</h2>
         <p className="mt-4 max-w-2xl leading-relaxed text-stone">
-          Recognising members and their children who have brought pride to the community — in
-          academics, careers, sport and public service.
+          पढ़ाई, करियर, खेल और लोक सेवा में समाज का नाम रोशन करने वाले सदस्यों और उनके बच्चों का
+          सम्मान।
         </p>
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {achievers.map((a, i) => (
             <div key={i} className="ledger-plaque animate-rise flex gap-4 p-5">
               <div className="grid h-16 w-20 shrink-0 place-items-center rounded-md border-2 border-gold bg-maroon-deep font-display font-semibold text-gold">
-                {a.name.replace(/Achiever Name/i, 'A').slice(0, 1)}
+                {a.name.slice(0, 1)}
               </div>
               <div>
                 <span className="ledger-number">{a.category}</span>
@@ -180,11 +180,11 @@ function AchieversSection() {
           ))}
         </div>
         <p className="mt-6 text-sm text-stone">
-          Nominate a community achiever through the{' '}
+          समाज की किसी प्रतिभा का नाम सुझाने के लिए{' '}
           <a href="/contact" className="text-saffron underline">
-            Contact
+            संपर्क
           </a>{' '}
-          page.
+          पेज पर जाएँ।
         </p>
       </div>
     </section>
@@ -195,9 +195,9 @@ export default function Welfare() {
   return (
     <>
       <PageHero
-        eyebrow="Samaj Welfare Programs"
-        title="Welfare Programs"
-        blurb="The Sangh's real work — a hostel, a health fund, and recognition for those who rise."
+        eyebrow="समाज कल्याण"
+        title="कल्याण कार्यक्रम"
+        blurb="संघ का असली काम: छात्रावास, स्वास्थ्य कोष, और आगे बढ़ने वालों का सम्मान।"
       />
       <HostelSection />
       <HealthSection />

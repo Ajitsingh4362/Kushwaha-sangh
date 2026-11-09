@@ -3,7 +3,7 @@ import { site } from '../data/content'
 
 export default function RefundPolicy() {
   return (
-    <>
+    <div lang="en">
       <PageHero
         eyebrow="Legal"
         title="Refund &amp; Cancellation Policy"
@@ -14,7 +14,7 @@ export default function RefundPolicy() {
         <div>
           <h2 className="font-display text-xl font-semibold text-maroon-deep">1. Donations Are Voluntary</h2>
           <p className="mt-2">
-            Donations made to {site.name} are voluntary contributions toward the Sangh&rsquo;s welfare
+            Donations made to {site.nameEn} are voluntary contributions toward the Sangh&rsquo;s welfare
             programs (girls&rsquo; hostel fund, health-assistance fund, and related activities). As these are
             charitable contributions rather than a purchase of goods or services, donations are generally
             <strong> non-refundable</strong> once processed.
@@ -65,6 +65,6 @@ export default function RefundPolicy() {
           against Razorpay&rsquo;s current policy requirements before launch.
         </p>
       </section>
-    </>
+    </div>
   )
 }

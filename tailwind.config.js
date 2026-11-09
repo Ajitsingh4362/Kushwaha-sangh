@@ -35,7 +35,7 @@ export default {
       fontFamily: {
         display: ['Eczar', 'serif'],
         body: ['Hind', 'sans-serif'],
-        ledger: ['"IBM Plex Mono"', 'monospace'],
+        ledger: ['"IBM Plex Mono"', 'Hind', 'monospace'],
       },
       keyframes: {
         'scroll-x': {
