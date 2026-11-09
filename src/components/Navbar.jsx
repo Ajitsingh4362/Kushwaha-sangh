@@ -94,7 +94,7 @@ export default function Navbar() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 lg:px-8">
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="सीतामढ़ी कुशवाहा संघ का लोगो" className="h-16 w-16 rounded-full object-contain" />
-          <span className="font-display text-lg font-semibold leading-tight text-blue-900">सीतामढ़ी कुशवाहा संघ</span>
+          <span className="font-display text-xl font-semibold leading-tight text-blue-900 sm:text-2xl">सीतामढ़ी कुशवाहा संघ</span>
         </Link>
 
         <nav className="hidden items-center gap-7 lg:flex">
