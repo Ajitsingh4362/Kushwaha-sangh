@@ -53,13 +53,13 @@ function NavItem({ item, onNavigate, mobile = false }) {
           <ChevronDown size={14} strokeWidth={2.5} />
         </NavLink>
         {open && (
-          <div className="absolute left-0 top-full min-w-[200px] border border-gold/30 bg-maroon-deep shadow-lg">
+          <div className="absolute left-0 top-full min-w-[200px] border border-gold/40 bg-cream-paper py-1 shadow-lg">
             {item.children.map((child) => (
               <Link
                 key={child.label}
                 to={child.to}
                 onClick={onNavigate}
-                className="block px-4 py-2.5 text-sm text-blue-900"
+                className="block px-4 py-2.5 text-sm text-blue-900 transition-colors hover:bg-saffron/15 hover:text-maroon-deep"
               >
                 {child.label}
               </Link>
