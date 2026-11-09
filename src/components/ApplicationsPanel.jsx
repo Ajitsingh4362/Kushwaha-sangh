@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { CheckCircle2, XCircle, Clock, IndianRupee } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
-export default function ApplicationsPanel() {
+// pendingOnly: show just the applications waiting for review (used in the
+// dashboard popup); the Applications page shows the reviewed list too.
+export default function ApplicationsPanel({ pendingOnly = false }) {
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -158,7 +160,7 @@ export default function ApplicationsPanel() {
         </div>
       </div>
 
-      {reviewed.length > 0 && (
+      {!pendingOnly && reviewed.length > 0 && (
         <div>
           <h3 className="font-display text-lg font-semibold text-maroon-deep">Reviewed</h3>
           <div className="mt-4 overflow-x-auto">

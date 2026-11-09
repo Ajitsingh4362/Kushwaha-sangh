@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Users, HeartHandshake, Hourglass, ShieldCheck, Wallet, ClipboardCheck, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { Link } from 'react-router-dom'
 import ActiveMembersModal from '../components/ActiveMembersModal'
+import AdminModal from '../components/AdminModal'
+import ApplicationsPanel from '../components/ApplicationsPanel'
 
 function currentMonthStart() {
   const d = new Date()
@@ -42,6 +45,7 @@ function StatCard({ icon: Icon, value, label, sub, accent = 'text-maroon-deep', 
 export default function AdminOverview() {
   const [stats, setStats] = useState(null)
   const [showMembers, setShowMembers] = useState(false)
+  const [showApplications, setShowApplications] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -112,6 +116,7 @@ export default function AdminOverview() {
               value={stats.pendingApplications}
               label="Pending Applications"
               accent={stats.pendingApplications > 0 ? 'text-red-700' : 'text-green-700'}
+              onClick={() => setShowApplications(true)}
             />
             <StatCard
               icon={Hourglass}
@@ -152,6 +157,23 @@ export default function AdminOverview() {
       )}
 
       {showMembers && <ActiveMembersModal onClose={() => setShowMembers(false)} />}
+
+      {showApplications && (
+        <AdminModal
+          title="Pending Applications"
+          subtitle="Verify the joining fee, then approve to add them as a member (they get a Member ID automatically)."
+          onClose={() => setShowApplications(false)}
+          footer={
+            <Link to="/admin/applications" className="text-sm font-medium text-saffron hover:underline">
+              Open Applications page (includes reviewed history) ›
+            </Link>
+          }
+        >
+          <div className="p-5">
+            <ApplicationsPanel pendingOnly />
+          </div>
+        </AdminModal>
+      )}
     </div>
   )
 }
