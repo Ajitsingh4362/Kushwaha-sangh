@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { Menu, X, ChevronDown } from 'lucide-react'
-import { site, navigation } from '../data/content'
+import { navigation } from '../data/content'
 import logo from '../assets/logo.png'
 import { useDonateModal } from '../lib/DonateModalContext'
 
