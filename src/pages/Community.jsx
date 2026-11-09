@@ -5,16 +5,11 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 // Public member directory. Data comes from the get_public_members()
 // database function (supabase/public_members.sql), which returns only
-// name, membership type and joining date — no contact details.
+// name, membership type and occupation — no contact details.
 
 const TYPE_HI = {
   karyakarni: 'कार्यकारिणी',
   regular: 'सामान्य',
-}
-
-function formatDate(dateStr) {
-  if (!dateStr) return '—'
-  return new Date(dateStr).toLocaleDateString('hi-IN', { day: 'numeric', month: 'long', year: 'numeric' })
 }
 
 export default function Community() {
@@ -81,16 +76,19 @@ export default function Community() {
                     <th scope="col" className="w-12 whitespace-nowrap px-3 py-3 font-semibold sm:w-20 sm:px-4">क्रम</th>
                     <th scope="col" className="px-3 py-3 font-semibold sm:px-4">नाम</th>
                     <th scope="col" className="px-3 py-3 font-semibold sm:px-4">सदस्यता</th>
-                    <th scope="col" className="hidden px-4 py-3 font-semibold sm:table-cell">सदस्य कब से</th>
+                    <th scope="col" className="hidden px-4 py-3 font-semibold sm:table-cell">व्यवसाय</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gold/15">
                   {shown.map((m) => (
                     <tr key={m.serial} className="even:bg-cream-deep/40">
                       <td className="px-3 py-2.5 font-ledger text-stone sm:px-4">{m.serial}</td>
-                      <td className="px-3 py-2.5 font-medium text-ink sm:px-4">{m.name}</td>
+                      <td className="px-3 py-2.5 sm:px-4">
+                        <span className="font-medium text-ink">{m.name}</span>
+                        {m.occupation && <span className="block text-xs text-stone sm:hidden">{m.occupation}</span>}
+                      </td>
                       <td className="whitespace-nowrap px-3 py-2.5 text-stone sm:px-4">{TYPE_HI[m.member_type] || 'सामान्य'}</td>
-                      <td className="hidden whitespace-nowrap px-4 py-2.5 text-stone sm:table-cell">{formatDate(m.joined_on)}</td>
+                      <td className="hidden px-4 py-2.5 text-stone sm:table-cell">{m.occupation || '—'}</td>
                     </tr>
                   ))}
                   {shown.length === 0 && (
