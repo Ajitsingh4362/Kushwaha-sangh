@@ -33,17 +33,17 @@ export function StatPlaque({ value, label, id, dark = false }) {
 
 export function PersonPlaque({ name, designation, regNo, note, photoUrl, featured = false }) {
   return (
-    <div className={`ledger-plaque animate-rise flex flex-col items-center px-6 text-center ${featured ? 'py-9' : 'py-7'}`}>
+    <div className={`ledger-plaque animate-rise flex flex-col items-center px-4 text-center ${featured ? 'py-7' : 'py-5'}`}>
       {photoUrl ? (
         <img
           src={photoUrl}
           alt={name}
-          className={`rounded-md border-2 border-gold object-cover ${featured ? 'h-28 w-32' : 'h-24 w-28'}`}
+          className={`rounded-md border-2 border-gold object-cover ${featured ? 'h-20 w-20 sm:h-24 sm:w-24' : 'h-16 w-16 sm:h-20 sm:w-20'}`}
         />
       ) : (
         <div
           className={`grid place-items-center rounded-md border-2 border-gold bg-maroon-deep font-display font-semibold text-gold ${
-            featured ? 'h-28 w-32 text-3xl' : 'h-24 w-28 text-2xl'
+            featured ? 'h-20 w-20 text-2xl sm:h-24 sm:w-24' : 'h-16 w-16 text-xl sm:h-20 sm:w-20'
           }`}
         >
           {name
@@ -58,7 +58,7 @@ export function PersonPlaque({ name, designation, regNo, note, photoUrl, feature
             .toUpperCase() || 'KS'}
         </div>
       )}
-      <div className={`mt-4 font-display font-semibold text-maroon-deep ${featured ? 'text-xl' : 'text-base'}`}>
+      <div className={`mt-3 font-display font-semibold text-maroon-deep ${featured ? 'text-xl' : 'text-base'}`}>
         {name}
       </div>
       <div className="mt-0.5 text-sm text-saffron">{designation}</div>

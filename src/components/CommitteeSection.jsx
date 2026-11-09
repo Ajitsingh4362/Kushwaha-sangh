@@ -55,16 +55,16 @@ export default function CommitteeSection() {
           <h2 className="mt-2 font-display text-3xl font-bold text-maroon-deep">संघ की समिति</h2>
         </div>
 
-        {president && <div className="mx-auto mt-8 max-w-xs">{plaque(president, true)}</div>}
+        {president && <div className="mx-auto mt-8 max-w-[15rem]">{plaque(president, true)}</div>}
 
         {officers.length > 0 && (
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:mt-8 sm:gap-6 lg:grid-cols-3">{officers.map((o) => plaque(o))}</div>
+          <div className="mx-auto mt-6 grid max-w-3xl grid-cols-2 gap-4 sm:mt-8 sm:gap-5 lg:grid-cols-3">{officers.map((o) => plaque(o))}</div>
         )}
 
         {executives.length > 0 && (
           <>
             <p className="eyebrow mt-12 text-center text-maroon/70">कार्यकारिणी समिति</p>
-            <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
+            <div className="mx-auto mt-6 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
               {executives.map((m) => plaque(m))}
             </div>
           </>
