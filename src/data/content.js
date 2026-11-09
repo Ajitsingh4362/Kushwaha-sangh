@@ -27,7 +27,6 @@ export const site = {
 export const navigation = [
   { label: 'होम', to: '/' },
   { label: 'हमारे बारे में', to: '/about' },
-  { label: 'समिति', to: '/committee' },
   {
     label: 'कल्याण कार्यक्रम',
     to: '/welfare',
