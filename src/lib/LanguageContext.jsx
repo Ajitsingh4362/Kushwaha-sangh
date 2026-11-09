@@ -34,7 +34,7 @@ function applyGoogleTranslateWithRetry(lang, maxAttempts = 30) {
 }
 
 export function LanguageProvider({ children }) {
-  const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEY) || 'en')
+  const [lang, setLang] = useState(() => localStorage.getItem(STORAGE_KEY) || 'hi')
   const location = useLocation()
 
   function t(text) {
