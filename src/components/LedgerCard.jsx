@@ -51,6 +51,7 @@ export function PersonPlaque({ name, designation, regNo, note, photoUrl, feature
             .replace(/ का नाम$/, '')
             .trim()
             .split(' ')
+            .filter((w) => w && !w.endsWith('.')) // skip titles like डॉ. / Dr.
             .map((w) => w[0])
             .join('')
             .slice(0, 2)

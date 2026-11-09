@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, Search, UserPlus, Users, X } from 'lucide-re
 import PageHero from '../components/PageHero'
 import PayDuesButton from '../components/PayDuesButton'
 import MembershipForm from '../components/MembershipForm'
+import CommitteeSection from '../components/CommitteeSection'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { nameToHindi, occupationToHindi } from '../lib/toHindi'
 
@@ -117,7 +118,10 @@ export default function Community() {
         </section>
       )}
 
-      <section id="member-list" className="mx-auto max-w-4xl scroll-mt-28 px-4 py-12 sm:px-5 lg:px-8">
+      <CommitteeSection />
+
+      <section id="member-list" className="mx-auto max-w-4xl scroll-mt-28 px-4 pb-14 pt-12 sm:px-5 lg:px-8">
+        <h2 className="mb-6 text-center font-display text-3xl font-bold text-maroon-deep">सदस्य सूची</h2>
         {loading ? (
           <p className="py-10 text-center text-stone">सदस्य सूची लोड हो रही है…</p>
         ) : failed ? (

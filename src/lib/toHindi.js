@@ -236,3 +236,29 @@ export function occupationToHindi(text) {
     })
     .join('')
 }
+
+const DESIGNATIONS = {
+  president: 'अध्यक्ष', adhyaksh: 'अध्यक्ष', adhyaksha: 'अध्यक्ष', chairman: 'अध्यक्ष',
+  'vice president': 'उपाध्यक्ष', 'vice-president': 'उपाध्यक्ष', 'up adhyaksh': 'उपाध्यक्ष', 'up-adhyaksh': 'उपाध्यक्ष',
+  upadhyaksh: 'उपाध्यक्ष', secretary: 'सचिव', sachiv: 'सचिव', 'general secretary': 'महासचिव',
+  'gen secretary': 'महासचिव', 'mahasachiv': 'महासचिव', 'joint secretary': 'संयुक्त सचिव',
+  'organizing secretary': 'संगठन सचिव', 'organising secretary': 'संगठन सचिव', 'assistant secretary': 'सहायक सचिव',
+  treasurer: 'कोषाध्यक्ष', koshadhyaksh: 'कोषाध्यक्ष', 'kosha adhyaksh': 'कोषाध्यक्ष', 'kosha-adhyaksh': 'कोषाध्यक्ष',
+  'kosh adhyaksh': 'कोषाध्यक्ष', 'executive member': 'कार्यकारिणी सदस्य', 'executive committee member': 'कार्यकारिणी सदस्य',
+  member: 'सदस्य', patron: 'संरक्षक', sanrakshak: 'संरक्षक', advisor: 'सलाहकार', adviser: 'सलाहकार',
+  'chief advisor': 'मुख्य सलाहकार', spokesperson: 'प्रवक्ता', 'media incharge': 'मीडिया प्रभारी',
+  'media in-charge': 'मीडिया प्रभारी', auditor: 'अंकेक्षक', founder: 'संस्थापक', 'founder member': 'संस्थापक सदस्य',
+}
+
+// Committee designations are typed freely in the admin panel; show the
+// Hindi title when it's a known one ("Treasurer", "Kosha-Adhyaksh
+// (Treasurer)"), otherwise leave the text as entered.
+export function designationToHindi(text) {
+  if (!text || DEVANAGARI.test(text)) return text
+  const clean = (s) => s.toLowerCase().replace(/\./g, '').replace(/\s+/g, ' ').trim()
+  const whole = DESIGNATIONS[clean(text)]
+  if (whole) return whole
+  const parts = text.split(/[()/,]/).map(clean).filter(Boolean)
+  for (const p of parts) if (DESIGNATIONS[p]) return DESIGNATIONS[p]
+  return text
+}
