@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import HelpButton from './components/HelpButton'
@@ -6,7 +6,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Committee from './pages/Committee'
 import Welfare from './pages/Welfare'
-import Membership from './pages/Membership'
 import Donate from './pages/Donate'
 import Gallery from './pages/Gallery'
 import Programs from './pages/Programs'
@@ -90,7 +89,7 @@ export default function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/committee" element={<Committee />} />
                 <Route path="/welfare" element={<Welfare />} />
-                <Route path="/membership" element={<Membership />} />
+                <Route path="/membership" element={<Navigate to={{ pathname: '/community', hash: '#join' }} replace />} />
                 <Route path="/donate" element={<Donate />} />
                 <Route path="/gallery" element={<Gallery />} />
                 <Route path="/programs" element={<Programs />} />

@@ -16,7 +16,7 @@ export default function DonateQRButton() {
         अभी दान करें
       </button>
       <Link
-        to="/membership"
+        to="/community#join"
         className="rounded-sm border border-maroon-deep px-7 py-3 text-sm font-semibold text-maroon-deep shadow transition hover:bg-maroon-deep hover:text-cream-paper"
       >
         हमसे जुड़ें

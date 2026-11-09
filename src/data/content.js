@@ -37,7 +37,6 @@ export const navigation = [
       { label: 'प्रतिभा सम्मान', to: '/welfare#achievers' },
     ],
   },
-  { label: 'सदस्यता', to: '/membership' },
   { label: 'सदस्य', to: '/community' },
   { label: 'दान करें', to: '/donate' },
   { label: 'गैलरी', to: '/gallery' },

@@ -1,18 +1,14 @@
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
 import QRCode from 'react-qr-code'
-import PageHero from '../components/PageHero'
-import { Field } from '../components/FormField'
+import { Field } from './FormField'
 import { supabase } from '../lib/supabase'
 import { donationMethods } from '../data/content'
-import PayDuesButton from '../components/PayDuesButton'
-import a4 from '../assets/activities/activity-4.jpg'
-import a1 from '../assets/activities/activity-1.jpg'
 
 const JOINING_FEE = 100
 const STEP = { DETAILS: 'details', FEE: 'fee', DONE: 'done' }
 
-function MembershipForm() {
+export default function MembershipForm() {
   const [step, setStep] = useState(STEP.DETAILS)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -162,49 +158,5 @@ function MembershipForm() {
         सदस्यता शुल्क के लिए आगे बढ़ें
       </button>
     </form>
-  )
-}
-
-function MemberPhotos() {
-  return (
-    <div className="grid gap-5 sm:grid-cols-2">
-      <div className="ledger-plaque overflow-hidden p-3">
-        <img src={a4} alt="संघ के सम्मान समारोह में सदस्य" className="h-64 w-full object-cover" />
-      </div>
-      <div className="ledger-plaque overflow-hidden p-3">
-        <img src={a1} alt="संघ द्वारा एक सदस्य का सम्मान" className="h-64 w-full object-cover" />
-      </div>
-    </div>
-  )
-}
-
-export default function Membership() {
-  return (
-    <>
-      <PageHero
-        eyebrow="संघ से जुड़ें"
-        title="सदस्यता"
-        blurb="सदस्य के रूप में पंजीकरण करें और अपना मासिक शुल्क भरें।"
-      />
-
-      <div className="flex justify-center bg-cream-deep/60 py-8">
-        <PayDuesButton />
-      </div>
-
-      <section className="mx-auto max-w-2xl px-5 py-16 lg:px-8">
-        <MembershipForm />
-      </section>
-      <section className="bg-cream-deep/60 py-16">
-        <div className="mx-auto max-w-4xl px-5 lg:px-8">
-          <p className="eyebrow text-center text-maroon/70">हमारे सदस्य</p>
-          <h2 className="mt-2 text-center font-display text-3xl font-bold text-maroon-deep">
-            संघ के चेहरे
-          </h2>
-          <div className="mt-8">
-            <MemberPhotos />
-          </div>
-        </div>
-      </section>
-    </>
   )
 }

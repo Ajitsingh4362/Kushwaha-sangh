@@ -217,7 +217,7 @@ export default function Home() {
               अभी दान करें
             </Link>
             <Link
-              to="/membership"
+              to="/community#join"
               className="flex items-center gap-2 rounded-sm border border-gold/60 px-6 py-3 font-semibold hover:bg-cream-paper/10"
             >
               <Users size={18} /> हमसे जुड़ें
