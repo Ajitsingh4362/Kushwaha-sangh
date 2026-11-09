@@ -45,7 +45,7 @@ export default function Community() {
     <>
       <PageHero
         eyebrow="हमारा परिवार"
-        title="समुदाय"
+        title="सदस्य"
         blurb="संघ के सभी पंजीकृत सदस्यों की सूची।"
       />
 

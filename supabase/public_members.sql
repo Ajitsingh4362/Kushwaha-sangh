@@ -1,4 +1,4 @@
--- Public member directory (the "समुदाय" page on the website).
+-- Public member directory (the "सदस्य" page on the website, /community).
 -- Run this once in Supabase: Project -> SQL Editor -> New query -> paste -> Run.
 --
 -- The members table stays private (RLS: committee only). This function
