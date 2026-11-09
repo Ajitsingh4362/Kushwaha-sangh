@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Users, HeartHandshake, Hourglass, ShieldCheck, Wallet, ClipboardCheck } from 'lucide-react'
+import { Users, HeartHandshake, Hourglass, ShieldCheck, Wallet, ClipboardCheck, ChevronRight } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import ActiveMembersModal from '../components/ActiveMembersModal'
 
 function currentMonthStart() {
   const d = new Date()
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-01`
 }
 
-function StatCard({ icon: Icon, value, label, sub, accent = 'text-maroon-deep' }) {
-  return (
-    <div className="ledger-plaque flex flex-col gap-3 p-5">
+function StatCard({ icon: Icon, value, label, sub, accent = 'text-maroon-deep', onClick }) {
+  const body = (
+    <>
       <span className={`grid h-9 w-9 place-items-center rounded-sm bg-cream ${accent}`}>
         <Icon size={18} />
       </span>
@@ -18,12 +19,29 @@ function StatCard({ icon: Icon, value, label, sub, accent = 'text-maroon-deep' }
         <p className="eyebrow mt-0.5 text-stone">{label}</p>
         {sub && <p className="mt-1 text-xs text-stone">{sub}</p>}
       </div>
-    </div>
+    </>
   )
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className="ledger-plaque group flex flex-col gap-3 p-5 text-left transition hover:-translate-y-0.5 hover:shadow-md"
+      >
+        {body}
+        <span className="flex items-center gap-1 text-xs font-medium text-saffron">
+          View list <ChevronRight size={13} className="transition group-hover:translate-x-0.5" />
+        </span>
+      </button>
+    )
+  }
+  return <div className="ledger-plaque flex flex-col gap-3 p-5">{body}</div>
 }
 
 export default function AdminOverview() {
   const [stats, setStats] = useState(null)
+  const [showMembers, setShowMembers] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -88,7 +106,7 @@ export default function AdminOverview() {
       ) : (
         <>
           <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-5">
-            <StatCard icon={Users} value={stats.members} label="Active Members" />
+            <StatCard icon={Users} value={stats.members} label="Active Members" onClick={() => setShowMembers(true)} />
             <StatCard
               icon={ClipboardCheck}
               value={stats.pendingApplications}
@@ -132,6 +150,8 @@ export default function AdminOverview() {
           </div>
         </>
       )}
+
+      {showMembers && <ActiveMembersModal onClose={() => setShowMembers(false)} />}
     </div>
   )
 }
