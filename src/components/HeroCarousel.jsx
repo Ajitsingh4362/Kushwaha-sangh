@@ -6,7 +6,7 @@ export default function HeroCarousel({ images }) {
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % images.length)
-    }, 3000)
+    }, 10000) // 10 seconds per slide
     return () => clearInterval(timer)
   }, [images.length])
 
