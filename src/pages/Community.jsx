@@ -10,7 +10,7 @@ import { nameToHindi, occupationToHindi } from '../lib/toHindi'
 
 // सदस्य page: member directory + new membership application + monthly dues.
 // Directory data comes from the get_public_members() database function
-// (supabase/public_members.sql): name, membership type and occupation only.
+// (supabase/member_ids.sql): member ID, name, membership type and occupation only.
 
 const PAGE_SIZE = 20
 
@@ -71,6 +71,7 @@ export default function Community() {
         .sort((a, b) => (b.member_type === 'karyakarni') - (a.member_type === 'karyakarni'))
         .map((m, i) => ({
         serial: i + 1,
+        code: m.member_code || '',
         name: nameToHindi(m.name),
         nameOriginal: m.name || '',
         type: TYPE_HI[m.member_type] || 'सामान्य सदस्य',
@@ -81,7 +82,12 @@ export default function Community() {
 
   const q = query.trim().toLowerCase()
   const filtered = q
-    ? rows.filter((r) => r.name.toLowerCase().includes(q) || r.nameOriginal.toLowerCase().includes(q))
+    ? rows.filter(
+        (r) =>
+          r.name.toLowerCase().includes(q) ||
+          r.nameOriginal.toLowerCase().includes(q) ||
+          r.code.toLowerCase().includes(q)
+      )
     : rows
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const current = Math.min(page, totalPages)
@@ -136,8 +142,8 @@ export default function Community() {
                 <Users size={20} className="text-saffron" />
                 कुल पंजीकृत सदस्य: {members.length}
               </p>
-              <label className="relative block sm:w-72">
-                <span className="sr-only">नाम से खोजें</span>
+              <label className="relative block sm:w-80">
+                <span className="sr-only">नाम या सदस्य ID से खोजें</span>
                 <Search size={16} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone" />
                 <input
                   type="search"
@@ -146,7 +152,7 @@ export default function Community() {
                     setQuery(e.target.value)
                     setPage(1)
                   }}
-                  placeholder="नाम से खोजें"
+                  placeholder="नाम या ID से खोजें (जैसे sks_1005)"
                   className="w-full border border-gold/40 bg-cream-paper py-2.5 pl-9 pr-3 text-sm text-ink placeholder:text-stone/60 focus:border-saffron"
                 />
               </label>
@@ -156,7 +162,8 @@ export default function Community() {
               <table className="w-full text-left text-sm">
                 <thead className="bg-maroon-deep text-cream-paper">
                   <tr>
-                    <th scope="col" className="w-12 whitespace-nowrap px-3 py-3 font-semibold sm:w-20 sm:px-4">क्रम</th>
+                    <th scope="col" className="hidden w-16 whitespace-nowrap px-4 py-3 font-semibold sm:table-cell">क्रम</th>
+                    <th scope="col" className="whitespace-nowrap px-3 py-3 font-semibold sm:px-4">सदस्य ID</th>
                     <th scope="col" className="px-3 py-3 font-semibold sm:px-4">नाम</th>
                     <th scope="col" className="px-3 py-3 font-semibold sm:px-4">सदस्य का प्रकार</th>
                     <th scope="col" className="hidden px-4 py-3 font-semibold sm:table-cell">व्यवसाय</th>
@@ -165,7 +172,8 @@ export default function Community() {
                 <tbody className="divide-y divide-gold/15">
                   {shown.map((r) => (
                     <tr key={r.serial} className="even:bg-cream-deep/40">
-                      <td className="px-3 py-2.5 font-ledger text-stone sm:px-4">{r.serial}</td>
+                      <td className="hidden px-4 py-2.5 font-ledger text-stone sm:table-cell">{r.serial}</td>
+                      <td className="whitespace-nowrap px-3 py-2.5 font-ledger text-xs text-maroon sm:px-4 sm:text-sm">{r.code || '—'}</td>
                       <td className="px-3 py-2.5 sm:px-4">
                         <span className="font-medium text-ink">{r.name}</span>
                         {r.occupation && <span className="block text-xs text-stone sm:hidden">{r.occupation}</span>}
@@ -176,8 +184,8 @@ export default function Community() {
                   ))}
                   {shown.length === 0 && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-8 text-center text-stone">
-                        {members.length === 0 ? 'अभी कोई सदस्य दर्ज नहीं है।' : 'इस नाम से कोई सदस्य नहीं मिला।'}
+                      <td colSpan={5} className="px-4 py-8 text-center text-stone">
+                        {members.length === 0 ? 'अभी कोई सदस्य दर्ज नहीं है।' : 'इस नाम या ID से कोई सदस्य नहीं मिला।'}
                       </td>
                     </tr>
                   )}

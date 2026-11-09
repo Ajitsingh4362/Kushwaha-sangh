@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Plus, Globe, UserPlus, Star, Trash2 } from 'lucide-react'
+import { Plus, Globe, UserPlus, Star, Trash2, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -13,6 +13,7 @@ export default function MembersListPanel() {
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [search, setSearch] = useState('')
   const [form, setForm] = useState({
     name: '',
     phone: '',
@@ -86,6 +87,13 @@ export default function MembersListPanel() {
   const websiteCount = members.filter((m) => m.source === 'website').length
   const karyakarniCount = members.filter((m) => m.member_type === 'karyakarni').length
 
+  const q = search.trim().toLowerCase()
+  const shownMembers = q
+    ? members.filter((m) =>
+        [m.member_code, m.name, m.phone, m.email].some((v) => (v || '').toLowerCase().includes(q))
+      )
+    : members
+
   if (loading) return <p className="text-stone">Loading members…</p>
 
   return (
@@ -142,14 +150,28 @@ export default function MembersListPanel() {
         </button>
       </form>
 
-      <div>
-        <h3 className="font-display text-lg font-semibold text-maroon-deep">All Members</h3>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h3 className="font-display text-lg font-semibold text-maroon-deep">
+          All Members{q && <span className="ml-2 text-sm font-normal text-stone">({shownMembers.length} found)</span>}
+        </h3>
+        <label className="relative block sm:w-80">
+          <span className="sr-only">Search members</span>
+          <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone" />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by member ID, name or phone…"
+            className="w-full border border-gold/40 bg-cream-paper py-2 pl-9 pr-3 text-sm text-ink focus:border-saffron"
+          />
+        </label>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px] text-left text-sm">
+        <table className="w-full min-w-[900px] text-left text-sm">
           <thead>
             <tr className="border-b border-gold/30 text-xs uppercase tracking-wide text-stone">
+              <th className="py-2 pr-4 font-medium">Member ID</th>
               <th className="py-2 pr-4 font-medium">Name</th>
               <th className="py-2 pr-4 font-medium">Contact</th>
               <th className="py-2 pr-4 font-medium">Address</th>
@@ -161,8 +183,9 @@ export default function MembersListPanel() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gold/15">
-            {members.map((m) => (
+            {shownMembers.map((m) => (
               <tr key={m.id}>
+                <td className="whitespace-nowrap py-3 pr-4 font-ledger text-xs text-maroon">{m.member_code || '—'}</td>
                 <td className="py-3 pr-4 font-medium text-ink">{m.name}</td>
                 <td className="py-3 pr-4 text-xs text-stone">
                   {[m.phone, m.email].filter(Boolean).join(' / ') || '—'}
@@ -204,10 +227,12 @@ export default function MembersListPanel() {
                 </td>
               </tr>
             ))}
-            {members.length === 0 && (
+            {shownMembers.length === 0 && (
               <tr>
-                <td colSpan={8} className="py-6 text-center text-stone">
-                  No members yet — add one above, or wait for a website application.
+                <td colSpan={9} className="py-6 text-center text-stone">
+                  {members.length === 0
+                    ? 'No members yet — add one above, or wait for a website application.'
+                    : 'No member matches that ID, name or phone.'}
                 </td>
               </tr>
             )}

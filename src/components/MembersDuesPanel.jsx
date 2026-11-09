@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CheckCircle2, XCircle, Clock, Plus, Download } from 'lucide-react'
+import { CheckCircle2, XCircle, Clock, Plus, Download, Search } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { Field } from './FormField'
 
@@ -40,6 +40,7 @@ export default function MembersDuesPanel() {
   const [newMember, setNewMember] = useState({ name: '', phone: '', member_type: 'regular' })
   const [saving, setSaving] = useState(false)
   const [selectedMonth, setSelectedMonth] = useState(currentMonthStart())
+  const [search, setSearch] = useState('')
 
   const thisMonth = currentMonthStart()
 
@@ -105,6 +106,7 @@ export default function MembersDuesPanel() {
       const due = duesForMember(m.id).find((d) => d.due_month === selectedMonth)
       const pending = pendingMonths(m.id)
       return [
+        m.member_code || '',
         m.name,
         m.phone || '',
         m.member_type === 'karyakarni' ? 'Executive Committee' : 'Regular',
@@ -115,7 +117,7 @@ export default function MembersDuesPanel() {
     })
     downloadCSV(
       `dues-${selectedMonth}.csv`,
-      ['Name', 'Phone', 'Membership Type', `Status — ${monthLabel(selectedMonth)}`, 'Paid Date', 'Pending Months'],
+      ['Member ID', 'Name', 'Phone', 'Membership Type', `Status — ${monthLabel(selectedMonth)}`, 'Paid Date', 'Pending Months'],
       rows
     )
   }
@@ -127,6 +129,7 @@ export default function MembersDuesPanel() {
       .map((d) => {
         const m = members.find((mem) => mem.id === d.member_id)
         return [
+          m?.member_code || '',
           m?.name || 'Unknown',
           m?.phone || '',
           monthLabel(d.due_month),
@@ -135,7 +138,7 @@ export default function MembersDuesPanel() {
           d.paid_date || '',
         ]
       })
-    downloadCSV('dues-full-history.csv', ['Name', 'Phone', 'Month', 'Amount (₹)', 'Status', 'Paid Date'], rows)
+    downloadCSV('dues-full-history.csv', ['Member ID', 'Name', 'Phone', 'Month', 'Amount (₹)', 'Status', 'Paid Date'], rows)
   }
 
   const totalMembers = members.length
@@ -250,6 +253,18 @@ export default function MembersDuesPanel() {
         </div>
       </div>
 
+      <label className="relative block sm:w-80">
+        <span className="sr-only">Search members</span>
+        <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone" />
+        <input
+          type="search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search by member ID, name or phone…"
+          className="w-full border border-gold/40 bg-cream-paper py-2 pl-9 pr-3 text-sm text-ink focus:border-saffron"
+        />
+      </label>
+
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-left text-sm">
           <thead>
@@ -262,12 +277,20 @@ export default function MembersDuesPanel() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gold/15">
-            {members.map((m) => {
+            {members
+              .filter((m) => {
+                const q = search.trim().toLowerCase()
+                return !q || [m.member_code, m.name, m.phone].some((v) => (v || '').toLowerCase().includes(q))
+              })
+              .map((m) => {
               const pending = pendingMonths(m.id)
               const thisMonthDue = duesForMember(m.id).find((d) => d.due_month === selectedMonth)
               return (
                 <tr key={m.id}>
-                  <td className="py-3 pr-4 font-medium text-ink">{m.name}</td>
+                  <td className="py-3 pr-4 font-medium text-ink">
+                    {m.name}
+                    {m.member_code && <span className="block font-ledger text-xs font-normal text-maroon">{m.member_code}</span>}
+                  </td>
                   <td className="py-3 pr-4 text-xs text-stone">{m.phone || '—'}</td>
                   <td className="py-3 pr-4">
                     {!thisMonthDue ? (
