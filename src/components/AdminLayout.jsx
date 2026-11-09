@@ -91,10 +91,9 @@ export default function AdminLayout() {
         }`}
       >
         <div className="flex shrink-0 items-center gap-3 border-b border-gold/20 px-5 py-5">
-          <img src={logo} alt="Kushwaha Sangh" className="h-11 w-11 rounded-full object-contain" />
+          <img src={logo} alt="Sitamarhi Kushwaha Sangh" className="h-11 w-11 shrink-0 rounded-full object-contain" />
           <div className="leading-tight">
-            <p className="font-display text-sm font-semibold">Kushwaha Sangh</p>
-            <p className="eyebrow text-gold-light/70">Admin Panel</p>
+            <p className="font-display text-base font-semibold leading-tight">Sitamarhi Kushwaha Sangh</p>
           </div>
         </div>
 
